@@ -7,6 +7,7 @@ import {
 } from "@/features/private/dashboard/components";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Roles } from "@/features/private/configuracion/roles/pages";
+import { TipoDocumentos } from "@/features/private/configuracion/tipos_documentos/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -79,7 +80,7 @@ export const Dashboard = () => {
             <Route path="/configuracion/ciudad" element={<h1>Ciudad</h1>} />
             <Route
               path="/configuracion/tipo_documentos"
-              element={<h1>tipo de documentos</h1>}
+              element={<TipoDocumentos />}
             />
             <Route
               path="/configuracion/cambiar_contrasenia"

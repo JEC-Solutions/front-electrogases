@@ -1,4 +1,7 @@
-import { IRole } from "@/features/private/configuracion/roles/interfaces";
+import {
+  IRole,
+  IRoles,
+} from "@/features/private/configuracion/roles/interfaces";
 import { Button, Input, Modal, Space } from "antd";
 import { Controller } from "react-hook-form";
 
@@ -7,10 +10,16 @@ interface Props {
   onClose: () => void;
   methods: any;
   onSubmit: (values: IRole) => void;
-  currentRol: IRole | null;
+  currentRol: IRoles | null;
 }
 
-export const ModalRoles = ({ methods, onClose, open, onSubmit, currentRol }: Props) => {
+export const ModalRoles = ({
+  methods,
+  onClose,
+  open,
+  onSubmit,
+  currentRol,
+}: Props) => {
   return (
     <Modal
       title={currentRol ? "Editar Rol" : "Agregar Rol"}

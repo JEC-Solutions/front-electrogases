@@ -1,19 +1,20 @@
-import * as rolesServices from "@/features/private/configuracion/roles/services/roles.services";
+import * as tiposDocumentos from "@/features/private/configuracion/tipos_documentos/services/tipoDocumentos.services";
 import { useForm } from "react-hook-form";
-import {
-  IRole,
-  IRoles,
-} from "@/features/private/configuracion/roles/interfaces";
-import Swal from "sweetalert2";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import {
+  ITipoDocumentos,
+  ITipoDocumento,
+} from "@/features/private/configuracion/tipos_documentos/interfaces";
+import Swal from "sweetalert2";
 
-export const useRoles = () => {
+export const useTiposDocumentos = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [currentRol, setCurrentRol] = useState<IRoles | null>(null);
-  const methodsRoles = useForm<IRole>();
+  const [currentTipoDocumentos, setCurrentTipoDocumentos] =
+    useState<ITipoDocumentos | null>(null);
+  const methodsTipoDocumentos = useForm<ITipoDocumento>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -21,26 +22,26 @@ export const useRoles = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setCurrentRol(null);
-    methodsRoles.reset();
+    setCurrentTipoDocumentos(null);
+    methodsTipoDocumentos.reset();
   };
 
-  const openCurrentRol = (rol: IRoles) => {
-    setCurrentRol(rol);
+  const openCurrentTipoDocumento = (tipoDocumento: any) => {
+    setCurrentTipoDocumentos(tipoDocumento);
     handleOpen();
   };
 
-  //   Get roles
+  //   Get tipo documento
   const {
     data = [],
     isLoading,
     isError,
     error,
-  } = useQuery<IRoles[]>({
-    queryKey: ["roles"],
+  } = useQuery<ITipoDocumentos[]>({
+    queryKey: ["tiposDocumentos"],
     queryFn: async () => {
       try {
-        const { data } = await rolesServices.getRoles();
+        const { data } = await tiposDocumentos.getTipoDocumentos();
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -51,11 +52,12 @@ export const useRoles = () => {
     refetchOnWindowFocus: false,
   });
 
-  //   Create roles
-  const roleMutation = useMutation({
-    mutationFn: (form: IRole) =>
-      rolesServices.crateRoles({
-        nombre_rol: form.nombre_rol,
+  //   Create tipo documentos
+  const tipoDocumentoMutation = useMutation({
+    mutationFn: (form: ITipoDocumento) =>
+      tiposDocumentos.crateTipoDocumento({
+        nombre: form.nombre,
+        abreviacion: form.abreviacion,
       }),
 
     onMutate: () => {
@@ -72,10 +74,10 @@ export const useRoles = () => {
       Swal.fire({
         icon: "success",
         title: "Creado",
-        text: "Rol creado exitosamente",
+        text: "Inicio de sesión exitoso",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["roles"] });
+        queryClient.invalidateQueries({ queryKey: ["tiposDocumentos"] });
         handleClose();
       });
     },
@@ -86,10 +88,10 @@ export const useRoles = () => {
     },
   });
 
-  //   Update role
-  const updateRoleMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: IRole }) =>
-      rolesServices.updateRole(id, data),
+  //   Update tipo documentos
+  const updateTipoDocumentoMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: ITipoDocumento }) =>
+      tiposDocumentos.updateTipoDocumento(id, data),
 
     onMutate: () => {
       Swal.fire({
@@ -105,10 +107,10 @@ export const useRoles = () => {
       Swal.fire({
         icon: "success",
         title: "Actualizado",
-        text: "Rol actualizado correctamente",
+        text: "Tipo de documento actualizado correctamente",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["roles"] });
+        queryClient.invalidateQueries({ queryKey: ["tiposDocumentos"] });
         handleClose();
       });
     },
@@ -120,17 +122,20 @@ export const useRoles = () => {
   });
 
   //   Control del formulario
-  const onSubmit = (form: IRole) => {
-    if (currentRol) {
-      updateRoleMutation.mutate({ id: currentRol.id_rol, data: form });
+  const onSubmit = (form: ITipoDocumento) => {
+    if (currentTipoDocumentos) {
+      updateTipoDocumentoMutation.mutate({
+        id: currentTipoDocumentos.id_tipo_documento,
+        data: form,
+      });
     } else {
-      roleMutation.mutate(form);
+      tipoDocumentoMutation.mutate(form);
     }
   };
 
-  //   Eliminar rol
-  const deleteRoleMutation = useMutation({
-    mutationFn: (id: number) => rolesServices.deleteRole(id),
+  //   Eliminar Tipo de documento
+  const deleteTipoDocumentoMutation = useMutation({
+    mutationFn: (id: number) => tiposDocumentos.deleteTipoDocumento(id),
 
     onMutate: () => {
       Swal.fire({
@@ -146,10 +151,10 @@ export const useRoles = () => {
       Swal.fire({
         icon: "success",
         title: "Eliminado",
-        text: "Rol eliminado correctamente",
+        text: "Tipo de documento eliminado correctamente",
         confirmButtonText: "Aceptar",
       });
-      queryClient.invalidateQueries({ queryKey: ["roles"] });
+      queryClient.invalidateQueries({ queryKey: ["tiposDocumentos"] });
     },
 
     onError: (error: any) => {
@@ -169,14 +174,14 @@ export const useRoles = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteRoleMutation.mutate(id);
+        deleteTipoDocumentoMutation.mutate(id);
       }
     });
   };
 
-  // Actualizar estado del rol
-  const toggleRoleMutation = useMutation({
-    mutationFn: (id: number) => rolesServices.toggleStatus(id),
+  // Actualizar estado del tipo de documento
+  const toggleTipoDocumentoMutation = useMutation({
+    mutationFn: (id: number) => tiposDocumentos.toggleStatus(id),
 
     onMutate: () => {
       Swal.fire({
@@ -192,10 +197,10 @@ export const useRoles = () => {
       Swal.fire({
         icon: "success",
         title: "Estado actualizado",
-        text: "El rol fue activado/desactivado correctamente",
+        text: "El tipo de documento fue activado/desactivado correctamente",
         confirmButtonText: "Aceptar",
       });
-      queryClient.invalidateQueries({ queryKey: ["roles"] });
+      queryClient.invalidateQueries({ queryKey: ["tiposDocumentos"] });
     },
 
     onError: (error: any) => {
@@ -204,43 +209,48 @@ export const useRoles = () => {
     },
   });
 
-  // Actualizar estado del rol
-  const toggleRoleStatus = (id: number) => {
+  //   Actualizar estado del tipo de documento
+  const toggleTipoDocumentoStatus = (id: number) => {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "¿Deseas activar o desactivar este rol?",
+      text: "¿Deseas activar o desactivar este tipo de documento?",
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Sí, continuar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        toggleRoleMutation.mutate(id);
+        toggleTipoDocumentoMutation.mutate(id);
       }
     });
   };
 
   useEffect(() => {
-    if (currentRol) {
-      methodsRoles.setValue("nombre_rol", currentRol.nombre_rol);
+    if (currentTipoDocumentos) {
+      methodsTipoDocumentos.setValue("nombre", currentTipoDocumentos.nombre);
+      methodsTipoDocumentos.setValue(
+        "abreviacion",
+        currentTipoDocumentos.abreviacion
+      );
     } else {
-      methodsRoles.setValue("nombre_rol", "");
+      methodsTipoDocumentos.setValue("nombre", "");
+      methodsTipoDocumentos.setValue("abreviacion", "");
     }
-  }, [currentRol]);
+  }, [currentTipoDocumentos]);
 
   return {
-    roles: data,
+    tipoDocumentos: data,
     isLoading,
     isError,
     error,
-    onSubmit,
-    methodsRoles,
     handleOpen,
     handleClose,
+    openCurrentTipoDocumento,
     open,
-    currentRol,
-    openCurrentRol,
+    currentTipoDocumentos,
     handleDelete,
-    toggleRoleStatus
+    onSubmit,
+    toggleTipoDocumentoStatus,
+    methodsTipoDocumentos
   };
 };
