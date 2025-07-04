@@ -11,7 +11,10 @@ export const handleAxiosError = (error: AxiosError) => {
 
     let errorText = message;
 
-    if (errorDetails && typeof errorDetails === "object") {
+    // Si es un error 500, solo mostrar el mensaje general
+    if (status === 500) {
+      errorText = message;
+    } else if (errorDetails && typeof errorDetails === "object") {
       if (Array.isArray(errorDetails)) {
         errorText += "\n" + errorDetails.join("\n");
       } else {

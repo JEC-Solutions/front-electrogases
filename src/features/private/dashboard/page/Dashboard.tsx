@@ -6,6 +6,7 @@ import {
   Historial,
 } from "@/features/private/dashboard/components";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Roles } from "@/features/private/configuracion/roles/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -19,7 +20,7 @@ export const Dashboard = () => {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      if (!mobile) setDrawerVisible(false); // Cierra drawer en desktop
+      if (!mobile) setDrawerVisible(false);
     };
 
     handleResize();
@@ -30,7 +31,12 @@ export const Dashboard = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {!isMobile && (
-        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          width={250}
+        >
           <Sidebar />
         </Sider>
       )}
@@ -62,18 +68,42 @@ export const Dashboard = () => {
           <Historial />
           <Routes>
             {/* Ruta por defecto cuando entras a /dashboard */}
-            <Route index element={<Navigate to="users" replace />} />
+            <Route index element={<Navigate to="inicio" replace />} />
+            <Route path="inicio" element={<h1>Inicio</h1>} />
 
-            {/* Rutas hijas */}
-            <Route path="/users" element={<h1>usuarios</h1>} />
-            <Route path="/devices" element={<h1>devices</h1>} />
-            <Route path="/notifications" element={<h1>notificaciones</h1>} />
+            {/* Configuracion */}
+            <Route
+              path="/configuracion/departamentos"
+              element={<h1>Departamentos</h1>}
+            />
+            <Route path="/configuracion/ciudad" element={<h1>Ciudad</h1>} />
+            <Route
+              path="/configuracion/tipo_documentos"
+              element={<h1>tipo de documentos</h1>}
+            />
+            <Route
+              path="/configuracion/cambiar_contrasenia"
+              element={<h1>Cambiar contrasenia</h1>}
+            />
+            <Route path="/configuracion/opciones" element={<h1>opciones</h1>} />
+            <Route path="/configuracion/menus" element={<h1>menus</h1>} />
+            <Route path="/configuracion/roles" element={<Roles />} />
+            <Route path="/configuracion/usuarios" element={<h1>menus</h1>} />
+
+            {/* Inspecciones */}
+            <Route path="/inspecciones/rutas" element={<h1>rutas</h1>} />
+            <Route path="/inspecciones/clientes" element={<h1>clientes</h1>} />
+            <Route path="/inspecciones/casas" element={<h1>casas</h1>} />
+            <Route path="/inspecciones" element={<h1>inspecciones</h1>} />
+
+            {/* Informes */}
+            <Route
+              path="/informes/cuadro_maestro"
+              element={<h1>cuadro maestro</h1>}
+            />
 
             {/* Ruta catch-all dentro dashboard */}
-            <Route
-              path="*"
-              element={<NotFound />}
-            />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Content>
       </Layout>

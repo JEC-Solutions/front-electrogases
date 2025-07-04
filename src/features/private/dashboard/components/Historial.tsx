@@ -1,5 +1,5 @@
 import { Breadcrumb } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const nameMap: Record<string, string> = {
   dashboard: "Dashboard",
@@ -16,13 +16,9 @@ export const Historial = () => {
 
   // Mapea cada segmento a breadcrumb item
   const breadcrumbItems = pathSnippets.map((_, index) => {
-    const url = "/" + pathSnippets.slice(0, index + 1).join("/");
     const name = pathSnippets[index];
-
     return (
-      <Breadcrumb.Item key={url}>
-        <Link to={url}>{nameMap[name] || name}</Link>
-      </Breadcrumb.Item>
+      <Breadcrumb.Item key={index}>{nameMap[name] || name}</Breadcrumb.Item>
     );
   });
 
