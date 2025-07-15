@@ -26,7 +26,7 @@ export const useTiposDocumentos = () => {
     methodsTipoDocumentos.reset();
   };
 
-  const openCurrentTipoDocumento = (tipoDocumento: any) => {
+  const openCurrentTipoDocumento = (tipoDocumento: ITipoDocumentos) => {
     setCurrentTipoDocumentos(tipoDocumento);
     handleOpen();
   };
@@ -74,7 +74,7 @@ export const useTiposDocumentos = () => {
       Swal.fire({
         icon: "success",
         title: "Creado",
-        text: "Inicio de sesión exitoso",
+        text: "Documento creado con éxito",
         confirmButtonText: "Aceptar",
       }).then(() => {
         queryClient.invalidateQueries({ queryKey: ["tiposDocumentos"] });
