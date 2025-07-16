@@ -9,6 +9,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Roles } from "@/features/private/configuracion/roles/pages";
 import { TipoDocumentos } from "@/features/private/configuracion/tipos_documentos/pages";
 import { Departamentos } from "@/features/private/configuracion/departamentos/pages";
+import { Ciudad } from "@/features/private/configuracion/ciudad/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -78,7 +79,7 @@ export const Dashboard = () => {
               path="/configuracion/departamentos"
               element={<Departamentos />}
             />
-            <Route path="/configuracion/ciudad" element={<h1>Ciudad</h1>} />
+            <Route path="/configuracion/ciudad" element={<Ciudad />} />
             <Route
               path="/configuracion/tipo_documentos"
               element={<TipoDocumentos />}

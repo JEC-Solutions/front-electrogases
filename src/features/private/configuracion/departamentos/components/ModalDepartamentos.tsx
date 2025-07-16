@@ -35,7 +35,7 @@ export const ModalDepartamentos = ({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label htmlFor="nombre">Codigo</label>
+          <label htmlFor="codigo">Codigo</label>
           <Controller
             name="codigo"
             control={control}
