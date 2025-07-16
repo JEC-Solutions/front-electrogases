@@ -10,6 +10,7 @@ import { Roles } from "@/features/private/configuracion/roles/pages";
 import { TipoDocumentos } from "@/features/private/configuracion/tipos_documentos/pages";
 import { Departamentos } from "@/features/private/configuracion/departamentos/pages";
 import { Ciudad } from "@/features/private/configuracion/ciudad/pages";
+import { Menu } from "@/features/private/configuracion/menus/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -89,7 +90,7 @@ export const Dashboard = () => {
               element={<h1>Cambiar contrasenia</h1>}
             />
             <Route path="/configuracion/opciones" element={<h1>opciones</h1>} />
-            <Route path="/configuracion/menus" element={<h1>menus</h1>} />
+            <Route path="/configuracion/menus" element={<Menu />} />
             <Route path="/configuracion/roles" element={<Roles />} />
             <Route path="/configuracion/usuarios" element={<h1>menus</h1>} />
 

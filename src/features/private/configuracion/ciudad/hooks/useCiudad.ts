@@ -113,10 +113,10 @@ export const useCiudad = () => {
       Swal.fire({
         icon: "success",
         title: "Actualizado",
-        text: "Departamento actualizado correctamente",
+        text: "Ciudad actualizada correctamente",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["departamentos"] });
+        queryClient.invalidateQueries({ queryKey: ["ciudades"] });
         handleClose();
       });
     },
