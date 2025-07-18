@@ -1,8 +1,19 @@
 import { electroApi } from "@/api";
-import { IRole } from "@/features/private/configuracion/roles/interfaces";
+import {
+  IRole,
+  IPermiso,
+} from "@/features/private/configuracion/roles/interfaces";
 
 export const getRoles = async () => {
   return await electroApi.get("/roles");
+};
+
+export const createPermisos = async (data: IPermiso) => {
+  return await electroApi.post("/permisos", data);
+};
+
+export const getPermisosByRol = async (idRol: number) => {
+  return await electroApi.get(`/permisos/rol/${idRol}`);
 };
 
 export const crateRoles = async (data: IRole) => {

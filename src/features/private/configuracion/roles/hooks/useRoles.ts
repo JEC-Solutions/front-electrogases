@@ -1,9 +1,13 @@
 import * as rolesServices from "@/features/private/configuracion/roles/services/roles.services";
+import * as opcionesServices from "@/features/private/configuracion/opciones/services/opciones.services";
 import { useForm } from "react-hook-form";
 import {
   IRole,
   IRoles,
+  IPermiso,
+  IPermisosRol,
 } from "@/features/private/configuracion/roles/interfaces";
+import { IOpciones } from "@/features/private/configuracion/opciones/interfaces";
 import Swal from "sweetalert2";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,8 +16,10 @@ import { useEffect, useState } from "react";
 export const useRoles = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [openPermisos, setOpenPermisos] = useState(false);
   const [currentRol, setCurrentRol] = useState<IRoles | null>(null);
   const methodsRoles = useForm<IRole>();
+  const methosPermisos = useForm<IPermiso>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -30,6 +36,18 @@ export const useRoles = () => {
     handleOpen();
   };
 
+  const openPermisosRol = (rol: IRoles) => {
+    setCurrentRol(rol);
+    setOpenPermisos(true);
+    refetchPermisos();
+  };
+
+  const handleClosePermisos = () => {
+    setOpenPermisos(false);
+    setCurrentRol(null);
+    methosPermisos.reset();
+  };
+
   //   Get roles
   const {
     data = [],
@@ -41,6 +59,39 @@ export const useRoles = () => {
     queryFn: async () => {
       try {
         const { data } = await rolesServices.getRoles();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  const { data: permisosRol = [], refetch: refetchPermisos } = useQuery<
+    IPermisosRol[]
+  >({
+    queryKey: ["roles-permisos", currentRol?.id_rol],
+    queryFn: async () => {
+      if (!currentRol?.id_rol) {
+        throw new Error("No hay rol seleccionado");
+      }
+
+      const { data } = await rolesServices.getPermisosByRol(currentRol.id_rol);
+      return data.data;
+    },
+    enabled: !!currentRol?.id_rol && openPermisos,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // Get opciones
+  const { data: opciones = [] } = useQuery<IOpciones[]>({
+    queryKey: ["opciones"],
+    queryFn: async () => {
+      try {
+        const { data } = await opcionesServices.getOpciones();
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -77,6 +128,41 @@ export const useRoles = () => {
       }).then(() => {
         queryClient.invalidateQueries({ queryKey: ["roles"] });
         handleClose();
+      });
+    },
+
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
+  const asignarPermisosMutation = useMutation({
+    mutationFn: (form: IPermiso) =>
+      rolesServices.createPermisos({
+        id_rol: currentRol?.id_rol || 0,
+        id_opciones: form.id_opciones,
+      }),
+
+    onMutate: () => {
+      Swal.fire({
+        title: "Cargando...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Creado",
+        text: "Permisos asignados exitosamente",
+        confirmButtonText: "Aceptar",
+      }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["roles-permisos"] });
+        handleClosePermisos();
       });
     },
 
@@ -126,6 +212,10 @@ export const useRoles = () => {
     } else {
       roleMutation.mutate(form);
     }
+  };
+
+  const onSubmitPermisos = (form: IPermiso) => {
+    asignarPermisosMutation.mutate(form);
   };
 
   //   Eliminar rol
@@ -241,6 +331,13 @@ export const useRoles = () => {
     currentRol,
     openCurrentRol,
     handleDelete,
-    toggleRoleStatus
+    toggleRoleStatus,
+    onSubmitPermisos,
+    methosPermisos,
+    opciones,
+    openPermisosRol,
+    handleClosePermisos,
+    openPermisos,
+    permisosRol,
   };
 };
