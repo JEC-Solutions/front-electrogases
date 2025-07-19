@@ -46,14 +46,14 @@ export const TableTipoDocumentos = ({
       key: "actions",
       render: (_text: any, record: ITipoDocumentos) => (
         <Space>
-          <Tooltip title="Editar Rol">
+          <Tooltip title="Editar Tipo Documento">
             <Button type="link" onClick={() => onOpenCurrent(record)}>
               <FaEdit style={{ color: "#1890ff" }} />
             </Button>
           </Tooltip>
 
           {/* Botón de Eliminar con ícono y Tooltip */}
-          <Tooltip title="Eliminar Rol">
+          <Tooltip title="Eliminar Tipo Documento">
             <Button
               type="link"
               danger
