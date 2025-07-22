@@ -13,6 +13,7 @@ import { Ciudad } from "@/features/private/configuracion/ciudad/pages";
 import { Menu } from "@/features/private/configuracion/menus/pages";
 import { Opciones } from "@/features/private/configuracion/opciones/pages";
 import { Clientes } from "@/features/private/inspeccion/clientes/pages";
+import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -94,7 +95,7 @@ export const Dashboard = () => {
             <Route path="/configuracion/opciones" element={<Opciones />} />
             <Route path="/configuracion/menus" element={<Menu />} />
             <Route path="/configuracion/roles" element={<Roles />} />
-            <Route path="/configuracion/usuarios" element={<h1>menus</h1>} />
+            <Route path="/configuracion/usuarios" element={<Usuarios />} />
 
             {/* Inspecciones */}
             <Route path="/inspecciones/rutas" element={<h1>rutas</h1>} />

@@ -1,18 +1,23 @@
-import * as clientesServices from "@/features/private/inspeccion/clientes/services/clientes.services";
+import * as usuariosServices from "@/features/private/configuracion/usuarios/services/usuarios.services";
 import * as tiposDocumentos from "@/features/private/configuracion/tipos_documentos/services/tipoDocumentos.services";
-import { ICliente, IClientes } from "@/features/private/inspeccion/clientes/interfaces";
 import { ITipoDocumentos } from "@/features/private/configuracion/tipos_documentos/interfaces";
+import {
+  IUsuario,
+  IUsuarios,
+} from "@/features/private/configuracion/usuarios/interfaces";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-export const useClientes = () => {
+export const useUsuarios = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [currentCliente, setCurrentCliente] = useState<IClientes | null>(null);
-  const methodsClientes = useForm<ICliente>();
+  const [currentUsuarios, setCurrentUsuarios] = useState<IUsuarios | null>(
+    null
+  );
+  const methodsUsuarios = useForm<IUsuario>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -20,12 +25,12 @@ export const useClientes = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setCurrentCliente(null);
-    methodsClientes.reset();
+    setCurrentUsuarios(null);
+    methodsUsuarios.reset();
   };
 
-  const openCurrentCliente = (cliente: IClientes) => {
-    setCurrentCliente(cliente);
+  const openCurrentUsuario = (usuario: IUsuarios) => {
+    setCurrentUsuarios(usuario);
     handleOpen();
   };
 
@@ -34,11 +39,11 @@ export const useClientes = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<IClientes[]>({
-    queryKey: ["clientes"],
+  } = useQuery<IUsuarios[]>({
+    queryKey: ["usuarios"],
     queryFn: async () => {
       try {
-        const { data } = await clientesServices.getClientes();
+        const { data } = await usuariosServices.getUsuarios();
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -64,8 +69,8 @@ export const useClientes = () => {
     refetchOnWindowFocus: false,
   });
 
-  const clienteMutation = useMutation({
-    mutationFn: (form: ICliente) => clientesServices.createCliente(form),
+  const usuarioMutation = useMutation({
+    mutationFn: (form: IUsuario) => usuariosServices.createUsuario(form),
 
     onMutate: () => {
       Swal.fire({
@@ -81,10 +86,10 @@ export const useClientes = () => {
       Swal.fire({
         icon: "success",
         title: "Creado",
-        text: "Cliente creado con éxito",
+        text: "Usuarios creado con éxito",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["clientes"] });
+        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
         handleClose();
       });
     },
@@ -95,10 +100,10 @@ export const useClientes = () => {
     },
   });
 
-  //   Update cliente
-  const updateClienteMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: ICliente }) =>
-      clientesServices.updateCliente(id, data),
+  //   Update usuario
+  const updateUsuarioMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: IUsuario }) =>
+      usuariosServices.updateUsuario(id, data),
 
     onMutate: () => {
       Swal.fire({
@@ -114,10 +119,10 @@ export const useClientes = () => {
       Swal.fire({
         icon: "success",
         title: "Actualizado",
-        text: "Cliente actualizado correctamente",
+        text: "Usuario actualizado correctamente",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["clientes"] });
+        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
         handleClose();
       });
     },
@@ -129,66 +134,19 @@ export const useClientes = () => {
   });
 
   //   Control del formulario
-  const onSubmit = (form: ICliente) => {
-    if (currentCliente) {
-      updateClienteMutation.mutate({
-        id: currentCliente.id_cliente,
+  const onSubmit = (form: IUsuario) => {
+    if (currentUsuarios) {
+      updateUsuarioMutation.mutate({
+        id: currentUsuarios.id_usuario,
         data: form,
       });
     } else {
-      clienteMutation.mutate(form);
+      usuarioMutation.mutate(form);
     }
   };
 
-  //   Eliminar Tipo de documento
-  const deleteTipoDocumentoMutation = useMutation({
-    mutationFn: (id: number) => clientesServices.deleteCliente(id),
-
-    onMutate: () => {
-      Swal.fire({
-        title: "Eliminando...",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-    },
-
-    onSuccess: () => {
-      Swal.fire({
-        icon: "success",
-        title: "Eliminado",
-        text: "Tipo de documento eliminado correctamente",
-        confirmButtonText: "Aceptar",
-      });
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
-    },
-
-    onError: (error: any) => {
-      Swal.close();
-      handleAxiosError(error);
-    },
-  });
-
-  //   Ejecutar el query
-  const handleDelete = (id: number) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteTipoDocumentoMutation.mutate(id);
-      }
-    });
-  };
-
-  // Actualizar estado del cliente
   const toggleClienteMutation = useMutation({
-    mutationFn: (id: number) => clientesServices.toggleStatus(id),
+    mutationFn: (id: number) => usuariosServices.toggleStatus(id),
 
     onMutate: () => {
       Swal.fire({
@@ -204,10 +162,10 @@ export const useClientes = () => {
       Swal.fire({
         icon: "success",
         title: "Estado actualizado",
-        text: "El cliente fue activado/desactivado correctamente",
+        text: "El usuario fue activado/desactivado correctamente",
         confirmButtonText: "Aceptar",
       });
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      queryClient.invalidateQueries({ queryKey: ["usuarios"] });
     },
 
     onError: (error: any) => {
@@ -233,29 +191,57 @@ export const useClientes = () => {
   };
 
   useEffect(() => {
-    if (currentCliente) {
-      methodsClientes.setValue("primer_nombre", currentCliente.primer_nombre);
-      methodsClientes.setValue("segundo_nombre", currentCliente.segundo_nombre);
+    if (currentUsuarios) {
+      methodsUsuarios.setValue(
+        "persona.id_tipo_documento",
+        currentUsuarios.persona?.tipo_documento?.id_tipo_documento
+      );
+      methodsUsuarios.setValue(
+        "persona.numero_documento",
+        currentUsuarios.persona.numero_documento
+      );
+      methodsUsuarios.setValue(
+        "persona.primer_nombre",
+        currentUsuarios.persona.primer_nombre
+      );
+      methodsUsuarios.setValue(
+        "persona.segundo_nombre",
+        currentUsuarios.persona.segundo_nombre
+      );
+      methodsUsuarios.setValue(
+        "persona.primer_apellido",
+        currentUsuarios.persona.primer_apellido
+      );
+      methodsUsuarios.setValue(
+        "persona.segundo_apellido",
+        currentUsuarios.persona.segundo_apellido
+      );
+      methodsUsuarios.setValue(
+        "persona.telefono",
+        currentUsuarios.persona.telefono
+      );
+      methodsUsuarios.setValue(
+        "persona.email",
+        currentUsuarios.persona.email
+      );
     } else {
-      methodsClientes.setValue("primer_nombre", "");
-      methodsClientes.setValue("segundo_nombre", "");
+      methodsUsuarios.reset();
     }
-  }, [currentCliente]);
+  }, [currentUsuarios]);
 
   return {
-    clientes: data,
+    usuarios: data,
     isLoading,
     isError,
     error,
     documentos,
-    methodsClientes,
+    methodsUsuarios,
     open,
     handleOpen,
     handleClose,
-    openCurrentCliente,
-    currentCliente,
+    openCurrentUsuario,
+    currentUsuarios,
     onSubmit,
-    handleDelete,
     toggleStatus,
   };
 };
