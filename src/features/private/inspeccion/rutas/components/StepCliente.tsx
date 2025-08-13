@@ -13,7 +13,7 @@ export const StepCliente = ({ methods }: Props) => {
     formState: { errors },
   } = methods;
 
-  const formatValues = tipoDocumentos.map((documento) => ({
+  const formaDocuments = tipoDocumentos.map((documento) => ({
     value: documento.id_tipo_documento,
     label: documento.nombre,
   }));
@@ -26,11 +26,10 @@ export const StepCliente = ({ methods }: Props) => {
           <Controller
             name="cliente.primer_nombre"
             control={control}
-            defaultValue=""
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Input
-                id="primero_nombre"
+                id="primer_nombre"
                 placeholder="Primer nombre"
                 {...field}
               />
@@ -38,7 +37,7 @@ export const StepCliente = ({ methods }: Props) => {
           />
           {errors?.cliente?.primer_nombre && (
             <span style={{ color: "red" }}>
-              {errors.cliente.primer_nombre.message}
+              {errors.cliente.primer_nombre.message as string}
             </span>
           )}
         </div>
@@ -50,7 +49,6 @@ export const StepCliente = ({ methods }: Props) => {
           <Controller
             name="cliente.segundo_nombre"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <Input
                 id="segundo_nombre"
@@ -64,11 +62,10 @@ export const StepCliente = ({ methods }: Props) => {
 
       <Col xs={24} md={12}>
         <div className="mb-4">
-          <label htmlFor="primero_apellido">Primer Apellido</label>
+          <label htmlFor="primer_apellido">Primer Apellido</label>
           <Controller
             name="cliente.primer_apellido"
             control={control}
-            defaultValue=""
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Input
@@ -80,7 +77,7 @@ export const StepCliente = ({ methods }: Props) => {
           />
           {errors?.cliente?.primer_apellido && (
             <span style={{ color: "red" }}>
-              {errors.cliente.primer_apellido.message}
+              {errors.cliente.primer_apellido.message as string}
             </span>
           )}
         </div>
@@ -90,9 +87,8 @@ export const StepCliente = ({ methods }: Props) => {
         <div className="mb-4">
           <label htmlFor="segundo_apellido">Segundo Apellido</label>
           <Controller
-            name="cliente.segun_apellido"
+            name="cliente.segundo_apellido"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <Input
                 id="segundo_apellido"
@@ -104,50 +100,92 @@ export const StepCliente = ({ methods }: Props) => {
         </div>
       </Col>
 
-      <Col xs={24} md={12}>
-        <div className="mb-4">
-          <label htmlFor="telefono">Teléfono</label>
-          <Controller
-            name="cliente.telefono"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <Input id="telefono" placeholder="Telefono" {...field} />
-            )}
-          />
-        </div>
-      </Col>
-
-      <Col xs={24} md={12}>
+      <Col xs={24} md={8}>
         <div className="mb-4">
           <label htmlFor="tipo_documento">Tipo de Documento</label>
           <Controller
             name="cliente.id_tipo_documento"
             control={control}
-            defaultValue=""
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Select
-                {...field}
                 id="tipo_documento"
                 showSearch
                 allowClear
                 placeholder="Seleccione el tipo de documento"
                 style={{ width: "100%" }}
                 optionFilterProp="label"
-                options={formatValues}
+                options={formaDocuments}
                 value={field.value ?? undefined}
-                filterOption={(input, option) =>
-                  (option?.label ?? "")
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
+                onChange={field.onChange}
+                onBlur={field.onBlur}
               />
             )}
           />
           {errors?.cliente?.id_tipo_documento && (
             <span style={{ color: "red" }}>
-              {errors.cliente.id_tipo_documento.message}
+              {errors.cliente.id_tipo_documento.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label htmlFor="numero_documento">Número de documento</label>
+          <Controller
+            name="cliente.numero_documento"
+            control={control}
+            rules={{
+              required: "Este campo es requerido",
+              minLength: {
+                value: 5,
+                message: "Debe tener al menos 5 caracteres",
+              },
+              maxLength: {
+                value: 15,
+                message: "No puede tener más de 15 caracteres",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                id="numero_documento"
+                placeholder="Número de documento"
+                {...field}
+              />
+            )}
+          />
+          {errors?.cliente?.numero_documento && (
+            <span style={{ color: "red" }}>
+              {errors.cliente.numero_documento.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label htmlFor="telefono">Teléfono</label>
+          <Controller
+            name="cliente.telefono"
+            control={control}
+            rules={{
+              minLength: {
+                value: 7,
+                message: "Debe tener al menos 7 caracteres",
+              },
+              maxLength: {
+                value: 10,
+                message: "No puede tener más de 10 caracteres",
+              },
+            }}
+            render={({ field }) => (
+              <Input id="telefono" placeholder="Teléfono" {...field} />
+            )}
+          />
+          {errors?.cliente?.telefono && (
+            <span style={{ color: "red" }}>
+              {errors.cliente.telefono.message as string}
             </span>
           )}
         </div>

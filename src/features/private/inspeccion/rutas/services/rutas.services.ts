@@ -20,3 +20,11 @@ export const deleteRuta = async (idRuta: number) => {
 export const toggleStatus = async (idRuta: number) => {
   return await electroApi.patch(`/ruta/${idRuta}/toggle_status`);
 };
+
+export const getTiposVisita = async () => {
+  return await electroApi.get("/tipo-visita");
+};
+
+export const getResultados = async () => {
+  return await electroApi.get("/resultados");
+};

@@ -12,3 +12,7 @@ export const crateCiudad = async (data: ICiudad) => {
 export const updateCiudad = async (codigo: string, data: ICiudad) => {
   return await electroApi.put(`/ciudad/${codigo}`, data);
 };
+
+export const getCitysByDpto = async (codigo: string) => {
+  return await electroApi.get(`/ciudad/departamentos/${codigo}/ciudades`);
+};

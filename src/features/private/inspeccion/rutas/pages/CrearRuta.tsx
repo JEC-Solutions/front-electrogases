@@ -1,15 +1,5 @@
 import { useCrearRutas } from "@/features/private/inspeccion/rutas/hooks";
-import {
-  Button,
-  Input,
-  Select,
-  Space,
-  Steps,
-  DatePicker,
-  TimePicker,
-  Card,
-} from "antd";
-import { Controller } from "react-hook-form";
+import { Button, Space, Steps, Card } from "antd";
 import { useState } from "react";
 import {
   StepCasa,
@@ -21,7 +11,7 @@ import Swal from "sweetalert2";
 const { Step } = Steps;
 
 export const CrearRuta = () => {
-  const { methods, onSubmit } = useCrearRutas();
+  const { methods, onSubmit, dataTipoVisita, resultados } = useCrearRutas();
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -32,6 +22,27 @@ export const CrearRuta = () => {
         "cliente.primer_apellido",
         "cliente.telefono",
         "cliente.id_tipo_documento",
+        "cliente.numero_documento",
+        "cliente.telefono",
+      ]);
+
+      if (!isValid) {
+        Swal.fire({
+          icon: "warning",
+          title: "Campos incompletos",
+          text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
+        });
+        return;
+      }
+    } else if (currentStep === 1) {
+      const isValid = await methods.trigger([
+        "casa.no_cuenta",
+        "casa.medidor",
+        "casa.direccion",
+        "casa.barrio",
+        "casa.id_tipo_visita",
+        "casa.id_departamento",
+        "casa.id_ciudad",
       ]);
 
       if (!isValid) {
@@ -61,9 +72,13 @@ export const CrearRuta = () => {
       <form onSubmit={onFinish}>
         {currentStep === 0 && <StepCliente methods={methods} />}
 
-        {currentStep === 1 && <StepCasa methods={methods} />}
+        {currentStep === 1 && (
+          <StepCasa methods={methods} tiposVisita={dataTipoVisita} />
+        )}
 
-        {currentStep === 2 && <StepRuta methods={methods} />}
+        {currentStep === 2 && (
+          <StepRuta methods={methods} resultados={resultados} />
+        )}
 
         <Space
           style={{

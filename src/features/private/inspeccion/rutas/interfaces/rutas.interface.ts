@@ -18,10 +18,12 @@ export interface Casa {
   medidor: string;
   direccion: string;
   barrio: string;
-  cuenta: string;
+  no_cuenta: string;
   tipo_vivienda: string;
   telefono: string;
   id_ciudad: string;
+  id_tipo_visita: string;
+  id_departamento: string;
 }
 
 export interface Ruta {
@@ -80,6 +82,20 @@ export interface Cliente {
   telefono: string;
   numero_documento: string;
   estado: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ITipoVisita {
+  id_tipo_visita: string;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IResultados {
+  id_resultado: string;
+  nombre: string;
   created_at: string;
   updated_at: string;
 }
