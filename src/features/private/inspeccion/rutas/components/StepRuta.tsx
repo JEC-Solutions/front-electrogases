@@ -27,6 +27,7 @@ export const StepRuta = ({ methods, resultados }: Props) => {
           <Controller
             name="ruta.fecha"
             control={control}
+            defaultValue={''}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <DatePicker
@@ -51,6 +52,7 @@ export const StepRuta = ({ methods, resultados }: Props) => {
           <Controller
             name="ruta.hora"
             control={control}
+            defaultValue={''}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <TimePicker
@@ -75,23 +77,18 @@ export const StepRuta = ({ methods, resultados }: Props) => {
           <Controller
             name="ruta.id_resultado"
             control={control}
-            rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Select
                 {...field}
+                allowClear
+                showSearch
                 placeholder="Seleccione resultado"
-                options={formatResultados}
                 style={{ width: "100%" }}
-                value={field.value ?? undefined}
-                onChange={field.onChange}
+                optionFilterProp="label"
+                options={formatResultados}
               />
             )}
           />
-          {errors?.ruta?.id_resultado && (
-            <span style={{ color: "red" }}>
-              {errors.ruta.id_resultado.message as string}
-            </span>
-          )}
         </div>
       </Col>
     </Row>

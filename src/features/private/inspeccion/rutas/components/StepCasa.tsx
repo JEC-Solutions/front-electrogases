@@ -38,6 +38,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.no_cuenta"
             control={control}
+            defaultValue={''}
             rules={{
               required: "Este campo es requerido",
               minLength: {
@@ -64,6 +65,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.medidor"
             control={control}
+            defaultValue={''}
             rules={{
               required: "Este campo es requerido",
               minLength: {
@@ -90,6 +92,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.direccion"
             control={control}
+            defaultValue={''}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Input id="direccion" placeholder="Dirección" {...field} />
@@ -109,6 +112,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.barrio"
             control={control}
+            defaultValue={''}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Input id="barrio" placeholder="Barrio" {...field} />
@@ -128,6 +132,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.valor_servicio"
             control={control}
+            defaultValue={''}
             render={({ field }) => (
               <InputNumber
                 id="valor_servicio"
@@ -162,6 +167,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.numero_acta"
             control={control}
+            defaultValue={''}
             render={({ field }) => (
               <Input id="numero_acta" placeholder="Número de acta" {...field} />
             )}
@@ -266,6 +272,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <Controller
             name="casa.observaciones"
             control={control}
+            defaultValue={''}
             render={({ field }) => (
               <Input.TextArea rows={3} placeholder="Observaciones" {...field} />
             )}

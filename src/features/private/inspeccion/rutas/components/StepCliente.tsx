@@ -4,13 +4,15 @@ import { useTiposDocumentos } from "@/features/private/configuracion/tipos_docum
 
 interface Props {
   methods: any;
+  onFindDocument: (documento: string) => void;
 }
 
-export const StepCliente = ({ methods }: Props) => {
+export const StepCliente = ({ methods, onFindDocument }: Props) => {
   const { tipoDocumentos } = useTiposDocumentos();
   const {
     control,
     formState: { errors },
+    trigger,
   } = methods;
 
   const formaDocuments = tipoDocumentos.map((documento) => ({
@@ -20,86 +22,6 @@ export const StepCliente = ({ methods }: Props) => {
 
   return (
     <Row gutter={16} className="mt-2">
-      <Col xs={24} md={12}>
-        <div className="mb-4">
-          <label htmlFor="primer_nombre">Primer Nombre</label>
-          <Controller
-            name="cliente.primer_nombre"
-            control={control}
-            rules={{ required: "Este campo es requerido" }}
-            render={({ field }) => (
-              <Input
-                id="primer_nombre"
-                placeholder="Primer nombre"
-                {...field}
-              />
-            )}
-          />
-          {errors?.cliente?.primer_nombre && (
-            <span style={{ color: "red" }}>
-              {errors.cliente.primer_nombre.message as string}
-            </span>
-          )}
-        </div>
-      </Col>
-
-      <Col xs={24} md={12}>
-        <div className="mb-4">
-          <label htmlFor="segundo_nombre">Segundo Nombre</label>
-          <Controller
-            name="cliente.segundo_nombre"
-            control={control}
-            render={({ field }) => (
-              <Input
-                id="segundo_nombre"
-                placeholder="Segundo nombre"
-                {...field}
-              />
-            )}
-          />
-        </div>
-      </Col>
-
-      <Col xs={24} md={12}>
-        <div className="mb-4">
-          <label htmlFor="primer_apellido">Primer Apellido</label>
-          <Controller
-            name="cliente.primer_apellido"
-            control={control}
-            rules={{ required: "Este campo es requerido" }}
-            render={({ field }) => (
-              <Input
-                id="primer_apellido"
-                placeholder="Primer apellido"
-                {...field}
-              />
-            )}
-          />
-          {errors?.cliente?.primer_apellido && (
-            <span style={{ color: "red" }}>
-              {errors.cliente.primer_apellido.message as string}
-            </span>
-          )}
-        </div>
-      </Col>
-
-      <Col xs={24} md={12}>
-        <div className="mb-4">
-          <label htmlFor="segundo_apellido">Segundo Apellido</label>
-          <Controller
-            name="cliente.segundo_apellido"
-            control={control}
-            render={({ field }) => (
-              <Input
-                id="segundo_apellido"
-                placeholder="Segundo apellido"
-                {...field}
-              />
-            )}
-          />
-        </div>
-      </Col>
-
       <Col xs={24} md={8}>
         <div className="mb-4">
           <label htmlFor="tipo_documento">Tipo de Documento</label>
@@ -136,6 +58,7 @@ export const StepCliente = ({ methods }: Props) => {
           <Controller
             name="cliente.numero_documento"
             control={control}
+            defaultValue={""}
             rules={{
               required: "Este campo es requerido",
               minLength: {
@@ -143,15 +66,33 @@ export const StepCliente = ({ methods }: Props) => {
                 message: "Debe tener al menos 5 caracteres",
               },
               maxLength: {
-                value: 15,
-                message: "No puede tener más de 15 caracteres",
+                value: 10,
+                message: "No puede tener más de 10 caracteres",
               },
+              pattern: { value: /^\d+$/, message: "Solo dígitos" },
             }}
             render={({ field }) => (
               <Input
                 id="numero_documento"
                 placeholder="Número de documento"
                 {...field}
+                inputMode="numeric"
+                pattern="\d*"
+                onBlur={async (e) => {
+                  field.onBlur();
+
+                  const isValid = await trigger("cliente.numero_documento");
+                  if (!isValid) return;
+
+                  const doc = (e.target.value ?? "").toString().trim();
+                  if (doc) onFindDocument(doc);
+                }}
+                onPressEnter={async (e) => {
+                  const isValid = await trigger("cliente.numero_documento");
+                  if (!isValid) return;
+                  const doc = (e.currentTarget.value ?? "").toString().trim();
+                  if (doc) onFindDocument(doc);
+                }}
               />
             )}
           />
@@ -169,6 +110,7 @@ export const StepCliente = ({ methods }: Props) => {
           <Controller
             name="cliente.telefono"
             control={control}
+            defaultValue={""}
             rules={{
               minLength: {
                 value: 7,
@@ -188,6 +130,90 @@ export const StepCliente = ({ methods }: Props) => {
               {errors.cliente.telefono.message as string}
             </span>
           )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={12}>
+        <div className="mb-4">
+          <label htmlFor="primer_nombre">Primer Nombre</label>
+          <Controller
+            name="cliente.primer_nombre"
+            control={control}
+            rules={{ required: "Este campo es requerido" }}
+            defaultValue={""}
+            render={({ field }) => (
+              <Input
+                id="primer_nombre"
+                placeholder="Primer nombre"
+                {...field}
+              />
+            )}
+          />
+          {errors?.cliente?.primer_nombre && (
+            <span style={{ color: "red" }}>
+              {errors.cliente.primer_nombre.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={12}>
+        <div className="mb-4">
+          <label htmlFor="segundo_nombre">Segundo Nombre</label>
+          <Controller
+            name="cliente.segundo_nombre"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <Input
+                id="segundo_nombre"
+                placeholder="Segundo nombre"
+                {...field}
+              />
+            )}
+          />
+        </div>
+      </Col>
+
+      <Col xs={24} md={12}>
+        <div className="mb-4">
+          <label htmlFor="primer_apellido">Primer Apellido</label>
+          <Controller
+            name="cliente.primer_apellido"
+            control={control}
+            defaultValue={""}
+            rules={{ required: "Este campo es requerido" }}
+            render={({ field }) => (
+              <Input
+                id="primer_apellido"
+                placeholder="Primer apellido"
+                {...field}
+              />
+            )}
+          />
+          {errors?.cliente?.primer_apellido && (
+            <span style={{ color: "red" }}>
+              {errors.cliente.primer_apellido.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={12}>
+        <div className="mb-4">
+          <label htmlFor="segundo_apellido">Segundo Apellido</label>
+          <Controller
+            name="cliente.segundo_apellido"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <Input
+                id="segundo_apellido"
+                placeholder="Segundo apellido"
+                {...field}
+              />
+            )}
+          />
         </div>
       </Col>
     </Row>

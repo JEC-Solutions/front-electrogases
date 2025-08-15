@@ -7,11 +7,15 @@ import {
   StepRuta,
 } from "@/features/private/inspeccion/rutas/components";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const { Step } = Steps;
 
 export const CrearRuta = () => {
-  const { methods, onSubmit, dataTipoVisita, resultados } = useCrearRutas();
+  const { methods, onSubmit, dataTipoVisita, resultados, getUserDocument } =
+    useCrearRutas();
+
+  const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -20,7 +24,6 @@ export const CrearRuta = () => {
       const isValid = await methods.trigger([
         "cliente.primer_nombre",
         "cliente.primer_apellido",
-        "cliente.telefono",
         "cliente.id_tipo_documento",
         "cliente.numero_documento",
         "cliente.telefono",
@@ -53,6 +56,17 @@ export const CrearRuta = () => {
         });
         return;
       }
+    } else if (currentStep === 2) {
+      const isValid = await methods.trigger(["ruta.fecha", "ruta.hora"]);
+
+      if (!isValid) {
+        Swal.fire({
+          icon: "warning",
+          title: "Campos incompletos",
+          text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
+        });
+        return;
+      }
     }
 
     setCurrentStep((prev) => prev + 1);
@@ -61,8 +75,16 @@ export const CrearRuta = () => {
 
   const onFinish = methods.handleSubmit(onSubmit);
 
+  const handleBack = () => {
+    navigate("/dashboard/inspecciones/rutas");
+  };
+
   return (
     <Card>
+      <Button type="primary" htmlType="button" className="mb-4" onClick={handleBack}>
+        Regresar
+      </Button>
+
       <Steps current={currentStep} className="mb-6">
         <Step title="Cliente" />
         <Step title="Casa" />
@@ -70,7 +92,9 @@ export const CrearRuta = () => {
       </Steps>
 
       <form onSubmit={onFinish}>
-        {currentStep === 0 && <StepCliente methods={methods} />}
+        {currentStep === 0 && (
+          <StepCliente methods={methods} onFindDocument={getUserDocument} />
+        )}
 
         {currentStep === 1 && (
           <StepCasa methods={methods} tiposVisita={dataTipoVisita} />

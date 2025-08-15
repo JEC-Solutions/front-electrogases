@@ -7,11 +7,9 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import Cookies from "universal-cookie";
+import { handleLogout } from "@/utils";
 
 const { Header } = Layout;
-
-const cookies = new Cookies();
 
 interface NavbarProps {
   collapsed: boolean;
@@ -27,7 +25,7 @@ export const Navbar = ({
   isMobile,
   toggleDrawer,
 }: NavbarProps) => {
-  // Decide el ícono y la acción del botón
+
   const icon = isMobile
     ? MenuOutlined
     : collapsed
@@ -35,11 +33,6 @@ export const Navbar = ({
     : MenuFoldOutlined;
 
   const onClick = isMobile ? toggleDrawer : toggleCollapsed;
-
-  const handleLogout = () => {
-    cookies.remove("token", { path: "/" });
-    window.location.href = "/";
-  };
 
   const menu = (
     <Menu>

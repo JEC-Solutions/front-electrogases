@@ -28,3 +28,7 @@ export const getTiposVisita = async () => {
 export const getResultados = async () => {
   return await electroApi.get("/resultados");
 };
+
+export const getUserByDocument = async (documento: string) => {
+  return await electroApi.get(`/usuarios/documento/${documento}`);
+};
