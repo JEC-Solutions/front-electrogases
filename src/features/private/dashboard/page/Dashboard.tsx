@@ -13,6 +13,7 @@ import { Ciudad } from "@/features/private/configuracion/ciudad/pages";
 import { Menu } from "@/features/private/configuracion/menus/pages";
 import { Opciones } from "@/features/private/configuracion/opciones/pages";
 import { Clientes } from "@/features/private/inspeccion/clientes/pages";
+import { Rutas } from "@/features/private/inspeccion/rutas/pages";
 import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { NotFound } from "@/features/public/404/page";
 
@@ -98,7 +99,7 @@ export const Dashboard = () => {
             <Route path="/configuracion/usuarios" element={<Usuarios />} />
 
             {/* Inspecciones */}
-            <Route path="/inspecciones/rutas" element={<h1>rutas</h1>} />
+            <Route path="/inspecciones/rutas" element={<Rutas />} />
             <Route path="/inspecciones/clientes" element={<Clientes />} />
             <Route path="/inspecciones/casas" element={<h1>casas</h1>} />
             <Route path="/inspecciones" element={<h1>inspecciones</h1>} />
