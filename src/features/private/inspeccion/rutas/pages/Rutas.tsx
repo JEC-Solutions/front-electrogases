@@ -4,7 +4,19 @@ import { TableRutas } from "@/features/private/inspeccion/rutas/components";
 import { useNavigate } from "react-router-dom";
 
 export const Rutas = () => {
-  const { error, isError, isLoading, rutas } = useRutas();
+  const {
+    error,
+    isError,
+    isLoading,
+    rutas,
+    currentRuta,
+    handleClose,
+    handleOpen,
+    open,
+    methods,
+    onSubmit,
+    inspectores
+  } = useRutas();
   const navigate = useNavigate();
 
   const handleAgregarRuta = () => {
@@ -38,7 +50,16 @@ export const Rutas = () => {
               : "Inténtalo de nuevo más tarde."}
           </div>
         ) : (
-          <TableRutas rutas={rutas} />
+          <TableRutas
+            rutas={rutas}
+            current={currentRuta}
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            methods={methods}
+            onSubmit={onSubmit}
+            inspectores={inspectores}
+          />
         )}
       </Card>
     </div>

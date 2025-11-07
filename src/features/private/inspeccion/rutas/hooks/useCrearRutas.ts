@@ -4,6 +4,7 @@ import {
   ITipoVisita,
   IResultados,
 } from "@/features/private/inspeccion/rutas/interfaces";
+import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { IUser } from "@/features/private/configuracion/usuarios/interfaces";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -23,6 +24,22 @@ export const useCrearRutas = () => {
     queryFn: async () => {
       try {
         const { data } = await rutaServices.getTiposVisita();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // Get inspectores
+  const { data: inspectores = [] } = useQuery<IUsuarios[]>({
+    queryKey: ["inspectores"],
+    queryFn: async () => {
+      try {
+        const { data } = await rutaServices.getInspectores();
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -124,8 +141,6 @@ export const useCrearRutas = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log("usuario buscado ->", usuario);
-
   const getUserDocument = (documento: string) => {
     setNumeroDoc(documento);
   };
@@ -154,5 +169,6 @@ export const useCrearRutas = () => {
     dataTipoVisita,
     resultados,
     getUserDocument,
+    inspectores,
   };
 };

@@ -12,8 +12,14 @@ import { useNavigate } from "react-router-dom";
 const { Step } = Steps;
 
 export const CrearRuta = () => {
-  const { methods, onSubmit, dataTipoVisita, resultados, getUserDocument } =
-    useCrearRutas();
+  const {
+    methods,
+    onSubmit,
+    dataTipoVisita,
+    resultados,
+    getUserDocument,
+    inspectores,
+  } = useCrearRutas();
 
   const navigate = useNavigate();
 
@@ -81,7 +87,12 @@ export const CrearRuta = () => {
 
   return (
     <Card>
-      <Button type="primary" htmlType="button" className="mb-4" onClick={handleBack}>
+      <Button
+        type="primary"
+        htmlType="button"
+        className="mb-4"
+        onClick={handleBack}
+      >
         Regresar
       </Button>
 
@@ -101,7 +112,11 @@ export const CrearRuta = () => {
         )}
 
         {currentStep === 2 && (
-          <StepRuta methods={methods} resultados={resultados} />
+          <StepRuta
+            methods={methods}
+            resultados={resultados}
+            inspectores={inspectores}
+          />
         )}
 
         <Space

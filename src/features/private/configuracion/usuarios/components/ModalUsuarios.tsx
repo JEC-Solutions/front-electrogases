@@ -5,6 +5,7 @@ import {
 } from "@/features/private/configuracion/usuarios/interfaces";
 import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
 import { Controller } from "react-hook-form";
+import { useRoles } from "../../roles/hooks";
 
 interface Props {
   open: boolean;
@@ -23,6 +24,7 @@ export const ModalUsuarios = ({
   currentUsuario,
   documentos,
 }: Props) => {
+  const { roles } = useRoles();
   const {
     handleSubmit,
     control,
@@ -75,6 +77,49 @@ export const ModalUsuarios = ({
                     {errors.persona?.id_tipo_documento?.message && (
                       <span style={{ color: "red" }}>
                         {String(errors.persona?.id_tipo_documento.message)}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </Col>
+
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label htmlFor="id_rol">Rol</label>
+              <Controller
+                name="id_rol"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: "Por favor seleccione un rol",
+                }}
+                render={({ field }) => (
+                  <>
+                    <Select
+                      {...field}
+                      id="id_rol"
+                      showSearch
+                      allowClear
+                      placeholder="Seleccione un rol"
+                      style={{ width: "100%" }}
+                      optionFilterProp="label"
+                      options={roles.map((r) => ({
+                        label: r.nombre_rol,
+                        value: r.id_rol,
+                      }))}
+                      onChange={(value) => field.onChange(value ?? "")}
+                      value={field.value ?? undefined}
+                      filterOption={(input, option) =>
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                    />
+                    {errors.id_rol?.message && (
+                      <span style={{ color: "red" }}>
+                        {String(errors.id_rol?.message)}
                       </span>
                     )}
                   </>

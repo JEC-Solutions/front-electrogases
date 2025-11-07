@@ -138,3 +138,8 @@ export interface IResultados {
   created_at: string;
   updated_at: string;
 }
+
+export interface IAsignar {
+  id_inspector: number;
+  motivo: string;
+}

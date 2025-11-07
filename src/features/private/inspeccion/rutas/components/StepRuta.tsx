@@ -2,13 +2,15 @@ import { Col, DatePicker, Row, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 import { IResultados } from "@/features/private/inspeccion/rutas/interfaces";
+import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 
 interface Props {
   resultados: IResultados[];
+  inspectores: IUsuarios[];
   methods: any;
 }
 
-export const StepRuta = ({ methods, resultados }: Props) => {
+export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
   const {
     control,
     formState: { errors },
@@ -19,6 +21,14 @@ export const StepRuta = ({ methods, resultados }: Props) => {
     label: resultado.nombre,
   }));
 
+  const formatInspectores =
+    inspectores?.map((inspector) => ({
+      value: inspector.id_usuario,
+      label: `${inspector.persona?.primer_nombre ?? ""} ${
+        inspector.persona?.primer_apellido ?? ""
+      }`,
+    })) ?? [];
+
   return (
     <Row gutter={16} className="mt-2">
       <Col xs={24} md={8}>
@@ -27,7 +37,7 @@ export const StepRuta = ({ methods, resultados }: Props) => {
           <Controller
             name="ruta.fecha"
             control={control}
-            defaultValue={''}
+            defaultValue={""}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <DatePicker
@@ -52,7 +62,7 @@ export const StepRuta = ({ methods, resultados }: Props) => {
           <Controller
             name="ruta.hora"
             control={control}
-            defaultValue={''}
+            defaultValue={""}
             rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <TimePicker
@@ -89,6 +99,34 @@ export const StepRuta = ({ methods, resultados }: Props) => {
               />
             )}
           />
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label>Inspector asignado</label>
+          <Controller
+            name="ruta.id_inspector"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                allowClear
+                showSearch
+                placeholder="Seleccione inspector (opcional)"
+                style={{ width: "100%" }}
+                optionFilterProp="label"
+                options={formatInspectores}
+                value={field.value ?? null}
+                onChange={(v) => field.onChange(v ?? null)}
+              />
+            )}
+          />
+          {errors?.ruta?.id_inspector && (
+            <span style={{ color: "red" }}>
+              {errors.ruta.id_inspector.message as string}
+            </span>
+          )}
         </div>
       </Col>
     </Row>
