@@ -118,7 +118,7 @@ export const useCrearRutas = () => {
     enabled: !!numeroDoc,
     queryFn: async () => {
       try {
-        const { data } = await rutaServices.getUserByDocument(numeroDoc!);
+        const { data } = await rutaServices.getClienteByDocument(numeroDoc!);
 
         if (data?.message) {
           const isWarning = Boolean(data?.error);

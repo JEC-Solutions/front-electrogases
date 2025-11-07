@@ -33,8 +33,8 @@ export const getResultados = async () => {
   return await electroApi.get("/resultados");
 };
 
-export const getUserByDocument = async (documento: string) => {
-  return await electroApi.get(`/usuarios/documento/${documento}`);
+export const getClienteByDocument = async (documento: string) => {
+  return await electroApi.get(`/cliente/documento/${documento}`);
 };
 
 export const asignarRuta = async (id: number, payload: IAsignar) => {
