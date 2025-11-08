@@ -24,10 +24,11 @@ export const useRutas = () => {
   const handleClose = () => {
     setCurrentRuta({} as IRutas);
     setOpen(false);
+    methods.reset();
   };
 
   const {
-    data = [],
+    data: rutas = [],
     isLoading,
     isError,
     error,
@@ -76,7 +77,7 @@ export const useRutas = () => {
       });
     },
 
-    onSuccess: () => {
+    onSuccess: (_, vars) => {
       Swal.fire({
         icon: "success",
         title: "Actualizado",
@@ -84,6 +85,12 @@ export const useRutas = () => {
         confirmButtonText: "Aceptar",
       }).then(() => {
         queryClient.invalidateQueries({ queryKey: ["rutas"] });
+
+        if (vars?.id) {
+          queryClient.invalidateQueries({
+            queryKey: ["historialRuta", vars.id],
+          });
+        }
         handleClose();
       });
     },
@@ -104,10 +111,13 @@ export const useRutas = () => {
   };
 
   return {
-    rutas: data,
+    // rutas
+    rutas,
     isLoading,
     isError,
     error,
+
+    // asignar
     open,
     currentRuta,
     handleOpen,

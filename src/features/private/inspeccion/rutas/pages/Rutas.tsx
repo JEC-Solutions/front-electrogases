@@ -5,17 +5,20 @@ import { useNavigate } from "react-router-dom";
 
 export const Rutas = () => {
   const {
-    error,
-    isError,
-    isLoading,
+    // rutas
     rutas,
-    currentRuta,
-    handleClose,
-    handleOpen,
+    isLoading,
+    isError,
+    error,
+
+    // asignar
     open,
+    currentRuta,
+    handleOpen,
+    handleClose,
     methods,
     onSubmit,
-    inspectores
+    inspectores,
   } = useRutas();
   const navigate = useNavigate();
 

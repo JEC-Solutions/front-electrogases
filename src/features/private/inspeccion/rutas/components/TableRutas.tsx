@@ -5,10 +5,13 @@ import {
 import { Button, Input, Space, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useMemo, useState } from "react";
-import { FiDownload, FiFileText, FiNavigation } from "react-icons/fi";
-import { getGreenOutlineButtonProps, getRedOutlineButtonProps } from "@/ui";
+import { FiClock, FiNavigation } from "react-icons/fi";
+// import { getGreenOutlineButtonProps, getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
+import { useHistorialRuta } from "@/features/private/inspeccion/rutas/hooks";
+import { ModalHistorico } from "@/features/private/inspeccion/rutas/components";
+
 interface Props {
   rutas: IRutas[];
   open: boolean;
@@ -30,6 +33,16 @@ export const TableRutas = ({
   onSubmit,
   inspectores,
 }: Props) => {
+  const {
+    handleViewHistorial,
+    handleCloseHistorial,
+    openHistorial,
+    historial,
+    errorHistorial,
+    historialError,
+    loadingHistorial,
+    refetchHistorial,
+  } = useHistorialRuta();
   const [query, setQuery] = useState("");
 
   const columns: ColumnsType<IRutas> = [
@@ -77,6 +90,13 @@ export const TableRutas = ({
       width: 120,
       render: (_: unknown, record) => (
         <Space>
+          <Tooltip title="Ver historial de asignaciones">
+            <Button
+              size="small"
+              icon={<FiClock size={16} />}
+              onClick={() => handleViewHistorial?.(record)}
+            />
+          </Tooltip>
           <Tooltip
             title={
               record.persona?.id_persona ? "Reasignar ruta" : "Asignar ruta"
@@ -138,7 +158,7 @@ export const TableRutas = ({
               style={{ maxWidth: 520 }}
             />
 
-            <Space>
+            {/* <Space>
               <Button
                 icon={<FiDownload size={18} />}
                 {...getGreenOutlineButtonProps()}
@@ -152,7 +172,7 @@ export const TableRutas = ({
               >
                 Exportar PDF
               </Button>
-            </Space>
+            </Space> */}
           </Space>
 
           <Table
@@ -175,6 +195,16 @@ export const TableRutas = ({
         methods={methods}
         onSubmit={onSubmit}
         inspectores={inspectores}
+      />
+
+      <ModalHistorico
+        onClose={handleCloseHistorial}
+        open={openHistorial}
+        historial={historial}
+        isError={errorHistorial}
+        error={historialError}
+        loading={loadingHistorial}
+        refetch={refetchHistorial}
       />
     </>
   );

@@ -1,5 +1,8 @@
 import { electroApi } from "@/api";
-import { IAsignar, IRuta } from "@/features/private/inspeccion/rutas/interfaces";
+import {
+  IAsignar,
+  IRuta,
+} from "@/features/private/inspeccion/rutas/interfaces";
 
 export const getRutas = async () => {
   return await electroApi.get("/ruta");
@@ -38,5 +41,9 @@ export const getClienteByDocument = async (documento: string) => {
 };
 
 export const asignarRuta = async (id: number, payload: IAsignar) => {
-  return await electroApi.patch(`/ruta/${id}/asignar`, payload)
-}
+  return await electroApi.patch(`/ruta/${id}/asignar`, payload);
+};
+
+export const historialRuta = async (id: number) => {
+  return await electroApi.get(`/ruta/${id}/historial`);
+};
