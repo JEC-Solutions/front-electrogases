@@ -15,6 +15,7 @@ import { Opciones } from "@/features/private/configuracion/opciones/pages";
 import { Clientes } from "@/features/private/inspeccion/clientes/pages";
 import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
+import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/pages";
 import { NotFound } from "@/features/public/404/page";
 
 const { Sider, Content } = Layout;
@@ -102,13 +103,12 @@ export const Dashboard = () => {
             <Route path="/inspecciones/rutas" element={<Rutas />} />
             <Route path="/inspecciones/rutas/crear" element={<CrearRuta />} />
             <Route path="/inspecciones/clientes" element={<Clientes />} />
-            <Route path="/inspecciones/casas" element={<h1>casas</h1>} />
             <Route path="/inspecciones" element={<h1>inspecciones</h1>} />
 
             {/* Informes */}
             <Route
               path="/informes/cuadro_maestro"
-              element={<h1>cuadro maestro</h1>}
+              element={<CuadroMaestro />}
             />
 
             {/* Ruta catch-all dentro dashboard */}
