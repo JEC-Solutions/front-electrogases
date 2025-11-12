@@ -3,7 +3,16 @@ import {
   IRutas,
   IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
-import { Button, Input, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  DatePicker,
+  Input,
+  InputNumber,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useMemo, useState } from "react";
 import { FiClock, FiFileText, FiNavigation } from "react-icons/fi";
@@ -12,6 +21,16 @@ import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { useHistorialRuta } from "@/features/private/inspeccion/rutas/hooks";
 import { ModalHistorico } from "@/features/private/inspeccion/rutas/components";
+import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
+import { Dayjs } from "dayjs";
+
+type PdfFilters = {
+  start: Dayjs | null;
+  end: Dayjs | null;
+  inspectorId?: number;
+  clienteId?: number;
+  clienteDocumento?: string;
+};
 
 interface Props {
   rutas: IRutas[];
@@ -46,8 +65,15 @@ export const TableRutas = ({
     loadingHistorial,
     refetchHistorial,
   } = useHistorialRuta();
+  const [pdfFilters, setPdfFilters] = useState<PdfFilters>({
+    start: null,
+    end: null,
+    inspectorId: undefined,
+    clienteId: undefined,
+    clienteDocumento: "",
+  });
   const [query, setQuery] = useState("");
-
+  const { clientes } = useClientes();
   const columns: ColumnsType<IRutas> = [
     {
       title: "Fecha",
@@ -117,67 +143,89 @@ export const TableRutas = ({
     },
   ];
 
-  const filtered = useMemo(() => {
-    if (!query.trim()) return rutas;
-    const q = query.toLowerCase();
 
-    return rutas.filter((r) => {
-      const inspector = r.persona
-        ? `${r.persona.primer_nombre} ${r.persona.primer_apellido}`
-        : "";
-      const cliente = r.casa?.cliente
-        ? `${r.casa.cliente.primer_nombre} ${r.casa.cliente.primer_apellido}`
-        : "";
-      const haystack = [
-        r.fecha,
-        r.hora,
-        inspector,
-        r.casa?.direccion,
-        r.casa?.barrio,
-        cliente,
-        (r.casa as any)?.no_cuenta,
-        (r.casa as any)?.medidor,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
 
-      return haystack.includes(q);
+  const handleExportPdf = () => {
+    const { start, end, inspectorId, clienteId, clienteDocumento } = pdfFilters;
+    if (!start || !end) {
+      // message.warning("Selecciona un rango de fechas.");
+      return;
+    }
+
+    onDownload({
+      start: start.format("YYYY-MM-DD"),
+      end: end.format("YYYY-MM-DD"),
+      inspectorId: inspectorId ?? 0,
+      clienteId: clienteId ?? 0,
+      clienteDocumento: (clienteDocumento || "").trim(),
     });
-  }, [rutas, query]);
+  };
 
   return (
     <>
       <div className="overflow-x-auto">
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <Space style={{ width: "100%", justifyContent: "space-between" }}>
-            <Input.Search
-              placeholder="Buscar por fecha, inspector, dirección, cliente, etc."
-              allowClear
-              enterButton="Buscar"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onSearch={(v) => setQuery(v)}
-              style={{ maxWidth: 520 }}
+          <Space wrap>
+            <DatePicker.RangePicker
+              format="YYYY-MM-DD"
+              value={[pdfFilters.start, pdfFilters.end]}
+              onChange={(vals) =>
+                setPdfFilters((s) => ({
+                  ...s,
+                  start: vals?.[0] ?? null,
+                  end: vals?.[1] ?? null,
+                }))
+              }
             />
 
-            <Space>
-              <Button
-                icon={<FiFileText size={18} />}
-                {...getRedOutlineButtonProps()}
-                onClick={() =>
-                  onDownload({
-                    start: "2025-01-01",
-                    end: "2025-12-31",
-                    inspectorId: 2,
-                    clienteId: 0,
-                    clienteDocumento: "",
-                  })
-                }
-              >
-                Exportar PDF
-              </Button>
-            </Space>
+            <Select
+              allowClear
+              placeholder="Inspector"
+              style={{ width: 220 }}
+              options={inspectores.map((i) => ({
+                value: i.id_usuario,
+                label: `${i.persona.primer_nombre ?? ""} ${
+                  i.persona?.primer_nombre ?? ""
+                }`.trim(),
+              }))}
+              value={pdfFilters.inspectorId}
+              onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
+            />
+
+            <InputNumber
+              placeholder="Cliente ID"
+              style={{ width: 140 }}
+              min={0}
+              value={pdfFilters.clienteId}
+              onChange={(v) =>
+                setPdfFilters((s) => ({
+                  ...s,
+                  clienteId: typeof v === "number" ? v : undefined,
+                }))
+              }
+            />
+
+            <Input
+              placeholder="Documento cliente"
+              allowClear
+              style={{ width: 200 }}
+              value={pdfFilters.clienteDocumento}
+              onChange={(e) =>
+                setPdfFilters((s) => ({
+                  ...s,
+                  clienteDocumento: e.target.value,
+                }))
+              }
+            />
+
+            <Button
+              icon={<FiFileText size={18} />}
+              {...getRedOutlineButtonProps()}
+              onClick={handleExportPdf}
+              disabled={!pdfFilters.start || !pdfFilters.end}
+            >
+              Exportar PDF
+            </Button>
           </Space>
 
           <Table
