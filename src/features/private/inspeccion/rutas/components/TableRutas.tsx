@@ -169,7 +169,7 @@ export const TableRutas = ({
                   onDownload({
                     start: "2025-01-01",
                     end: "2025-12-31",
-                    inspectorId: 12,
+                    inspectorId: 2,
                     clienteId: 0,
                     clienteDocumento: "",
                   })

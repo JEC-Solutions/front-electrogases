@@ -17,6 +17,7 @@ import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/pages";
 import { NotFound } from "@/features/public/404/page";
+import { Page } from "../../configuracion/cambiar_contraseña";
 
 const { Sider, Content } = Layout;
 
@@ -92,7 +93,7 @@ export const Dashboard = () => {
             />
             <Route
               path="/configuracion/cambiar_contrasenia"
-              element={<h1>Cambiar contrasenia</h1>}
+              element={<Page/>}
             />
             <Route path="/configuracion/opciones" element={<Opciones />} />
             <Route path="/configuracion/menus" element={<Menu />} />

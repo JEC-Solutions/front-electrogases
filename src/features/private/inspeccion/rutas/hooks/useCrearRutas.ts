@@ -99,7 +99,7 @@ export const useCrearRutas = () => {
         confirmButtonText: "Aceptar",
       }).then(() => {
         queryClient.invalidateQueries({ queryKey: ["rutas"] });
-        window.location.reload();
+        // window.location.reload();
       });
     },
 

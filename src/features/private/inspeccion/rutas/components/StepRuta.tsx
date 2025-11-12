@@ -62,16 +62,19 @@ export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
           <Controller
             name="ruta.hora"
             control={control}
-            defaultValue={""}
+            defaultValue=""
             rules={{ required: "Este campo es requerido" }}
-            render={({ field }) => (
-              <TimePicker
-                format="HH:mm:ss"
-                value={field.value ? dayjs(field.value, "HH:mm:ss") : null}
-                onChange={(_, timeStr) => field.onChange(timeStr || "")}
-                style={{ width: "100%" }}
-              />
-            )}
+            render={({ field }) => {
+              const fmt = field.value?.length === 5 ? "HH:mm" : "HH:mm:ss";
+              return (
+                <TimePicker
+                  format="HH:mm"
+                  value={field.value ? dayjs(field.value, fmt) : null}
+                  onChange={(_, timeStr) => field.onChange(timeStr || "")}
+                  style={{ width: "100%" }}
+                />
+              );
+            }}
           />
           {errors?.ruta?.hora && (
             <span style={{ color: "red" }}>

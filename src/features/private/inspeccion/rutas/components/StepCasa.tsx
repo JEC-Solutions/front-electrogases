@@ -66,23 +66,10 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
             name="casa.medidor"
             control={control}
             defaultValue={''}
-            rules={{
-              required: "Este campo es requerido",
-              minLength: {
-                value: 16,
-                message: "Debe tener mínimo 16 caracteres",
-              },
-              maxLength: { value: 16, message: "Máximo 15 caracteres" },
-            }}
             render={({ field }) => (
               <Input id="medidor" placeholder="Medidor" {...field} />
             )}
           />
-          {errors?.casa?.medidor && (
-            <span style={{ color: "red" }}>
-              {errors.casa.medidor.message as string}
-            </span>
-          )}
         </div>
       </Col>
 

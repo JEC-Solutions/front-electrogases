@@ -46,7 +46,6 @@ export const CrearRuta = () => {
     } else if (currentStep === 1) {
       const isValid = await methods.trigger([
         "casa.no_cuenta",
-        "casa.medidor",
         "casa.direccion",
         "casa.barrio",
         "casa.id_tipo_visita",
