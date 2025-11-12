@@ -19,6 +19,9 @@ export const Rutas = () => {
     methods,
     onSubmit,
     inspectores,
+
+    // pdf
+    generarPDF
   } = useRutas();
   const navigate = useNavigate();
 
@@ -62,6 +65,7 @@ export const Rutas = () => {
             methods={methods}
             onSubmit={onSubmit}
             inspectores={inspectores}
+            onDownload={generarPDF}
           />
         )}
       </Card>

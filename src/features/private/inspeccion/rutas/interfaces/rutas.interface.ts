@@ -143,3 +143,11 @@ export interface IAsignar {
   id_inspector: number;
   motivo: string;
 }
+
+export interface IPdfRuta {
+  start: string
+  end: string
+  inspectorId: number
+  clienteId: number
+  clienteDocumento: string
+}

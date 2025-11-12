@@ -1,12 +1,13 @@
 import {
   IAsignar,
   IRutas,
+  IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
 import { Button, Input, Space, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useMemo, useState } from "react";
-import { FiClock, FiNavigation } from "react-icons/fi";
-// import { getGreenOutlineButtonProps, getRedOutlineButtonProps } from "@/ui";
+import { FiClock, FiFileText, FiNavigation } from "react-icons/fi";
+import { getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { useHistorialRuta } from "@/features/private/inspeccion/rutas/hooks";
@@ -21,6 +22,7 @@ interface Props {
   onSubmit: (payload: IAsignar) => void;
   methods: any;
   inspectores: IUsuarios[];
+  onDownload: (payload: IPdfRuta) => void;
 }
 
 export const TableRutas = ({
@@ -32,6 +34,7 @@ export const TableRutas = ({
   methods,
   onSubmit,
   inspectores,
+  onDownload,
 }: Props) => {
   const {
     handleViewHistorial,
@@ -158,21 +161,23 @@ export const TableRutas = ({
               style={{ maxWidth: 520 }}
             />
 
-            {/* <Space>
-              <Button
-                icon={<FiDownload size={18} />}
-                {...getGreenOutlineButtonProps()}
-              >
-                Exportar Excel
-              </Button>
-
+            <Space>
               <Button
                 icon={<FiFileText size={18} />}
                 {...getRedOutlineButtonProps()}
+                onClick={() =>
+                  onDownload({
+                    start: "2025-01-01",
+                    end: "2025-12-31",
+                    inspectorId: 12,
+                    clienteId: 0,
+                    clienteDocumento: "",
+                  })
+                }
               >
                 Exportar PDF
               </Button>
-            </Space> */}
+            </Space>
           </Space>
 
           <Table

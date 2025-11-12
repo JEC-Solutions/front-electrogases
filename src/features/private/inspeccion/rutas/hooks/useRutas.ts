@@ -2,6 +2,7 @@ import * as rutaServices from "@/features/private/inspeccion/rutas/services/ruta
 import {
   IAsignar,
   IRutas,
+  IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
+import { downloadBase64 } from "@/utils/downloadBase64";
 
 export const useRutas = () => {
   const queryClient = useQueryClient();
@@ -110,6 +112,45 @@ export const useRutas = () => {
     }
   };
 
+  const generarPdfMutation = useMutation({
+    mutationFn: (payload: IPdfRuta) => rutaServices.generatePdf(payload),
+    onMutate: () => {
+      Swal.fire({
+        title: "Descargando...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+    onSuccess: ({ data }) => {
+      Swal.close();
+
+      const { base64, filename, mimeType } = data ?? {};
+      if (!base64) {
+        Swal.fire({
+          icon: "error",
+          title: "Sin PDF",
+          text: "No llegó el base64 del PDF",
+        });
+        return;
+      }
+      downloadBase64(
+        base64,
+        filename || "rutero.pdf",
+        mimeType || "application/pdf"
+      );
+    },
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
+  // Exponer un método para usar desde la UI
+  const generarPDF = (_payload: IPdfRuta) => {
+    generarPdfMutation.mutate(_payload);
+  };
   return {
     // rutas
     rutas,
@@ -125,5 +166,8 @@ export const useRutas = () => {
     methods,
     onSubmit,
     inspectores,
+
+    // pdf
+    generarPDF,
   };
 };

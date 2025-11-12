@@ -2,6 +2,7 @@ import { electroApi } from "@/api";
 import {
   IAsignar,
   IRuta,
+  IPdfRuta
 } from "@/features/private/inspeccion/rutas/interfaces";
 
 export const getRutas = async () => {
@@ -47,3 +48,7 @@ export const asignarRuta = async (id: number, payload: IAsignar) => {
 export const historialRuta = async (id: number) => {
   return await electroApi.get(`/ruta/${id}/historial`);
 };
+
+export const generatePdf = async (data: IPdfRuta) => {
+  return await electroApi.post('/ruta/pdf', data)
+}
