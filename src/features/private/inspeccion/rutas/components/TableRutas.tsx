@@ -3,18 +3,9 @@ import {
   IRutas,
   IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
-import {
-  Button,
-  DatePicker,
-  Input,
-  InputNumber,
-  Select,
-  Space,
-  Table,
-  Tooltip,
-} from "antd";
+import { Button, DatePicker, Input, Select, Space, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FiClock, FiFileText, FiNavigation } from "react-icons/fi";
 import { getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
@@ -23,6 +14,7 @@ import { useHistorialRuta } from "@/features/private/inspeccion/rutas/hooks";
 import { ModalHistorico } from "@/features/private/inspeccion/rutas/components";
 import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
 import { Dayjs } from "dayjs";
+import Swal from "sweetalert2";
 
 type PdfFilters = {
   start: Dayjs | null;
@@ -72,7 +64,6 @@ export const TableRutas = ({
     clienteId: undefined,
     clienteDocumento: "",
   });
-  const [query, setQuery] = useState("");
   const { clientes } = useClientes();
   const columns: ColumnsType<IRutas> = [
     {
@@ -143,12 +134,26 @@ export const TableRutas = ({
     },
   ];
 
-
-
   const handleExportPdf = () => {
     const { start, end, inspectorId, clienteId, clienteDocumento } = pdfFilters;
+
     if (!start || !end) {
-      // message.warning("Selecciona un rango de fechas.");
+      Swal.fire({
+        icon: "warning",
+        title: "Falta rango de fechas",
+        text: "Selecciona la fecha de inicio y fin para generar el PDF.",
+        confirmButtonText: "Entendido",
+      });
+      return;
+    }
+
+    if (end.isBefore(start, "day")) {
+      Swal.fire({
+        icon: "error",
+        title: "Rango inválido",
+        text: "La fecha final no puede ser anterior a la fecha inicial.",
+        confirmButtonText: "Corregir",
+      });
       return;
     }
 
@@ -160,6 +165,12 @@ export const TableRutas = ({
       clienteDocumento: (clienteDocumento || "").trim(),
     });
   };
+
+  const normalize = (s: string) =>
+    (s ?? "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
 
   return (
     <>
@@ -180,29 +191,40 @@ export const TableRutas = ({
 
             <Select
               allowClear
+              showSearch
               placeholder="Inspector"
               style={{ width: 220 }}
               options={inspectores.map((i) => ({
                 value: i.id_usuario,
-                label: `${i.persona.primer_nombre ?? ""} ${
-                  i.persona?.primer_nombre ?? ""
+                label: `${i.persona?.primer_nombre ?? ""} ${
+                  i.persona?.primer_apellido ?? ""
                 }`.trim(),
               }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                normalize(option?.label as string).includes(normalize(input))
+              }
               value={pdfFilters.inspectorId}
               onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
             />
 
-            <InputNumber
-              placeholder="Cliente ID"
-              style={{ width: 140 }}
-              min={0}
-              value={pdfFilters.clienteId}
-              onChange={(v) =>
-                setPdfFilters((s) => ({
-                  ...s,
-                  clienteId: typeof v === "number" ? v : undefined,
-                }))
+            <Select
+              allowClear
+              showSearch
+              placeholder="Cliente"
+              style={{ width: 220 }}
+              options={clientes.map((c) => ({
+                value: c.id_cliente,
+                label: `${c.primer_nombre ?? ""} ${
+                  c.primer_apellido ?? ""
+                }`.trim(),
+              }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                normalize(option?.label as string).includes(normalize(input))
               }
+              value={pdfFilters.clienteId}
+              onChange={(v) => setPdfFilters((s) => ({ ...s, clienteId: v }))}
             />
 
             <Input
@@ -230,7 +252,7 @@ export const TableRutas = ({
 
           <Table
             columns={columns}
-            dataSource={filtered}
+            dataSource={rutas}
             rowKey="id_ruta"
             className="custom-table"
             rowClassName={(_record, index) =>
