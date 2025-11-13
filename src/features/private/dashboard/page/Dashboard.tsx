@@ -17,8 +17,7 @@ import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/pages";
 import { NotFound } from "@/features/public/404/page";
-import { Page } from "../../configuracion/cambiar_contraseña";
-
+import { Inspecciones } from "@/features/private/inspeccion/inspecciones/pages";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -93,7 +92,7 @@ export const Dashboard = () => {
             />
             <Route
               path="/configuracion/cambiar_contrasenia"
-              element={<Page/>}
+              element={<p>Cambiar contrasenia</p>}
             />
             <Route path="/configuracion/opciones" element={<Opciones />} />
             <Route path="/configuracion/menus" element={<Menu />} />
@@ -104,7 +103,10 @@ export const Dashboard = () => {
             <Route path="/inspecciones/rutas" element={<Rutas />} />
             <Route path="/inspecciones/rutas/crear" element={<CrearRuta />} />
             <Route path="/inspecciones/clientes" element={<Clientes />} />
-            <Route path="/inspecciones" element={<h1>inspecciones</h1>} />
+            <Route
+              path="/inspecciones/cuadro_maestro"
+              element={<Inspecciones />}
+            />
 
             {/* Informes */}
             <Route
