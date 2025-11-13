@@ -1,4 +1,4 @@
-import { Col, DatePicker, Row, Select, TimePicker } from "antd";
+import { Col, DatePicker, Input, Row, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 import { IResultados } from "@/features/private/inspeccion/rutas/interfaces";
@@ -130,6 +130,20 @@ export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
               {errors.ruta.id_inspector.message as string}
             </span>
           )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label htmlFor="numero_acta">Número de acta</label>
+          <Controller
+            name="ruta.numero_acta"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <Input id="numero_acta" placeholder="Número de acta" {...field} />
+            )}
+          />
         </div>
       </Col>
     </Row>

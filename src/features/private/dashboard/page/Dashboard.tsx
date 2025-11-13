@@ -104,7 +104,7 @@ export const Dashboard = () => {
             <Route path="/inspecciones/rutas/crear" element={<CrearRuta />} />
             <Route path="/inspecciones/clientes" element={<Clientes />} />
             <Route
-              path="/inspecciones/cuadro_maestro"
+              path="/inspecciones"
               element={<Inspecciones />}
             />
 

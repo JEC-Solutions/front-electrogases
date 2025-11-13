@@ -148,19 +148,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
         </div>
       </Col>
 
-      <Col xs={24} md={8}>
-        <div className="mb-4">
-          <label htmlFor="numero_acta">Número de acta</label>
-          <Controller
-            name="casa.numero_acta"
-            control={control}
-            defaultValue={''}
-            render={({ field }) => (
-              <Input id="numero_acta" placeholder="Número de acta" {...field} />
-            )}
-          />
-        </div>
-      </Col>
+
 
       <Col xs={24} md={8}>
         <div className="mb-4">

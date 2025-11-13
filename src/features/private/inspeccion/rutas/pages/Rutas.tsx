@@ -49,7 +49,7 @@ export const Rutas = () => {
           </div>
         ) : isError ? (
           <div style={{ color: "red", textAlign: "center" }}>
-            Ocurrió un error al cargar los roles.
+            Ocurrió un error al cargar las rutas.
             <br />
             {error instanceof Error
               ? error.message

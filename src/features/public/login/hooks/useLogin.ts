@@ -55,7 +55,7 @@ export const useLogin = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Creado",
+        title: "Bienvenido!!",
         text: "Inicio de sesión exitoso",
         confirmButtonText: "Aceptar",
       }).then(() => {
