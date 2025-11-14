@@ -7,10 +7,17 @@ import {
   TrazaVacioInterno,
   EvalRecintosTablaSimple,
   SeccionIsometricos,
+  TablaVentilacion,
+  ParametrosEvaluacion,
+  Defectologias,
+  Equipos,
+  Registro,
+  Declaracion,
 } from "@/features/private/inspeccion/inspecciones/components";
 
 export const Acta = () => {
-  const { inspeccion } = useActa();
+  const { inspeccion, isometricoBase64, esquemaPlantaBase64, firmaBase64 } =
+    useActa();
 
   return (
     <div
@@ -58,8 +65,54 @@ export const Acta = () => {
       {/* ISOMETRICOS */}
       <div className="overflow-x-auto overflow-y-hidden">
         <div className="min-w-[1248px]">
-          <SeccionIsometricos />
+          <SeccionIsometricos
+            inspeccion={inspeccion}
+            isometricoBase64={isometricoBase64}
+            esquemaPlantaBase64={esquemaPlantaBase64}
+          />
         </div>
+      </div>
+
+      {/* 7. VENTILACION */}
+      <div className="overflow-x-auto overflow-y-hidden">
+        <div className="min-w-[1248px]">
+          <TablaVentilacion inspeccion={inspeccion} />
+        </div>
+      </div>
+
+      {/* 8. PARAMETROS DE EVALUACION */}
+      <div className="overflow-x-auto overflow-y-hidden">
+        <div className="w-max">
+          <div className="border-t border-black">
+            <div className="border-l border-r border-black bg-gray-100 font-bold text-center text-xs py-1">
+              8. PARÁMETROS DE EVALUACIÓN / RESOLUCIÓN 90902 DE 2013 /
+              RESOLUCIÓN 41385 DE 2017
+            </div>
+
+            <ParametrosEvaluacion inspeccion={inspeccion} />
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto overflow-y-hidden">
+        <div className="w-max">
+          <Defectologias inspeccion={inspeccion} />
+        </div>
+      </div>
+
+      {/* 9 EQUIPOS*/}
+      <div className="overflow-x-auto overflow-y-hidden">
+        <Equipos />
+      </div>
+
+      {/* 10 DECLARACION*/}
+      <div className="overflow-x-auto overflow-y-hidden">
+        <Declaracion />
+      </div>
+
+      {/* 11 - 12  REGISTRO*/}
+      <div className="overflow-x-auto overflow-y-hidden">
+        <Registro inspeccion={inspeccion} firmaBase64={firmaBase64} />
       </div>
     </div>
   );

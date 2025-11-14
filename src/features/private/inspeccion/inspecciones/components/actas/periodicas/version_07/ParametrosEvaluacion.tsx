@@ -1,14 +1,29 @@
-// Section8FilaCompacta.tsx
-import React from "react";
+import { IActa } from "@/features/private/inspeccion/inspecciones/interfaces";
+
+interface Props {
+  inspeccion: IActa | undefined;
+}
 
 /** Celda con valor + unidad arriba a la derecha (m³, L, min, %Vol) */
-const UnitValue = ({ unit }: { unit: string }) => (
+const UnitValue = ({
+  unit,
+  value,
+}: {
+  unit: string;
+  value?: number | string;
+}) => (
   <div className="border border-black relative h-[36px]">
     <span className="absolute right-0 top-0 bg-gray-100 px-1 leading-none text-[11px]">
       {unit}
     </span>
-    {/* Línea para escribir el valor */}
+
     <div className="absolute left-1 right-1 bottom-1 border-b border-black h-[0px]" />
+
+    {value !== undefined && value !== null && (
+      <span className="absolute right-1 bottom-[6px] text-[11px] leading-none">
+        {value}
+      </span>
+    )}
   </div>
 );
 
@@ -19,7 +34,9 @@ const LabelCell = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-export function Section8FilaCompacta() {
+export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
+  const parametros = inspeccion?.parametrosEvaluacion[0];
+
   return (
     <>
       {/* Fila única (sin tabla) */}
@@ -46,13 +63,13 @@ export function Section8FilaCompacta() {
           <br />
           Inicio
         </LabelCell>
-        <UnitValue unit="m³" />
+        <UnitValue unit="m³" value={parametros?.lecturaInicialAire} />
         <LabelCell>
           Lectura
           <br />
           Final
         </LabelCell>
-        <UnitValue unit="m³" />
+        <UnitValue unit="m³" value={parametros?.lecturaFinalAire} />
 
         {/* Lecturas L (Inicio/Final) */}
         <LabelCell>
@@ -60,13 +77,13 @@ export function Section8FilaCompacta() {
           <br />
           Inicio
         </LabelCell>
-        <UnitValue unit="L" />
+        <UnitValue unit="L" value={parametros?.lecturaInicialMedidor} />
         <LabelCell>
           Lectura
           <br />
           Final
         </LabelCell>
-        <UnitValue unit="L" />
+        <UnitValue unit="L" value={parametros?.lecturaFinalMedidor} />
 
         {/* Tiempo de la prueba (min) */}
         <LabelCell>
@@ -74,7 +91,7 @@ export function Section8FilaCompacta() {
           <br />
           la prueba
         </LabelCell>
-        <UnitValue unit="min" />
+        <UnitValue unit="min" value={parametros?.tiempoPruebaAire} />
 
         {/* Prueba Presión (solo línea de valor, sin unidad) */}
         <div className="border border-black relative h-[36px] px-1">
@@ -84,7 +101,9 @@ export function Section8FilaCompacta() {
           <span className="absolute left-[52px] top-1 text-[11px] font-semibold bg-gray-100 px-1">
             Presión
           </span>
-          <div className="absolute left-1 right-1 bottom-1 border-b border-black" />
+          <div className="absolute left-1 right-1 bottom-1 border-b border-black">
+            <span>{parametros?.pruebaPresion}</span>
+          </div>
         </div>
 
         {/* Con detector de fugas (valor + %Vol) */}
@@ -94,8 +113,9 @@ export function Section8FilaCompacta() {
           de fugas
         </LabelCell>
         <div className="border border-black relative h-[36px]">
-          {/* área de escritura */}
-          <div className="absolute inset-x-1 bottom-1 border-b border-black" />
+          <div className="absolute inset-x-1 bottom-1 border-b border-black flex justify-end pr-1 text-[11px]">
+            {parametros?.detectorFugas ?? ""}
+          </div>
         </div>
         <div className="border border-black relative h-[36px]">
           <span className="absolute right-0 top-0 bg-gray-100 px-1 leading-none text-[11px]">
@@ -105,4 +125,4 @@ export function Section8FilaCompacta() {
       </div>
     </>
   );
-}
+};

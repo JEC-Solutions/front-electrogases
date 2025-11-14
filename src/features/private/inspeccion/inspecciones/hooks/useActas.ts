@@ -30,10 +30,86 @@ export const useActa = () => {
     refetchOnWindowFocus: false,
   });
 
+  // 2) Firma del cliente (opcional por si la usas en otro lado)
+  const {
+    data: firmaBase64,
+    isLoading: isLoadingFirma,
+    isError: isErrorFirma,
+  } = useQuery<string>({
+    queryKey: ["inspeccion-firma", numericId],
+    queryFn: async () => {
+      try {
+        const { data } = await inspeccionServices.getFirma(numericId!);
+        return data.data.imagen.base64 as string;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    enabled: !!numericId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // 3) Esquema en planta
+  const {
+    data: esquemaPlantaBase64,
+    isLoading: isLoadingEsquema,
+    isError: isErrorEsquema,
+  } = useQuery<string>({
+    queryKey: ["inspeccion-esquema-planta", numericId],
+    queryFn: async () => {
+      try {
+        const { data } = await inspeccionServices.getEsquemaPlanta(numericId!);
+        return data.data.imagen.base64 as string;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    enabled: !!numericId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // 4) Isométrico
+  const {
+    data: isometricoBase64,
+    isLoading: isLoadingIsometrico,
+    isError: isErrorIsometrico,
+  } = useQuery<string>({
+    queryKey: ["inspeccion-isometrico", numericId],
+    queryFn: async () => {
+      try {
+        const { data } = await inspeccionServices.getIsometrico(numericId!);
+        return data.data.imagen.base64 as string;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    enabled: !!numericId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  const isLoadingImagenes =
+    isLoadingFirma || isLoadingEsquema || isLoadingIsometrico;
+
+  const isErrorImagenes = isErrorFirma || isErrorEsquema || isErrorIsometrico;
+
   return {
+     // inspección
     inspeccion,
     isLoading,
     isError,
     error,
+
+    // imágenes en base64
+    firmaBase64,
+    esquemaPlantaBase64,
+    isometricoBase64,
+    isLoadingImagenes,
+    isErrorImagenes,
   };
 };

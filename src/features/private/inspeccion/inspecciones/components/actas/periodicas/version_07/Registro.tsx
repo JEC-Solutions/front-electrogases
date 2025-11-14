@@ -1,8 +1,32 @@
-const Line = ({ className = "" }: { className?: string }) => (
-  <span className={`inline-block border-b border-black ${className}`} />
+import { IActa } from "@/features/private/inspeccion/inspecciones/interfaces";
+
+interface Props {
+  inspeccion: IActa | undefined;
+  firmaBase64: string | undefined;
+}
+
+const Line = ({
+  className = "",
+  value = "",
+}: {
+  className?: string;
+  value?: string;
+}) => (
+  <span className={`inline-block border-b border-black ${className}`}>
+    {value}
+  </span>
 );
 
-export function Section11y12() {
+export const Registro = ({ inspeccion, firmaBase64 }: Props) => {
+  const nombreInspector =
+    inspeccion?.ruta?.persona?.primer_nombre +
+    " " +
+    inspeccion?.ruta?.persona?.segundo_nombre +
+    " " +
+    inspeccion?.ruta?.persona?.primer_apellido +
+    " " +
+    inspeccion?.ruta?.persona?.segundo_apellido;
+
   return (
     <div className="overflow-x-auto overflow-y-hidden">
       <div className="min-w-[1248px]">
@@ -18,13 +42,14 @@ export function Section11y12() {
 
               {/* Declaraciones */}
               <div className="px-2 py-1 border-b border-black">
-                Declaro que conozco el resultado de la Inspecciones y las acciones
-                a seguir en caso de encontrar defectos en la instalación.
+                Declaro que conozco el resultado de la Inspecciones y las
+                acciones a seguir en caso de encontrar defectos en la
+                instalación.
               </div>
 
               <div className="px-2 py-1 border-b border-black">
-                Con la Firma de este documento el usuario autoriza el cobro de la
-                revisión a <Line className="w-24 align-middle mx-1" /> cuotas
+                Con la Firma de este documento el usuario autoriza el cobro de
+                la revisión a <Line className="w-24 align-middle mx-1" /> cuotas
               </div>
 
               {/* Nombre quien atiende */}
@@ -38,7 +63,15 @@ export function Section11y12() {
                 {/* Firma (izquierda) */}
                 <div className="border-r border-black">
                   <div className="px-2 py-1 border-b border-black">Firma:</div>
-                  <div className="h-[120px]" />
+                  <div className="h-[120px] flex items-center justify-center">
+                    {firmaBase64 && (
+                      <img
+                        src={firmaBase64}
+                        alt="Firma cliente"
+                        className="max-h-[110px] max-w-[90%] object-contain"
+                      />
+                    )}
+                  </div>
                 </div>
 
                 {/* Cédula / Vínculo (derecha) */}
@@ -67,8 +100,10 @@ export function Section11y12() {
                 {/* Columna izquierda: campos del inspector */}
                 <div className="border-r border-black">
                   <div className="px-2 py-1 border-b border-black flex items-center gap-2">
-                    <span className="whitespace-nowrap">Nombre del Inspector:</span>
-                    <Line className="flex-1" />
+                    <span className="whitespace-nowrap">
+                      Nombre del Inspector:
+                    </span>
+                    <Line className="flex-1" value={nombreInspector} />
                   </div>
                   <div className="px-2 py-1 border-b border-black flex items-center gap-2">
                     <span className="whitespace-nowrap">Certificado No.:</span>
@@ -99,4 +134,4 @@ export function Section11y12() {
       </div>
     </div>
   );
-}
+};

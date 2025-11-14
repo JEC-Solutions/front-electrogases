@@ -79,6 +79,9 @@ export interface IActa {
   lineaMatriz: any;
   vacioInterno: VacioInterno;
   ruta: Ruta;
+  volumenRecintos: VolumenRecinto[];
+  resultadoDefectologias: ResultadoDefectologia[];
+  parametrosEvaluacion: ParametrosEvaluacion[]
 }
 
 export interface InstalacionExistente {
@@ -144,17 +147,61 @@ export interface Departamento {
 }
 
 export interface VacioInterno {
-  id_vacio_interno: number
-  ventilacion: boolean
-  area_planta: string
-  lado_minimo: string
-  nro_pisos: number
-  cubierto: boolean
-  area_cubierta: string
-  cumple: boolean
-  forma: number
-  id_documento_legal: string
-  fecha: string
-  created_at: string
-  updated_at: string
+  id_vacio_interno: number;
+  ventilacion: boolean;
+  area_planta: string;
+  lado_minimo: string;
+  nro_pisos: number;
+  cubierto: boolean;
+  area_cubierta: string;
+  cumple: boolean;
+  forma: number;
+  id_documento_legal: string;
+  fecha: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface VolumenRecinto {
+  id_volumen_recintos: number;
+  volumenRecinto: number;
+  volumenADY1: number;
+  volumenADY2: number;
+  volumenADY3: any;
+  volumenADY4: any;
+  volumenTotal: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ResultadoDefectologia {
+  id_resultado_defectologia: number;
+  resultado: boolean;
+  created_at: string;
+  updated_at: string;
+  defectologia: Defectologia;
+}
+
+export interface Defectologia {
+  id_defectologia: number;
+  codigo: string;
+  descripcion: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ParametrosEvaluacion {
+  id_parametros_evaluacion: number
+  lecturaInicialAire: number
+  lecturaFinalAire: number
+  tiempoPruebaAire: number
+  lecturaInicialMedidor: number
+  lecturaFinalMedidor: number
+  lecturaInicialMedidor2: number
+  lecturaFinalMedidor2: number
+  tiempoPruebaMedidor: number
+  pruebaPresion: number
+  detectorFugas: number
+  createdAt: string
+  updatedAt: string
 }

@@ -1,4 +1,5 @@
-/** Celda "Etiqueta: ______" con línea para escribir */
+
+
 const LabeledLine = ({ label }: { label: string }) => (
   <div className="flex items-center gap-1">
     <span className="whitespace-nowrap">{label}</span>
@@ -6,7 +7,6 @@ const LabeledLine = ({ label }: { label: string }) => (
   </div>
 );
 
-/** Una fila de equipos: izquierda y derecha (cada lado: N/S, Marca, Modelo) */
 const EquipmentRow = ({
   leftLabel,
   rightLabel,
@@ -41,7 +41,8 @@ const EquipmentRow = ({
   </tr>
 );
 
-export function SectionEquipos() {
+export const Equipos = () => {
+
   return (
     <div className="overflow-x-auto overflow-y-hidden">
       <div className="min-w-[1248px]">
@@ -78,13 +79,10 @@ export function SectionEquipos() {
               leftLabel="Detector de fugas:"
               rightLabel="Flexómetro:"
             />
-            <EquipmentRow
-              leftLabel="Manómetro de media"
-              rightLabel="Otro:"
-            />
+            <EquipmentRow leftLabel="Manómetro de media" rightLabel="Otro:" />
           </tbody>
         </table>
       </div>
     </div>
   );
-}
+};

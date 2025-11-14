@@ -15,7 +15,6 @@ import { Opciones } from "@/features/private/configuracion/opciones/pages";
 import { Clientes } from "@/features/private/inspeccion/clientes/pages";
 import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
-import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/pages";
 import { NotFound } from "@/features/public/404/page";
 import {
   Inspecciones,
@@ -112,7 +111,7 @@ export const Dashboard = () => {
             {/* Informes */}
             <Route
               path="/informes/cuadro_maestro"
-              element={<CuadroMaestro />}
+              element={<p>cuadro maestro</p>}
             />
 
             {/* Ruta catch-all dentro dashboard */}

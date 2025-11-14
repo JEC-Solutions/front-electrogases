@@ -2,7 +2,7 @@ const Box = () => (
   <span className="inline-block w-[14px] h-[14px] border border-black align-middle" />
 );
 
-export function Section10Declaracion() {
+export const Declaracion = () => {
   return (
     <div className="overflow-x-auto overflow-y-hidden">
       <div className="min-w-[1248px]">
@@ -125,4 +125,4 @@ export function Section10Declaracion() {
       </div>
     </div>
   );
-}
+};
