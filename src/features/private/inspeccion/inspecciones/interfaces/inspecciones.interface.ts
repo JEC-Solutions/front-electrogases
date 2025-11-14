@@ -77,7 +77,7 @@ export interface IActa {
   isometricos: any[];
   esquemaPlanta: any[];
   lineaMatriz: any;
-  vacioInterno: any;
+  vacioInterno: VacioInterno;
   ruta: Ruta;
 }
 
@@ -98,6 +98,7 @@ export interface Ruta {
   created_at: string;
   updated_at: string;
   casa: Casa;
+  persona: Persona;
 }
 
 export interface Casa {
@@ -140,4 +141,20 @@ export interface Departamento {
   nombre: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface VacioInterno {
+  id_vacio_interno: number
+  ventilacion: boolean
+  area_planta: string
+  lado_minimo: string
+  nro_pisos: number
+  cubierto: boolean
+  area_cubierta: string
+  cumple: boolean
+  forma: number
+  id_documento_legal: string
+  fecha: string
+  created_at: string
+  updated_at: string
 }

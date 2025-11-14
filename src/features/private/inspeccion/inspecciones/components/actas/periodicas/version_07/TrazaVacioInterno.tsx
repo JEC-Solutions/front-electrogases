@@ -15,13 +15,12 @@ function Box({ checked = false }: { checked?: boolean }) {
 }
 
 export const TrazaVacioInterno = ({ inspeccion }: Props) => {
-
-  const lineaMatriz = !!inspeccion?.vacio_interno;
-
+  const forma3 = inspeccion?.vacioInterno.forma === 3;
+  const forma5 = inspeccion?.vacioInterno.forma === 5;
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
-      <div className="min-w-[1248px]">
+      <div className="w-max">
         <div className="grid grid-cols-[260px_130px_1fr_150px_110px_100px_90px_240px_170px] border-b border-l border-black text-xs leading-tight box-border">
           {/* Col 1: Título */}
           <div className="px-2 py-1 border-r border-black bg-gray-100 font-bold flex items-center">
@@ -36,11 +35,11 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             <div className="px-2 flex items-center justify-between">
               <span className="flex items-center gap-1">
                 <span className="font-semibold">SI</span>
-                <Box />
+                <Box checked={inspeccion?.vacio_interno} />
               </span>
               <span className="flex items-center gap-1">
                 <span className="font-semibold">NO</span>
-                <Box checked />
+                <Box checked={!inspeccion?.vacio_interno} />
               </span>
             </div>
           </div>
@@ -54,15 +53,13 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             <div className="px-2 py-1 flex flex-col gap-1">
               <div className="flex items-center gap-1">
                 <span className="font-semibold">N°</span>
-                <span className="flex-1 h-[18px] border-b border-black" />
+                <span className="flex-1 h-[18px] border-b border-black">
+                  {inspeccion?.vacioInterno?.id_documento_legal}
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 <span className="font-semibold">Fecha</span>
-                <span className="w-[22px] h-[18px] border border-black" />
-                <span>-</span>
-                <span className="w-[22px] h-[18px] border border-black" />
-                <span>-</span>
-                <span className="w-[36px] h-[18px] border border-black" />
+                <span>{inspeccion?.vacioInterno.fecha}</span>
               </div>
             </div>
           </div>
@@ -75,11 +72,11 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             <div className="px-2 py-1 flex flex-col gap-1">
               <span className="flex items-center justify-between">
                 <span className="font-semibold">Ventilación</span>
-                <Box />
+                <Box checked={inspeccion?.vacioInterno?.ventilacion} />
               </span>
               <span className="flex items-center justify-between">
                 <span className="font-semibold">Evacuación</span>
-                <Box />
+                <Box checked={!inspeccion?.vacioInterno?.ventilacion} />
               </span>
             </div>
           </div>
@@ -90,7 +87,9 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               Área en planta
             </div>
             <div className="px-2 flex items-center gap-1">
-              <span className="flex-1 h-[18px] border-b border-black" />
+              <span className="flex-1 h-[18px] border-b border-black">
+                {inspeccion?.vacioInterno.area_planta}
+              </span>
               <span className="font-semibold">m²</span>
             </div>
           </div>
@@ -101,7 +100,9 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               Lado mínimo
             </div>
             <div className="px-2 flex items-center gap-1">
-              <span className="flex-1 h-[18px] border-b border-black" />
+              <span className="flex-1 h-[18px] border-b border-black">
+                {inspeccion?.vacioInterno.lado_minimo}
+              </span>
               <span className="font-semibold">m</span>
             </div>
           </div>
@@ -112,7 +113,9 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               # de pisos
             </div>
             <div className="px-2 flex items-center">
-              <span className="flex-1 h-[18px] border-b border-black" />
+              <span className="flex-1 h-[18px] border-b border-black">
+                {inspeccion?.vacioInterno.nro_pisos}
+              </span>
             </div>
           </div>
 
@@ -121,13 +124,15 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             <div className="px-2 border-b border-black text-[10px] font-semibold flex items-center">
               Cubierto:
               <span className="ml-2 mr-1 font-semibold">SI</span>
-              <Box />
+              <Box checked={inspeccion?.vacioInterno.cubierto} />
               <span className="ml-2 mr-1 font-semibold">NO</span>
-              <Box />
+              <Box checked={!inspeccion?.vacioInterno.cubierto} />
             </div>
             <div className="px-2 py-1 flex items-center gap-1">
               <span className="font-semibold">Área libre cubierta</span>
-              <span className="flex-1 h-[18px] border-b border-black" />
+              <span className="flex-1 h-[18px] border-b border-black">
+                {inspeccion?.vacioInterno.area_cubierta}
+              </span>
               <span className="font-semibold">m²</span>
             </div>
           </div>
@@ -142,11 +147,11 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               <div className="border-r border-black flex flex-col">
                 <div className="px-2 h-[26px] flex items-center justify-between border-b border-black">
                   <span className="font-semibold">SI</span>
-                  <Box />
+                  <Box checked={inspeccion?.vacioInterno.cumple} />
                 </div>
                 <div className="px-2 h-[26px] flex items-center justify-between  border-black">
                   <span className="font-semibold">NO</span>
-                  <Box />
+                  <Box checked={!inspeccion?.vacioInterno.cumple} />
                 </div>
               </div>
               {/* Columna derecha: verificación de ventilación (años) */}
@@ -157,11 +162,11 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
                 <div className="flex items-center gap-2">
                   <span className="flex items-center gap-1">
                     <span className="font-semibold">3</span>
-                    <Box />
+                    <Box checked={forma3} />
                   </span>
                   <span className="flex items-center gap-1">
                     <span className="font-semibold">5</span>
-                    <Box />
+                    <Box checked={forma5} />
                   </span>
                 </div>
               </div>

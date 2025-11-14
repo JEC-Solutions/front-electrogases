@@ -7,7 +7,7 @@ interface Props {
 export const Header = ({ inspeccion }: Props) => {
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[1246px]">
+      <div className="min-w-[1248px]">
         <div className="flex">
           {/* Sección 1 — 79px */}
           <div className="w-[116px] border-t border-l border-black p-2">

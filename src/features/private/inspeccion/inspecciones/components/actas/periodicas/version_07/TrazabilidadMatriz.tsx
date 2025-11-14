@@ -19,7 +19,7 @@ export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
-      <div className="min-w-[1248px]">
+      <div className="w-max">
         <div className="grid grid-cols-[345px_175px_145px_305px_155px_170px_140px] border-r border-l border-b border-black text-xs leading-tight box-border">
           {/* Col 1: Título */}
           <div className="px-2 py-1 border-r border-black bg-gray-100 font-bold flex items-center">

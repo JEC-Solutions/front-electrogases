@@ -1,4 +1,3 @@
-// SeccionIsometricoPlantaVolumenes.tsx
 const LineField = ({ label }: { label: string }) => (
   <div className="flex items-center justify-between gap-2 px-2 py-[6px] border-b border-black/60">
     <span className="whitespace-nowrap">{label}</span>
@@ -6,7 +5,7 @@ const LineField = ({ label }: { label: string }) => (
   </div>
 );
 
-export function SeccionIsometricoPlantaVolumenes() {
+export const SeccionIsometricos = () => {
   // tamaño de celda para los fondos (px)
   const cell = 22;
 

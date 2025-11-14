@@ -16,7 +16,7 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
-      <div className="min-w-[1248px]">
+      <div className="w-max">
         <div className="grid grid-cols-[1030px_400px] border-t border-l border-r border-black text-xs leading-tight">
           {/* IZQUIERDA: 1. DATOS DE USUARIO */}
           <div className="border-r border-black">

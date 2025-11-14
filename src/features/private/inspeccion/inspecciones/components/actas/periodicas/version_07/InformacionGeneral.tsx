@@ -49,7 +49,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
-      <div className="min-w-[1248px]">
+      <div className="w-max">
         <div className="border border-black text-xs leading-tight box-border">
           {/* Título */}
           <div className="px-2 py-1 border-b border-black bg-gray-100 font-bold text-center">
