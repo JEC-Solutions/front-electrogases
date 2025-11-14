@@ -6,55 +6,138 @@ export interface IResponse {
 }
 
 export interface IInspecciones {
-  id_inspeccion: number
-  fecha_expedicion: string
-  fecha_inspeccion: string
-  fecha_puesta_en_servicio: string
-  tipo_gas_glp: boolean
-  hora_inicio: string
-  hora_fin: string
-  solicitud_usuario: boolean
-  numero_certificado: string
-  reemplazo_informe: boolean
-  numero_informe: string
-  vacio_interno: boolean
-  numero_licencia_construccion: string
-  fecha_licencia_contruccion: string
-  existe_linea: boolean
-  existe_vacio: boolean
-  created_at: string
-  updated_at: string
-  tipoInspeccion: TipoInspeccion
-  ruta: Ruta
+  id_inspeccion: number;
+  fecha_expedicion: string;
+  fecha_inspeccion: string;
+  fecha_puesta_en_servicio: string;
+  tipo_gas_glp: boolean;
+  hora_inicio: string;
+  hora_fin: string;
+  solicitud_usuario: boolean;
+  numero_certificado: string;
+  reemplazo_informe: boolean;
+  numero_informe: string;
+  vacio_interno: boolean;
+  numero_licencia_construccion: string;
+  fecha_licencia_contruccion: string;
+  existe_linea: boolean;
+  existe_vacio: boolean;
+  created_at: string;
+  updated_at: string;
+  tipoInspeccion: TipoInspeccion;
+  ruta: Ruta;
 }
 
 export interface TipoInspeccion {
-  id_tipo_inspeccion: number
-  nombre: string
-  created_at: string
-  updated_at: string
-}
-
-export interface Ruta {
-  id_ruta: number
-  fecha: string
-  hora: string
-  numero_acta: string
-  estado: boolean
-  created_at: string
-  updated_at: string
-  persona: Persona
+  id_tipo_inspeccion: number;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Persona {
-  id_persona: number
-  primer_nombre: string
-  segundo_nombre: string
-  primer_apellido: string
-  segundo_apellido: string
-  telefono: string
-  numero_documento: string
-  email: string
-  created_at: string
-  updated_at: string
+  id_persona: number;
+  primer_nombre: string;
+  segundo_nombre: string;
+  primer_apellido: string;
+  segundo_apellido: string;
+  telefono: string;
+  numero_documento: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IActa {
+  id_inspeccion: number;
+  fecha_expedicion: string;
+  fecha_inspeccion: string;
+  fecha_puesta_en_servicio: string;
+  tipo_gas_glp: boolean;
+  hora_inicio: string;
+  hora_fin: string;
+  solicitud_usuario: boolean;
+  numero_certificado: string;
+  reemplazo_informe: boolean;
+  numero_informe: string;
+  vacio_interno: boolean;
+  numero_licencia_construccion: string;
+  fecha_licencia_contruccion: string;
+  existe_linea: boolean;
+  existe_vacio: boolean;
+  created_at: string;
+  updated_at: string;
+  instalacionNueva: any;
+  instalacionExistente: InstalacionExistente;
+  tipoInspeccion: TipoInspeccion;
+  clasesInspeccion: any[];
+  evaluacionRecintos: any[];
+  evaluacionCondiciones: any[];
+  equiposUtilizados: any[];
+  isometricos: any[];
+  esquemaPlanta: any[];
+  lineaMatriz: any;
+  vacioInterno: any;
+  ruta: Ruta;
+}
+
+export interface InstalacionExistente {
+  id_instalacion_existente: number;
+  solicitudUsuario: boolean;
+  numeroVisita: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Ruta {
+  id_ruta: number;
+  fecha: string;
+  hora: string;
+  numero_acta: string;
+  estado: boolean;
+  created_at: string;
+  updated_at: string;
+  casa: Casa;
+}
+
+export interface Casa {
+  id_casa: number;
+  no_cuenta: string;
+  medidor: string;
+  direccion: string;
+  barrio: string;
+  valor_servicio: string;
+  observaciones: string;
+  created_at: string;
+  updated_at: string;
+  cliente: Cliente;
+  ciudad: Ciudad;
+}
+
+export interface Cliente {
+  id_cliente: number;
+  primer_nombre: string;
+  segundo_nombre: string;
+  primer_apellido: string;
+  segundo_apellido: string;
+  telefono: string;
+  numero_documento: string;
+  estado: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Ciudad {
+  codigo: string;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
+  departamento: Departamento;
+}
+
+export interface Departamento {
+  codigo: string;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
 }

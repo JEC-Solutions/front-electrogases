@@ -17,7 +17,10 @@ import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/pages";
 import { NotFound } from "@/features/public/404/page";
-import { Inspecciones } from "@/features/private/inspeccion/inspecciones/pages";
+import {
+  Inspecciones,
+  Acta,
+} from "@/features/private/inspeccion/inspecciones/pages";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -103,10 +106,8 @@ export const Dashboard = () => {
             <Route path="/inspecciones/rutas" element={<Rutas />} />
             <Route path="/inspecciones/rutas/crear" element={<CrearRuta />} />
             <Route path="/inspecciones/clientes" element={<Clientes />} />
-            <Route
-              path="/inspecciones"
-              element={<Inspecciones />}
-            />
+            <Route path="/inspecciones" element={<Inspecciones />} />
+            <Route path="/inspecciones/:id" element={<Acta />} />
 
             {/* Informes */}
             <Route

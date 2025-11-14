@@ -1,12 +1,19 @@
 import { IInspecciones } from "@/features/private/inspeccion/inspecciones/interfaces";
 import { ColumnsType } from "antd/es/table";
 import { Button, Space, Table, Tooltip } from "antd";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   inspecciones: IInspecciones[];
 }
 
 export const TableInspecciones = ({ inspecciones }: Props) => {
+  const navigate = useNavigate();
+
+  const handleRedirect = (id: number) => {
+    navigate(`/dashboard/inspecciones/${id}`);
+  };
+
   const columns: ColumnsType<IInspecciones> = [
     {
       title: "Fecha inspección",
@@ -62,8 +69,7 @@ export const TableInspecciones = ({ inspecciones }: Props) => {
               size="small"
               type="link"
               onClick={() => {
-                // aquí luego conectas con tu modal / navegación
-                console.log("Ver inspección", record.id_inspeccion);
+                handleRedirect(record.id_inspeccion);
               }}
             >
               Ver
