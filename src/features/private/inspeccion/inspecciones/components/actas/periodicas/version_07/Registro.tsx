@@ -64,7 +64,7 @@ export const Registro = ({ inspeccion, firmaBase64 }: Props) => {
                 <div className="border-r border-black">
                   <div className="px-2 py-1 border-b border-black">Firma:</div>
                   <div className="h-[120px] flex items-center justify-center">
-                    {firmaBase64 && (
+                    {firmaBase64 === undefined ? null : (
                       <img
                         src={firmaBase64}
                         alt="Firma cliente"

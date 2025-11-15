@@ -102,7 +102,7 @@ export const Acta = () => {
 
       {/* 9 EQUIPOS*/}
       <div className="overflow-x-auto overflow-y-hidden">
-        <Equipos />
+        <Equipos inspeccion={inspeccion} />
       </div>
 
       {/* 10 DECLARACION*/}

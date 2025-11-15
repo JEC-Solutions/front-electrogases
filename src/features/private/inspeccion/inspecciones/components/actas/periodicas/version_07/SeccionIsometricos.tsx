@@ -28,6 +28,10 @@ export const SeccionIsometricos = ({
   isometricoBase64,
   esquemaPlantaBase64,
 }: Props) => {
+  console.log(isometricoBase64 === undefined)
+  console.log(esquemaPlantaBase64 === undefined)
+
+
   const volumenRecintos = inspeccion?.volumenRecintos ?? [];
 
   const getRecinto = (index: number) => volumenRecintos[index];
@@ -97,7 +101,7 @@ export const SeccionIsometricos = ({
             backgroundPosition: "0 0, 0 0, 0 0, 0 0",
           }}
         >
-          {isometricoBase64 && (
+          {isometricoBase64 === undefined ? null : (
             <img
               src={isometricoBase64}
               alt="Isométrico"
@@ -115,7 +119,7 @@ export const SeccionIsometricos = ({
             backgroundPosition: "0 0, 0 0",
           }}
         >
-          {esquemaPlantaBase64 && (
+          {esquemaPlantaBase64 === undefined ? null : (
             <img
               src={esquemaPlantaBase64}
               alt="Esquema en planta"

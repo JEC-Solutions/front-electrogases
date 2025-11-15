@@ -1,47 +1,86 @@
+import { IActa } from "@/features/private/inspeccion/inspecciones/interfaces";
 
+interface Props {
+  inspeccion: IActa | undefined;
+}
 
-const LabeledLine = ({ label }: { label: string }) => (
+interface EquipoApi {
+  equiposUtilizados: string;
+  ns?: string;
+  marca?: string;
+  modelo?: string;
+}
+
+const LabeledLine = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex items-center gap-1">
     <span className="whitespace-nowrap">{label}</span>
-    <span className="block flex-1 border-b border-black h-[14px]" />
+    <span className="block flex-1 border-b border-black h-[14px] text-[11px] leading-none">
+      {value ?? ""}
+    </span>
   </div>
 );
+
+interface EquipmentRowProps {
+  leftLabel: string;
+  rightLabel: string;
+  leftData?: { ns?: string; marca?: string; modelo?: string };
+  rightData?: { ns?: string; marca?: string; modelo?: string };
+}
 
 const EquipmentRow = ({
   leftLabel,
   rightLabel,
-}: {
-  leftLabel: string;
-  rightLabel: string;
-}) => (
+  leftData,
+  rightData,
+}: EquipmentRowProps) => (
   <tr className="h-[32px]">
     {/* Lado izquierdo */}
     <td className="border border-black px-2 align-middle">{leftLabel}</td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="N/S:" />
+      <LabeledLine label="N/S:" value={leftData?.ns} />
     </td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="Marca:" />
+      <LabeledLine label="Marca:" value={leftData?.marca} />
     </td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="Modelo:" />
+      <LabeledLine label="Modelo:" value={leftData?.modelo} />
     </td>
 
     {/* Lado derecho */}
     <td className="border border-black px-2 align-middle">{rightLabel}</td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="N/S:" />
+      <LabeledLine label="N/S:" value={rightData?.ns} />
     </td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="Marca:" />
+      <LabeledLine label="Marca:" value={rightData?.marca} />
     </td>
     <td className="border border-black px-2 align-middle">
-      <LabeledLine label="Modelo:" />
+      <LabeledLine label="Modelo:" value={rightData?.modelo} />
     </td>
   </tr>
 );
 
-export const Equipos = () => {
+export const Equipos = ({ inspeccion }: Props) => {
+  const equipos = (inspeccion?.equiposUtilizados as EquipoApi[]) ?? [];
+
+  const getEquipoData = (keyword: string) => {
+    const eq = equipos.find((e) =>
+      e.equiposUtilizados?.toLowerCase().includes(keyword.toLowerCase())
+    );
+    if (!eq) return undefined;
+    return {
+      ns: eq.ns,
+      marca: eq.marca,
+      modelo: eq.modelo,
+    };
+  };
+
+  const detectorCO = getEquipoData("co"); // "Detector CO"
+  const detectorFugas = getEquipoData("fuga"); // "Detector Fugas"
+  const manometroBaja = getEquipoData("manómetro de baja");
+  const flexometro = getEquipoData("flexómetro");
+  const manometroMedia = getEquipoData("manómetro de media");
+  const otro = getEquipoData("otro");
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
@@ -74,12 +113,21 @@ export const Equipos = () => {
             <EquipmentRow
               leftLabel="Detector de CO:"
               rightLabel="Manómetro de baja"
+              leftData={detectorCO}
+              rightData={manometroBaja}
             />
             <EquipmentRow
               leftLabel="Detector de fugas:"
               rightLabel="Flexómetro:"
+              leftData={detectorFugas}
+              rightData={flexometro}
             />
-            <EquipmentRow leftLabel="Manómetro de media" rightLabel="Otro:" />
+            <EquipmentRow
+              leftLabel="Manómetro de media"
+              rightLabel="Otro:"
+              leftData={manometroMedia}
+              rightData={otro}
+            />
           </tbody>
         </table>
       </div>

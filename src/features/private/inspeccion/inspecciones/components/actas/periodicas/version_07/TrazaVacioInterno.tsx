@@ -15,8 +15,8 @@ function Box({ checked = false }: { checked?: boolean }) {
 }
 
 export const TrazaVacioInterno = ({ inspeccion }: Props) => {
-  const forma3 = inspeccion?.vacioInterno.forma === 3;
-  const forma5 = inspeccion?.vacioInterno.forma === 5;
+  const forma3 = inspeccion?.vacioInterno?.forma === 3;
+  const forma5 = inspeccion?.vacioInterno?.forma === 5;
 
   return (
     <div className="overflow-x-auto overflow-y-hidden">
@@ -59,7 +59,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               </div>
               <div className="flex items-center gap-1">
                 <span className="font-semibold">Fecha</span>
-                <span>{inspeccion?.vacioInterno.fecha}</span>
+                <span>{inspeccion?.vacioInterno?.fecha}</span>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             </div>
             <div className="px-2 flex items-center gap-1">
               <span className="flex-1 h-[18px] border-b border-black">
-                {inspeccion?.vacioInterno.area_planta}
+                {inspeccion?.vacioInterno?.area_planta}
               </span>
               <span className="font-semibold">m²</span>
             </div>
@@ -101,7 +101,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             </div>
             <div className="px-2 flex items-center gap-1">
               <span className="flex-1 h-[18px] border-b border-black">
-                {inspeccion?.vacioInterno.lado_minimo}
+                {inspeccion?.vacioInterno?.lado_minimo}
               </span>
               <span className="font-semibold">m</span>
             </div>
@@ -114,7 +114,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             </div>
             <div className="px-2 flex items-center">
               <span className="flex-1 h-[18px] border-b border-black">
-                {inspeccion?.vacioInterno.nro_pisos}
+                {inspeccion?.vacioInterno?.nro_pisos}
               </span>
             </div>
           </div>
@@ -124,14 +124,14 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             <div className="px-2 border-b border-black text-[10px] font-semibold flex items-center">
               Cubierto:
               <span className="ml-2 mr-1 font-semibold">SI</span>
-              <Box checked={inspeccion?.vacioInterno.cubierto} />
+              <Box checked={inspeccion?.vacioInterno?.cubierto} />
               <span className="ml-2 mr-1 font-semibold">NO</span>
-              <Box checked={!inspeccion?.vacioInterno.cubierto} />
+              <Box checked={!inspeccion?.vacioInterno?.cubierto} />
             </div>
             <div className="px-2 py-1 flex items-center gap-1">
               <span className="font-semibold">Área libre cubierta</span>
               <span className="flex-1 h-[18px] border-b border-black">
-                {inspeccion?.vacioInterno.area_cubierta}
+                {inspeccion?.vacioInterno?.area_cubierta}
               </span>
               <span className="font-semibold">m²</span>
             </div>
@@ -147,11 +147,11 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
               <div className="border-r border-black flex flex-col">
                 <div className="px-2 h-[26px] flex items-center justify-between border-b border-black">
                   <span className="font-semibold">SI</span>
-                  <Box checked={inspeccion?.vacioInterno.cumple} />
+                  <Box checked={inspeccion?.vacioInterno?.cumple} />
                 </div>
                 <div className="px-2 h-[26px] flex items-center justify-between  border-black">
                   <span className="font-semibold">NO</span>
-                  <Box checked={!inspeccion?.vacioInterno.cumple} />
+                  <Box checked={!inspeccion?.vacioInterno?.cumple} />
                 </div>
               </div>
               {/* Columna derecha: verificación de ventilación (años) */}

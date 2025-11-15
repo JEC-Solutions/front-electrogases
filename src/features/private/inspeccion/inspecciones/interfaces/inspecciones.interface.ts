@@ -73,7 +73,7 @@ export interface IActa {
   clasesInspeccion: any[];
   evaluacionRecintos: any[];
   evaluacionCondiciones: any[];
-  equiposUtilizados: any[];
+  equiposUtilizados: EquiposUtilizado[]
   isometricos: any[];
   esquemaPlanta: any[];
   lineaMatriz: any;
@@ -204,4 +204,12 @@ export interface ParametrosEvaluacion {
   detectorFugas: number
   createdAt: string
   updatedAt: string
+}
+
+export interface EquiposUtilizado {
+  id_equipos_utilizados: number
+  equiposUtilizados: string
+  ns: string
+  marca: string
+  modelo: string
 }
