@@ -99,7 +99,7 @@ export const useCrearRutas = () => {
         confirmButtonText: "Aceptar",
       }).then(() => {
         queryClient.invalidateQueries({ queryKey: ["rutas"] });
-        // window.location.reload();
+        window.location.reload();
       });
     },
 
@@ -154,7 +154,7 @@ export const useCrearRutas = () => {
       methodsRutas.setValue("cliente.primer_nombre", usuario.primer_nombre);
       methodsRutas.setValue("cliente.segundo_nombre", usuario.segundo_nombre);
       methodsRutas.setValue("cliente.primer_apellido", usuario.primer_apellido);
-      methodsRutas.setValue("cliente.segundo_nombre", usuario.segundo_nombre);
+      methodsRutas.setValue("cliente.segundo_apellido", usuario.segundo_apellido);
       methodsRutas.setValue("cliente.telefono", usuario.telefono);
       methodsRutas.setValue(
         "cliente.id_tipo_documento",
