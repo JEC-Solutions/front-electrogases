@@ -2,12 +2,14 @@ import { IInspecciones } from "@/features/private/inspeccion/inspecciones/interf
 import { ColumnsType } from "antd/es/table";
 import { Button, Space, Table, Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
+import { EyeOutlined, FilePdfOutlined } from "@ant-design/icons";
 
 interface Props {
   inspecciones: IInspecciones[];
+  downloadPdf: (id: number) => void;
 }
 
-export const TableInspecciones = ({ inspecciones }: Props) => {
+export const TableInspecciones = ({ inspecciones, downloadPdf }: Props) => {
   const navigate = useNavigate();
 
   const handleRedirect = (id: number) => {
@@ -67,13 +69,23 @@ export const TableInspecciones = ({ inspecciones }: Props) => {
           <Tooltip title="Ver detalle">
             <Button
               size="small"
-              type="link"
+              type="primary"
+              icon={<EyeOutlined style={{ fontSize: 16 }} />}
               onClick={() => {
                 handleRedirect(record.id_inspeccion);
               }}
-            >
-              Ver
-            </Button>
+            />
+          </Tooltip>
+          <Tooltip title="Generar PDF">
+            <Button
+              size="small"
+              type="default"
+              danger
+              icon={<FilePdfOutlined style={{ fontSize: 16 }} />}
+              onClick={() => {
+                downloadPdf(record.id_inspeccion);
+              }}
+            />
           </Tooltip>
         </Space>
       ),

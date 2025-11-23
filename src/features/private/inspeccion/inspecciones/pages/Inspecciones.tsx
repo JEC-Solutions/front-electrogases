@@ -3,7 +3,13 @@ import { Card, Spin } from "antd";
 import { TableInspecciones } from "@/features/private/inspeccion/inspecciones/components";
 
 export const Inspecciones = () => {
-  const { error, inspecciones, isError, isLoading } = useInspecciones();
+  const {
+    error,
+    inspecciones,
+    isError,
+    isLoading,
+    downloadPdf,
+  } = useInspecciones();
 
   return (
     <div className="mt-8">
@@ -28,7 +34,10 @@ export const Inspecciones = () => {
               : "Inténtalo de nuevo más tarde."}
           </div>
         ) : (
-          <TableInspecciones inspecciones={inspecciones} />
+          <TableInspecciones
+            inspecciones={inspecciones}
+            downloadPdf={downloadPdf}
+          />
         )}
       </Card>
     </div>

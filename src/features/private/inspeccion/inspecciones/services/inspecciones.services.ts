@@ -19,3 +19,7 @@ export const getEsquemaPlanta = async (id: number) => {
 export const getIsometrico = async (id: number) => {
   return await electroApi.get(`/inspeccion/imagenes/isometrico/${id}`);
 };
+
+export const downloadPdf = async (id: number) => {
+  return await electroApi.get(`/inspeccion/generate-pdf/${id}`);
+} 
