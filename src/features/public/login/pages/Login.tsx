@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { Controller } from "react-hook-form";
-import { Card, Input, Button } from "antd";
+import { Card, Input, Button, Modal } from "antd";
 import {
   LockOutlined,
   EyeTwoTone,
   EyeInvisibleOutlined,
   UserOutlined,
+  IdcardOutlined,
 } from "@ant-design/icons";
 import { useLogin } from "@/features/public/login/hooks";
 
@@ -18,6 +19,12 @@ const Login = () => {
     showPassword,
     changePassword,
     handleBackToLogin,
+    // Nuevas propiedades del hook
+    isModalOpen,
+    showModal,
+    handleCancelModal,
+    recoverForm,
+    onRecoverSubmit,
   } = useLogin();
 
   return (
@@ -114,6 +121,16 @@ const Login = () => {
                       )}
                     />
                   </div>
+
+                  <div className="flex justify-end mb-6">
+                    <a
+                      className="text-primary hover:text-blue-600 text-sm cursor-pointer"
+                      onClick={showModal}
+                    >
+                      ¿Olvidaste tu contraseña?
+                    </a>
+                  </div>
+
                   <Button
                     className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center"
                     htmlType="submit"
@@ -126,7 +143,7 @@ const Login = () => {
             ) : (
               <>
                 <h2 className="text-3xl font-bold text-center">
-                  Recuperar contraseña
+                  Actualizar contraseña
                 </h2>
                 <p className="text-center mb-4">
                   Ingresa tu identificación y correo electrónico
@@ -220,6 +237,55 @@ const Login = () => {
           </Card>
         </motion.div>
       </div>
+
+      {/* --- MODAL DE RECUPERACIÓN --- */}
+      <Modal
+        title="Recuperar Contraseña"
+        open={isModalOpen}
+        onCancel={handleCancelModal}
+        footer={null}
+        centered
+      >
+        <p className="mb-4 text-gray-500">
+          Ingresa tu número de documento. Si estás registrado, te enviaremos una
+          contraseña temporal a tu correo.
+        </p>
+
+        <form onSubmit={recoverForm.handleSubmit(onRecoverSubmit)}>
+          <div className="mb-4">
+            <label className="block mb-1 font-medium">
+              Número de Documento
+            </label>
+            <Controller
+              name="numero_documento"
+              control={recoverForm.control}
+              rules={{ required: "El documento es obligatorio" }}
+              render={({ field, fieldState }) => (
+                <>
+                  <Input
+                    {...field}
+                    prefix={<IdcardOutlined />}
+                    placeholder="Ej: 123456789"
+                    status={fieldState.invalid ? "error" : ""}
+                  />
+                  {fieldState.error && (
+                    <span className="text-red-500 text-sm">
+                      {fieldState.error.message}
+                    </span>
+                  )}
+                </>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button onClick={handleCancelModal}>Cancelar</Button>
+            <Button type="primary" htmlType="submit" className="bg-primary">
+              Enviar Solicitud
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
