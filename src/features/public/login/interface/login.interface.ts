@@ -9,3 +9,7 @@ export interface IChangePassword {
   numero_documento: string;
   nuevaContrasena: string;
 }
+
+export interface IRecoverPassword {
+  numero_documento: string;
+}

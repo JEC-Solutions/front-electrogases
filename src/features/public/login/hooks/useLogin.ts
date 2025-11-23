@@ -1,7 +1,11 @@
 import * as loginServices from "@/features/public/login/services/login.services";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginForm, IChangePassword } from "@/features/public/login/interface";
+import {
+  LoginForm,
+  IChangePassword,
+  IRecoverPassword,
+} from "@/features/public/login/interface";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Swal from "sweetalert2";
@@ -13,12 +17,27 @@ const cookies = new Cookies();
 export const useLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { handleSubmit, control, reset } = useForm<LoginForm>();
+
+  const recoverForm = useForm<IRecoverPassword>();
 
   const navigate = useNavigate();
 
   const handleBackToLogin = () => {
     setChangePassword(false);
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+    recoverForm.reset();
+  };
+
+  const handleCancelModal = () => {
+    setIsModalOpen(false);
+    recoverForm.reset();
   };
 
   const loginMutation = useMutation({
@@ -43,6 +62,18 @@ export const useLogin = () => {
         Swal.fire({
           icon: "warning",
           title: "Cambio de contraseña requerido",
+          text: "Por favor, cambie su contraseña antes de continuar.",
+          confirmButtonText: "Cambiar contraseña",
+        }).then(() => {
+          setChangePassword(true);
+          reset();
+        });
+
+        return;
+      } else if (data.data.password_expired) {
+        Swal.fire({
+          icon: "warning",
+          title: "Contraseña expirada",
           text: "Por favor, cambie su contraseña antes de continuar.",
           confirmButtonText: "Cambiar contraseña",
         }).then(() => {
@@ -102,6 +133,36 @@ export const useLogin = () => {
     },
   });
 
+  // --- Mutación para Recuperar Contraseña (Modal) ---
+  const recoverPasswordMutation = useMutation({
+    mutationFn: (data: IRecoverPassword) =>
+      loginServices.recoverPassword({
+        numero_documento: data.numero_documento,
+      }),
+
+    onMutate: () => {
+      setIsModalOpen(false);
+      Swal.fire({
+        title: "Procesando...",
+        text: "Validando documento y enviando correo...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Correo enviado",
+        text: "Si el documento existe, recibirás una contraseña temporal en tu correo.",
+        confirmButtonText: "Entendido",
+      });
+      recoverForm.reset();
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
+    },
+  });
+
   const onSubmit = (data: LoginForm) => {
     if (data.numero_documento) {
       changePasswordMutation.mutate({
@@ -116,6 +177,10 @@ export const useLogin = () => {
     }
   };
 
+  const onRecoverSubmit = (data: IRecoverPassword) => {
+    recoverPasswordMutation.mutate(data);
+  };
+
   return {
     showPassword,
     setShowPassword,
@@ -124,5 +189,11 @@ export const useLogin = () => {
     onSubmit,
     changePassword,
     handleBackToLogin,
+    // Exports para el Modal
+    isModalOpen,
+    showModal,
+    handleCancelModal,
+    recoverForm,
+    onRecoverSubmit,
   };
 };
