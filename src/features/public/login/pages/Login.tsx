@@ -229,7 +229,7 @@ const Login = () => {
                     htmlType="submit"
                     style={{ width: "100%" }}
                   >
-                    Recuperar contraseña
+                    Actualizar contraseña
                   </Button>
                 </form>
               </>
