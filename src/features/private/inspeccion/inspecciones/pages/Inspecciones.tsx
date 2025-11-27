@@ -9,6 +9,9 @@ export const Inspecciones = () => {
     isError,
     isLoading,
     downloadPdf,
+    getImagenPorTipo,
+    isLoadingTipos,
+    tiposImagenes,
   } = useInspecciones();
 
   return (
@@ -37,6 +40,9 @@ export const Inspecciones = () => {
           <TableInspecciones
             inspecciones={inspecciones}
             downloadPdf={downloadPdf}
+            getImagenPorTipo={getImagenPorTipo}
+            tiposImagenes={tiposImagenes}
+            isLoadingTipos={isLoadingTipos}
           />
         )}
       </Card>

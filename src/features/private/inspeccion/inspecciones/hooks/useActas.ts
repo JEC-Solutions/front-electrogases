@@ -99,7 +99,7 @@ export const useActa = () => {
   const isErrorImagenes = isErrorFirma || isErrorEsquema || isErrorIsometrico;
 
   return {
-     // inspección
+    // inspección
     inspeccion,
     isLoading,
     isError,

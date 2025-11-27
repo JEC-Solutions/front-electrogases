@@ -22,4 +22,17 @@ export const getIsometrico = async (id: number) => {
 
 export const downloadPdf = async (id: number) => {
   return await electroApi.get(`/inspeccion/generate-pdf/${id}`);
-} 
+};
+
+export const getTiposImagenes = async () => {
+  return await electroApi.get(`/inspeccion/imagenes/tipos-imagen`);
+};
+
+export const getImagenesByTipo = async (
+  inspeccionId: number,
+  tipoImagenId: number
+) => {
+  return await electroApi.get(
+    `/inspeccion/imagenes/${inspeccionId}/tipo/${tipoImagenId}`
+  );
+};

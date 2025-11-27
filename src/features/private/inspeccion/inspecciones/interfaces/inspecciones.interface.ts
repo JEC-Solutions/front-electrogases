@@ -205,3 +205,10 @@ export interface ParametrosEvaluacion {
   createdAt: string
   updatedAt: string
 }
+
+export interface ITipoImagen {
+  id: number
+  nombre: string
+  descripcion: string
+  activo: boolean
+}

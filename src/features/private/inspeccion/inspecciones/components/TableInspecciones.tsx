@@ -1,19 +1,106 @@
-import { IInspecciones } from "@/features/private/inspeccion/inspecciones/interfaces";
+import {
+  IInspecciones,
+  ITipoImagen,
+} from "@/features/private/inspeccion/inspecciones/interfaces";
 import { ColumnsType } from "antd/es/table";
-import { Button, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Space,
+  Table,
+  Tooltip,
+  Modal,
+  Select,
+  Spin,
+  Empty,
+  Image,
+} from "antd";
 import { useNavigate } from "react-router-dom";
-import { EyeOutlined, FilePdfOutlined } from "@ant-design/icons";
+import {
+  CameraOutlined,
+  EyeOutlined,
+  FilePdfOutlined,
+} from "@ant-design/icons";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 interface Props {
   inspecciones: IInspecciones[];
   downloadPdf: (id: number) => void;
+  getImagenPorTipo: (
+    inspeccionId: number,
+    tipoImagenId: number
+  ) => Promise<any>;
+  tiposImagenes: ITipoImagen[];
+  isLoadingTipos: boolean;
 }
 
-export const TableInspecciones = ({ inspecciones, downloadPdf }: Props) => {
+export const TableInspecciones = ({
+  inspecciones,
+  downloadPdf,
+  getImagenPorTipo,
+  tiposImagenes,
+  isLoadingTipos,
+}: Props) => {
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentInspeccionId, setCurrentInspeccionId] = useState<number | null>(
+    null
+  );
+  const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
+  const [imageList, setImageList] = useState<any[]>([]);
+  const [loadingImages, setLoadingImages] = useState(false);
 
   const handleRedirect = (id: number) => {
     navigate(`/dashboard/inspecciones/${id}`);
+  };
+
+  const openImageModal = (id: number) => {
+    setCurrentInspeccionId(id);
+    setSelectedTypeId(null);
+    setImageList([]);
+    setIsModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setIsModalOpen(false);
+    setCurrentInspeccionId(null);
+  };
+
+  const handleTypeChange = async (tipoId: number) => {
+    if (!currentInspeccionId) return;
+
+    setSelectedTypeId(tipoId);
+    setLoadingImages(true);
+    setImageList([]);
+
+    try {
+      const res = await getImagenPorTipo(currentInspeccionId, tipoId);
+
+      const responseData = res?.data?.imagenes || [];
+
+      const imagesArray = Array.isArray(responseData)
+        ? responseData
+        : responseData
+        ? [responseData]
+        : [];
+
+      const validImages = imagesArray.filter(
+        (img: any) => img && img.imagenBase64
+      );
+
+      setImageList(validImages);
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema al intentar conectar con el servidor.",
+        confirmButtonText: "Entendido",
+      });
+    } finally {
+      setLoadingImages(false);
+    }
   };
 
   const columns: ColumnsType<IInspecciones> = [
@@ -76,6 +163,18 @@ export const TableInspecciones = ({ inspecciones, downloadPdf }: Props) => {
               }}
             />
           </Tooltip>
+          <Tooltip title="Ver Imágenes">
+            <Button
+              size="small"
+              style={{
+                backgroundColor: "#faad14",
+                borderColor: "#faad14",
+                color: "#fff",
+              }}
+              icon={<CameraOutlined />}
+              onClick={() => openImageModal(record.id_inspeccion)}
+            />
+          </Tooltip>
           <Tooltip title="Generar PDF">
             <Button
               size="small"
@@ -97,13 +196,97 @@ export const TableInspecciones = ({ inspecciones, downloadPdf }: Props) => {
       <Table
         columns={columns}
         dataSource={inspecciones}
-        rowKey="id"
+        rowKey="id_inspeccion"
         className="custom-table"
-        rowClassName={(_record, index) =>
-          index % 2 === 0 ? "even-row" : "odd-row"
-        }
         scroll={{ x: 600 }}
       />
+
+      {/* --- MODAL DE IMÁGENES --- */}
+      <Modal
+        title="Visualizador de Imágenes"
+        open={isModalOpen}
+        onCancel={closeImageModal}
+        footer={[
+          <Button key="close" onClick={closeImageModal}>
+            Cerrar
+          </Button>,
+        ]}
+        width={700}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {/* 1. SELECCIONADOR DE TIPO */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              Seleccione el tipo de imagen a visualizar:
+            </label>
+            <Select
+              style={{ width: "100%" }}
+              placeholder="Ej: Foto Fachada, Firma..."
+              loading={isLoadingTipos}
+              onChange={handleTypeChange}
+              value={selectedTypeId}
+              options={tiposImagenes.map((tipo) => ({
+                label: `${tipo.descripcion}`,
+                value: tipo.id,
+              }))}
+            />
+          </div>
+
+          {/* 2. ÁREA DE VISUALIZACIÓN */}
+          <div
+            style={{
+              minHeight: "300px",
+              border: "1px dashed #d9d9d9",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#fafafa",
+              padding: "20px",
+            }}
+          >
+            {loadingImages ? (
+              <Spin tip="Cargando imagen..." size="large" />
+            ) : !selectedTypeId ? (
+              <Empty description="Seleccione un tipo de imagen arriba" />
+            ) : imageList.length > 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                  justifyContent: "center",
+                }}
+              >
+                {imageList.map((imgItem, idx) => {
+                  const rawBase64 = imgItem.imagenBase64;
+                  const src = rawBase64?.startsWith("data:image")
+                    ? rawBase64
+                    : `data:image/png;base64,${rawBase64}`;
+
+                  return (
+                    <Image
+                      key={idx}
+                      width={200}
+                      src={src}
+                      alt="Evidencia"
+                      style={{ objectFit: "contain", maxHeight: "300px" }}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <Empty description="No hay imágenes para este tipo" />
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
