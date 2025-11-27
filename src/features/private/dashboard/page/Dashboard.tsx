@@ -14,6 +14,7 @@ import { Menu } from "@/features/private/configuracion/menus/pages";
 import { Opciones } from "@/features/private/configuracion/opciones/pages";
 import { Clientes } from "@/features/private/inspeccion/clientes/pages";
 import { Usuarios } from "@/features/private/configuracion/usuarios/pages";
+import { Inicio } from "@/features/private/inicio/pages";
 import { Rutas, CrearRuta } from "@/features/private/inspeccion/rutas/pages";
 import { NotFound } from "@/features/public/404/page";
 import {
@@ -80,7 +81,7 @@ export const Dashboard = () => {
           <Routes>
             {/* Ruta por defecto cuando entras a /dashboard */}
             <Route index element={<Navigate to="inicio" replace />} />
-            <Route path="inicio" element={<h1>Inicio</h1>} />
+            <Route path="inicio" element={<Inicio />} />
 
             {/* Configuracion */}
             <Route

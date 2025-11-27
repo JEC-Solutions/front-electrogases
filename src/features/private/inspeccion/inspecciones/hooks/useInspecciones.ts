@@ -1,11 +1,14 @@
 import * as inspeccionServices from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
-import { IInspecciones } from "@/features/private/inspeccion/inspecciones/interfaces";
+import { IInspecciones, ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfaces";
 import { handleAxiosError } from "@/utils/handleAxiosError";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { downloadBase64 } from "@/utils/downloadBase64";
 import Swal from "sweetalert2";
 
+
 export const useInspecciones = () => {
+  const queryClient = useQueryClient();
+
   const {
     data: inspecciones = [],
     isLoading,
@@ -40,7 +43,6 @@ export const useInspecciones = () => {
       return data;
     },
     onSuccess: (data) => {
-
       if (data && data.dataUri) {
         try {
           const cleanBase64 = data.dataUri.includes(",")
@@ -83,6 +85,44 @@ export const useInspecciones = () => {
     },
   });
 
+  const { data: tiposImagenes = [], isLoading: isLoadingTipos } = useQuery<
+    ITipoImagen[]
+  >({
+    queryKey: ["tipos-imagenes"],
+    queryFn: async () => {
+      try {
+        const { data } = await inspeccionServices.getTiposImagenes();
+        return data?.data?.tipos_imagen || [];
+      } catch (error) {
+        console.error("Error cargando tipos de imágenes", error);
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 60,
+  });
+
+  const getImagenPorTipo = async (
+    inspeccionId: number,
+    tipoImagenId: number
+  ) => {
+    try {
+      return await queryClient.fetchQuery({
+        queryKey: ["imagen-inspeccion", inspeccionId, "tipo", tipoImagenId],
+        queryFn: async () => {
+          const { data } = await inspeccionServices.getImagenesByTipo(
+            inspeccionId,
+            tipoImagenId
+          );
+          return data;
+        },
+        staleTime: 1000 * 60 * 10,
+      });
+    } catch (error) {
+      console.error("Error obteniendo imagen:", error);
+      return null;
+    }
+  };
+
   return {
     inspecciones,
     isLoading,
@@ -90,5 +130,9 @@ export const useInspecciones = () => {
     error,
     downloadPdf: downloadMutation.mutate,
     isDownloading: downloadMutation.isPending,
+    // imagenes
+    getImagenPorTipo,
+    isLoadingTipos,
+    tiposImagenes,
   };
 };

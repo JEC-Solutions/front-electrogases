@@ -213,3 +213,9 @@ export interface EquiposUtilizado {
   marca: string
   modelo: string
 }
+export interface ITipoImagen {
+  id: number
+  nombre: string
+  descripcion: string
+  activo: boolean
+}
