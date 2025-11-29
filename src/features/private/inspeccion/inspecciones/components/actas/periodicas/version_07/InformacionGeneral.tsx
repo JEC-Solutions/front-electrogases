@@ -8,9 +8,9 @@ interface Props {
 
 function Box({ checked = false }: { checked?: boolean }) {
   return (
-    <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black">
+    <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white">
       {checked ? (
-        <span className="-mt-[2px] text-[10px] leading-none">✓</span>
+        <span className="-mt-[2px] text-[10px] leading-none font-bold">✓</span>
       ) : null}
     </span>
   );
@@ -24,13 +24,11 @@ function DigitBox({
   checked?: boolean;
 }) {
   return (
-    <div className="relative mx-auto flex items-center justify-center w-[20px] h-[18px] border border-black">
-      {/* número */}
-      <span className="text-[11px] leading-none">{label}</span>
-      {/* marca (simulamos el “chulo” inclinado del formulario) */}
+    <div className="relative mx-auto flex items-center justify-center w-[16px] h-[16px] border border-black bg-white">
+      <span className="text-[9px] leading-none font-semibold">{label}</span>
       {checked && (
         <span className="absolute inset-0 flex items-center justify-center">
-          <span className="rotate-12 -mt-[1px] text-[12px] leading-none">
+          <span className="rotate-12 -mt-[1px] text-[12px] leading-none font-bold text-black">
             ✓
           </span>
         </span>
@@ -41,241 +39,207 @@ function DigitBox({
 
 export const InformacionGeneral = ({ inspeccion }: Props) => {
   const primeraVisita = inspeccion?.instalacionExistente === null;
-  const segundaVisita = inspeccion?.instalacionExistente.numeroVisita === 2;
-  const terceraVisita = inspeccion?.instalacionExistente.numeroVisita === 3;
+  const segundaVisita = inspeccion?.instalacionExistente?.numeroVisita === 2;
+  const terceraVisita = inspeccion?.instalacionExistente?.numeroVisita === 3;
 
   const hayInspeccionAnterior =
     !!inspeccion?.instalacionExistente?.id_instalacion_existente;
 
+  // Helpers para textos
+  const dateInsp = inspeccion?.fecha_inspeccion || "-";
+  const dateExp = inspeccion?.fecha_expedicion || "-";
+  const dateSol = formatDateYMD(inspeccion?.created_at) || "-";
+  const timeStart = formatTimeWithAmPm(inspeccion?.hora_inicio || "");
+  const timeEnd = formatTimeWithAmPm(inspeccion?.hora_fin || "");
+
   return (
-    <div className="overflow-x-auto overflow-y-hidden">
-      <div className="w-max">
-        <div className="border border-black text-xs leading-tight box-border">
-          {/* Título */}
-          <div className="px-2 py-1 border-b border-black bg-gray-100 font-bold text-center">
+    <div className="w-full text-[8pt] font-arial text-black border-l border-r border-b border-black box-border">
+      {/* Contenedor Flex Principal: Izquierda (Sección 3) | Derecha (Sección 3.1) */}
+      <div className="flex w-full">
+        {/* =========================================
+            BLOQUE IZQUIERDO: 3. INFORMACIÓN GENERAL
+           ========================================= */}
+        <div className="flex-1 flex flex-col border-r border-black">
+          {/* Encabezado Sección 3 */}
+          <div className="w-full bg-gray-200 font-bold text-center border-b border-black py-0.5">
             3. INFORMACIÓN GENERAL DE LA INSPECCIÓN
           </div>
 
-          {/* Grid principal: 9 columnas (como tu layout anterior) x 3 filas de contenido */}
-          <div className="grid grid-cols-[205px_205px_200px_190px_130px_120px_120px_87px_178px] grid-rows-[60px_96px_96px]">
-            {/* ===== Fila 1 (arriba): S1..S9 y S10 arrancando ===== */}
-            <div className="border-b border-r border-black px-2 py-1">
-              <span className="font-semibold">Fecha de Inspección: </span>
-              <span className="min-h-[22px]">
-                {inspeccion?.fecha_inspeccion}
-              </span>
-            </div>
-            <div className="border-b border-r border-black px-2 py-1">
-              <span className="font-semibold">Fecha expedición: </span>
-              <span className="min-h-[22px]">
-                {inspeccion?.fecha_expedicion}
-              </span>
-            </div>
-            <div className="border-b border-r border-black px-2 py-1">
-              <span className="font-semibold">Fecha de solicitud: </span>
-              <span className="min-h-[22px]">
-                {formatDateYMD(inspeccion?.created_at)}
-              </span>
+          {/* --- FILA SUPERIOR: Fechas, Tipos, Horas, Visita --- */}
+          <div className="flex w-full border-b border-black h-[50px]">
+            {/* Col 1: Fecha Insp */}
+            <div className="flex-1 border-r border-black flex flex-col items-center justify-center p-1 text-center">
+              <span className="leading-tight mb-1">Fecha de Inspeccion :</span>
+              <span className="font-semibold">{dateInsp}</span>
             </div>
 
-            {/* S4/S5: celda anidada (arriba/abajo dentro de la misma columna) */}
-            <div className="border-r border-b border-black grid grid-rows-[24px_1fr]">
-              {/* S4 */}
-              <div className="flex items-center justify-between px-2 border-b border-black h-[24px]">
-                <span className="font-semibold">Revisión Periódica</span>
-                {/* pequeña columna para la casilla */}
-                <span className="w-[18px] h-full border-l border-black flex items-center justify-center">
-                  <Box checked={!inspeccion?.solicitud_usuario} />
-                </span>
+            {/* Col 2: Fecha Exp */}
+            <div className="flex-1 border-r border-black flex flex-col items-center justify-center p-1 text-center">
+              <span className="leading-tight mb-1">Fecha expedicion:</span>
+              <span className="font-semibold">{dateExp}</span>
+            </div>
+
+            {/* Col 3: Fecha Solicitud */}
+            <div className="flex-1 border-r border-black flex flex-col items-center justify-center p-1 text-center">
+              <span className="leading-tight mb-1">Fecha de solicitud:</span>
+              <span className="font-semibold">{dateSol}</span>
+            </div>
+
+            {/* Col 4: Tipo Revisión */}
+            <div className="w-[140px] border-r border-black flex flex-col">
+              <div className="flex-1 border-b border-black flex items-center justify-between px-1">
+                <span>Revisión Periódica</span>
+                <Box checked={!inspeccion?.solicitud_usuario} />
               </div>
-
-              {/* S5 */}
-              <div className="flex items-center justify-between px-2 h-full">
+              <div className="flex-1 flex items-center justify-between px-1">
                 <span>A solicitud del usuario</span>
-                <span className="w-[18px] h-full border-l border-black flex items-center justify-center">
-                  <Box checked={inspeccion?.solicitud_usuario} />
-                </span>
+                <Box checked={inspeccion?.solicitud_usuario} />
               </div>
             </div>
 
-            <div className="border-r border-b border-black grid grid-rows-[18px_1fr]">
-              {/* Encabezado */}
-              <div className="px-2 border-b border-black text-[10px] font-semibold leading-none flex items-center">
-                Tipo de Gas.
+            {/* Col 5: Tipo de Gas */}
+            <div className="w-[90px] border-r border-black flex flex-col">
+              <div className="h-[18px] border-b border-black text-center font-semibold flex items-center justify-center">
+                Tipo de Gas:
               </div>
-
-              {/* Opciones */}
-              <div className="px-2 h-full flex items-center justify-between">
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">GN:</span>
-                  <Box checked={!inspeccion?.tipo_gas_glp} />
-                </span>
-
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">GLP</span>
-                  <Box checked={inspeccion?.tipo_gas_glp} />
-                </span>
+              <div className="flex-1 flex items-center justify-around px-1">
+                <div className="flex items-center gap-1">
+                  <span>GN:</span> <Box checked={!inspeccion?.tipo_gas_glp} />
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>GLP</span> <Box checked={inspeccion?.tipo_gas_glp} />
+                </div>
               </div>
             </div>
-            <div className="border-b border-r border-black px-2 py-1">
-              <span className="font-semibold">Hora de inicio: </span>
-              <span className=" min-h-[22px]">
-                {formatTimeWithAmPm(inspeccion?.hora_inicio || "")}
-              </span>
+
+            {/* Col 6: Hora Inicio */}
+            <div className="w-[80px] border-r border-black flex flex-col items-center justify-center p-1 text-center">
+              <span className="leading-tight mb-1">Hora de Incio:</span>
+              <span className="font-semibold">{timeStart}</span>
             </div>
-            <div className="border-b border-r border-black px-2 py-1">
-              <span className="font-semibold">Hora de final: </span>
-              <span className=" min-h-[22px]">
-                {formatTimeWithAmPm(inspeccion?.hora_fin || "")}
-              </span>
+
+            {/* Col 7: Hora Final */}
+            <div className="w-[80px] border-r border-black flex flex-col items-center justify-center p-1 text-center">
+              <span className="leading-tight mb-1">Hora Final:</span>
+              <span className="font-semibold">{timeEnd}</span>
             </div>
-            <div className="border-r border-b border-black grid grid-rows-[18px_1fr]">
-              {/* Título */}
-              <div className="text-[10px] font-semibold text-center leading-none border-b border-black">
+
+            {/* Col 8: Visita N° */}
+            <div className="w-[60px] flex flex-col">
+              <div className="h-[18px] border-b border-black text-center flex items-center justify-center">
                 Visita N°
               </div>
-
-              {/* 1 | 2 | 3 */}
-              <div className="flex items-center justify-center gap-1 pt-1">
+              <div className="flex-1 flex items-center justify-center gap-1 bg-gray-50">
                 <DigitBox label="1" checked={primeraVisita} />
                 <DigitBox label="2" checked={segundaVisita} />
                 <DigitBox label="3" checked={terceraVisita} />
               </div>
             </div>
+          </div>
 
-            {/* S10 ocupa toda la derecha (3 filas) */}
-            <div className="row-span-3 grid grid-rows-[18px_24px_24px_24px_24px]">
-              {/* Encabezado */}
-              <div className="px-2 bg-gray-100 font-bold text-[10px] text-center leading-none border-b border-black">
-                3.1. Clase de uso
+          {/* --- FILA INFERIOR: 3.2 Trazabilidad --- */}
+          <div className="flex w-full flex-1">
+            {/* 3.2 Título (Bloque Gris Izquierdo) */}
+            <div className="w-[130px] bg-gray-200 border-r border-black flex items-center justify-center p-2 text-center font-bold text-[8pt]">
+              3.2. TRAZABILIDAD DE INSPECCIÓN DE LA INSTALACIÓN INTERNA
+            </div>
+
+            {/* Columna: Informe Anterior SI/NO */}
+            <div className="w-[80px] border-r border-black flex flex-col justify-center px-1">
+              <div className="flex items-center justify-between mb-1">
+                <span>Informe de</span>
               </div>
-
-              {/* Comercial */}
-              <div className="px-2 flex items-center justify-between border-b border-black">
-                <span className="font-semibold">Comercial:</span>
-                <Box />
+              <div className="flex items-center justify-between mb-1">
+                <span>inspección</span> <span className="font-bold">SI</span>{" "}
+                <Box checked={hayInspeccionAnterior} />
               </div>
-
-              {/* Residencial (✓) */}
-              <div className="px-2 flex items-center justify-between border-b border-black">
-                <span className="font-semibold">Residencial:</span>
-                <Box />
-              </div>
-
-              {/* Multiusuario (✓) */}
-              <div className="px-2 flex items-center justify-between border-b border-black">
-                <span className="font-semibold">Multiusuario:</span>
-                <Box />
-              </div>
-
-              {/* Uniusuario */}
-              <div className="px-2 flex items-center justify-between">
-                <span className="font-semibold">Uniusuario:</span>
-                <Box />
+              <div className="flex items-center justify-end gap-2">
+                <span className="font-bold">NO</span>{" "}
+                <Box checked={!hayInspeccionAnterior} />
               </div>
             </div>
 
-            {/* ===== Fila 2 (medio): S11, S12, S13, S15, S17 ===== */}
-            {/* S11 y S12 ocupan 2 filas (medio + abajo) */}
-            <div className="row-span-2 border-r border-black flex items-center justify-center bg-gray-100">
-              <p className="font-bold px-2">
-                3.2 TRAZABILIAD DE INSPECCION DE LA INSTACIÓN INTERNA
-              </p>
-            </div>
-
-            <div className="row-span-2 border-r border-black flex-col items-center justify-center">
-              {/* Encabezado */}
-              <div className="px-2 border-b border-black font-semibold leading-none flex items-center">
-                Informe de inspección anterior.
-              </div>
-              <div className="px-2 h-full flex items-center justify-between">
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">SI</span>
-                  <Box checked={hayInspeccionAnterior} />
+            {/* Columna: Fecha Anterior / Certificado */}
+            <div className="flex-1 border-r border-black flex flex-col">
+              <div className="flex-1 border-b border-black flex items-center px-1">
+                <span className="mr-2">Fecha de Inspección anterior:</span>
+                <span className="font-semibold">
+                  {formatDateYMD(inspeccion?.instalacionExistente?.createdAt)}
                 </span>
-
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">NO</span>
-                  <Box checked={!hayInspeccionAnterior} />
+              </div>
+              <div className="flex-1 flex items-center px-1">
+                <span className="mr-2"># de certificado:</span>
+                <span className="font-semibold">
+                  {inspeccion?.numero_certificado}
                 </span>
               </div>
             </div>
 
-            {/* S13 (arriba de S14) en la col 3 */}
-            <div className="px-2 py-1 border-r border-b border-black flex-col items-center justify-center">
-              <span className="font-semibold">
-                Fecha de Inspección anterior:{" "}
-              </span>
-              <span className="min-h-[22px]">
-                {formatDateYMD(inspeccion?.instalacionExistente.createdAt)}
-              </span>
-            </div>
-
-            {/* S15 ocupa varias columnas en esta fila (cols 4 a 7) */}
-            <div className="px-2 py-1 border-r border-b border-black flex-col items-center justify-center">
-              <span className="font-semibold">Fecha puesta en servicio: </span>
-              <span className="min-h-[22px]">
-                {inspeccion?.fecha_puesta_en_servicio}
-              </span>
-            </div>
-
-            {/* S17 (al extremo derecho antes de S10) en la col 8 */}
-            <div className="col-span-4 border-r border-b border-black flex items-center justify-center bg-gray-100">
-              <p className="font-bold px-2">Reemplazo o adicion de informe</p>
-            </div>
-
-            {/* ===== Fila 3 (abajo): S14, S16, S18 ===== */}
-            {/* S14 (debajo de S13) */}
-            <div className="px-2 py-1 border-r border-black flex-col items-center justify-center">
-              <span className="font-semibold"># de certificado: </span>
-              <span className="min-h-[22px]">
-                {inspeccion?.numero_certificado}
-              </span>
-            </div>
-
-            {/* S16 (puente central) — ocupa cols 4 y 5 en la última fila */}
-            <div className=" border-r border-black flex-col items-center justify-center">
-              {/* Encabezado */}
-              <div className="px-2 border-b border-black font-semibold leading-none flex items-center">
-                Reforma
-              </div>
-              <div className="px-2 h-full flex items-center justify-between">
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">SI</span>
-                  <Box />
+            {/* Columna: Puesta Servicio / Reforma */}
+            <div className="flex-1 border-r border-black flex flex-col">
+              <div className="flex-1 border-b border-black flex items-center px-1">
+                <span className="mr-2 leading-tight">
+                  Fecha puesta <br /> en servicio
                 </span>
-
-                <span className="flex items-center gap-1">
-                  <span className="font-semibold">NO</span>
-                  <Box />
+                <span className="font-semibold text-center flex-1">
+                  {inspeccion?.fecha_puesta_en_servicio}
                 </span>
               </div>
-            </div>
-
-            {/* S18 (bloque grande inferior derecho) — ocupa cols 6 a 8 en la última fila */}
-            <div className="col-span-4 border-r border-black grid grid-cols-[130px_1fr]">
-              {/* Izquierda: opciones (2 renglones) */}
-              <div className="grid grid-rows-2 border-r">
-                <div className="px-2 flex items-center justify-between border-b border-black">
-                  <span className="font-semibold">Reemplazo</span>
-                  <Box checked={inspeccion?.reemplazo_informe}/>
+              <div className="flex-1 flex items-center justify-between px-1">
+                <span className="mr-1">Reforma</span>
+                <div className="flex items-center gap-1">
+                  <span>SI</span> <Box />
                 </div>
-                <div className="px-2 flex items-center justify-between">
-                  <span className="font-semibold">Adición</span>
-                  <Box checked={!inspeccion?.reemplazo_informe}/>
+                <div className="flex items-center gap-1">
+                  <span>NO</span> <Box />
                 </div>
               </div>
+            </div>
 
-              {/* Derecha: N° (ocupa el alto completo) */}
-              <div className="px-2 grid grid-rows-[28px_1fr]">
-                <div className="flex items-center gap-1 border-b border-black">
-                  <span className="font-semibold">N°:</span>
-                  {/* línea para el número */}
-                  <span className="flex-1 h-[18px] border-b border-black" />
-                </div>
-                {/* espacio en blanco inferior, como en el formato */}
-                <div />
+            {/* Columna: Reemplazo / Adición */}
+            <div className="w-[180px] flex flex-col">
+              <div className="h-[20px] border-b border-black text-center flex items-center justify-center font-semibold bg-gray-50">
+                Reemplazo o Adición de informe
               </div>
+              <div className="flex-1 flex">
+                <div className="w-[80px] border-r border-black flex flex-col justify-center px-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span>Reemplazo</span>{" "}
+                    <Box checked={inspeccion?.reemplazo_informe} />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Adición</span>{" "}
+                    <Box checked={!inspeccion?.reemplazo_informe} />
+                  </div>
+                </div>
+                <div className="flex-1 p-1 flex items-start">
+                  <span className="mr-1">N°:</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* =========================================
+            BLOQUE DERECHO: 3.1 CLASE DE USO
+           ========================================= */}
+        <div className="w-[110px] flex flex-col">
+          <div className="h-[22px] border-b border-black font-bold text-center flex items-center justify-center bg-gray-200">
+            3.1. Clase de uso
+          </div>
+
+          <div className="flex-1 flex flex-col justify-around py-1 px-2">
+            <div className="flex items-center justify-between">
+              <span>Comercial:</span> <Box />
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Residencial:</span> <Box />
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Multiusuario:</span> <Box />
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Uniusuario:</span> <Box />
             </div>
           </div>
         </div>

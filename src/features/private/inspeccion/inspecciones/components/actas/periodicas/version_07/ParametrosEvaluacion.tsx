@@ -4,125 +4,117 @@ interface Props {
   inspeccion: IActa | undefined;
 }
 
-/** Celda con valor + unidad arriba a la derecha (m³, L, min, %Vol) */
-const UnitValue = ({
-  unit,
-  value,
-}: {
-  unit: string;
-  value?: number | string;
-}) => (
-  <div className="border border-black relative h-[36px]">
-    <span className="absolute right-0 top-0 bg-gray-100 px-1 leading-none text-[11px]">
-      {unit}
-    </span>
-
-    <div className="absolute left-1 right-1 bottom-1 border-b border-black h-[0px]" />
-
-    {value !== undefined && value !== null && (
-      <span className="absolute right-1 bottom-[6px] text-[11px] leading-none">
-        {value}
-      </span>
-    )}
-  </div>
-);
-
-/** Celda solo de texto/etiqueta */
-const LabelCell = ({ children }: { children: React.ReactNode }) => (
-  <div className="border border-black px-2 h-[36px] flex items-center">
-    {children}
-  </div>
-);
-
 export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
   const parametros = inspeccion?.parametrosEvaluacion[0];
 
   return (
-    <>
-      {/* Fila única (sin tabla) */}
-      <div
-        className="
-          grid text-xs leading-tight
-          grid-cols-[160px_170px_120px_90px_120px_90px_120px_90px_120px_90px_150px_70px_150px_170px_140px_70px]
-        "
-      >
-        {/* Prueba de hermeticidad / Caudalímetro */}
-        <LabelCell>
+    <div className="w-full font-arial text-black border-l border-r border-black box-border text-[7.5pt]">
+      <div className="w-full border-b bg-gray-200 font-bold text-center py-1">
+        8. PARAMETROS DE EVALUACIÓN / RESOLUCIÓN 90 902 DE 2013/ RESOLUCIÓN
+        41385 DE 2017
+      </div>
+
+      <div className="flex w-full h-[32px]">
+        <div className="w-[8%] border-r border-black flex items-center justify-center text-center p-1 leading-none font-semibold bg-gray-100">
           Prueba de
           <br />
           Hermeticidad
-        </LabelCell>
-        <LabelCell>
-          Con caudalímetro
+        </div>
+
+        <div className="w-[10%] border-r border-black flex items-center justify-center text-center p-1 leading-none font-semibold bg-gray-100">
+          Con caudalimetro
           <br />o medidor
-        </LabelCell>
+        </div>
 
-        {/* Lecturas m³ (Inicio/Final) */}
-        <LabelCell>
-          Lectura
-          <br />
-          Inicio
-        </LabelCell>
-        <UnitValue unit="m³" value={parametros?.lecturaInicialAire} />
-        <LabelCell>
-          Lectura
-          <br />
-          Final
-        </LabelCell>
-        <UnitValue unit="m³" value={parametros?.lecturaFinalAire} />
-
-        {/* Lecturas L (Inicio/Final) */}
-        <LabelCell>
-          Lectura
-          <br />
-          Inicio
-        </LabelCell>
-        <UnitValue unit="L" value={parametros?.lecturaInicialMedidor} />
-        <LabelCell>
-          Lectura
-          <br />
-          Final
-        </LabelCell>
-        <UnitValue unit="L" value={parametros?.lecturaFinalMedidor} />
-
-        {/* Tiempo de la prueba (min) */}
-        <LabelCell>
-          Tiempo de
-          <br />
-          la prueba
-        </LabelCell>
-        <UnitValue unit="min" value={parametros?.tiempoPruebaAire} />
-
-        {/* Prueba Presión (solo línea de valor, sin unidad) */}
-        <div className="border border-black relative h-[36px] px-1">
-          <span className="absolute left-2 top-1 text-[11px] font-semibold bg-gray-100 px-1">
-            Prueba
-          </span>
-          <span className="absolute left-[52px] top-1 text-[11px] font-semibold bg-gray-100 px-1">
-            Presión
-          </span>
-          <div className="absolute left-1 right-1 bottom-1 border-b border-black">
-            <span>{parametros?.pruebaPresion}</span>
+        <div className="w-[9%] border-r border-black flex flex-col justify-between px-1">
+          <div className="flex justify-between items-start">
+            <span>Lectura</span>
+            <span className="font-bold">m3</span>
+          </div>
+          <div className="flex justify-between items-end">
+            <span>Inicio</span>
+            <span className="font-semibold">
+              {parametros?.lecturaInicialAire}
+            </span>
           </div>
         </div>
 
-        {/* Con detector de fugas (valor + %Vol) */}
-        <LabelCell>
-          Con detector
-          <br />
-          de fugas
-        </LabelCell>
-        <div className="border border-black relative h-[36px]">
-          <div className="absolute inset-x-1 bottom-1 border-b border-black flex justify-end pr-1 text-[11px]">
-            {parametros?.detectorFugas ?? ""}
+        <div className="w-[9%] border-r border-black flex flex-col justify-between px-1">
+          <div className="flex justify-between items-start">
+            <span>Lectura</span>
+            <span className="font-bold">m3</span>
+          </div>
+          <div className="flex justify-between items-end">
+            <span>Final</span>
+            <span className="font-semibold">
+              {parametros?.lecturaFinalAire}
+            </span>
           </div>
         </div>
-        <div className="border border-black relative h-[36px]">
-          <span className="absolute right-0 top-0 bg-gray-100 px-1 leading-none text-[11px]">
-            %Vol
-          </span>
+
+        <div className="w-[9%] border-r border-black flex flex-col justify-between px-1">
+          <div className="flex justify-between items-start">
+            <span>Lectura</span>
+            <span className="font-bold">L</span>
+          </div>
+          <div className="flex justify-between items-end">
+            <span>Inicio</span>
+            <span className="font-semibold">
+              {parametros?.lecturaInicialMedidor}
+            </span>
+          </div>
+        </div>
+
+        <div className="w-[9%] border-r border-black flex flex-col justify-between px-1">
+          <div className="flex justify-between items-start">
+            <span>Lectura</span>
+            <span className="font-bold">L</span>
+          </div>
+          <div className="flex justify-between items-end">
+            <span>Final</span>
+            <span className="font-semibold">
+              {parametros?.lecturaFinalMedidor}
+            </span>
+          </div>
+        </div>
+
+        <div className="w-[9%] border-r border-black flex flex-col justify-between px-1 bg-gray-100">
+          <div className="flex justify-between items-start">
+            <span>Tiempo de</span>
+            <span className="font-bold">min</span>
+          </div>
+          <div className="flex justify-between items-end">
+            <span>la prueba</span>
+            <span className="font-semibold bg-white px-1 border border-gray-400">
+              {parametros?.tiempoPruebaAire}
+            </span>
+          </div>
+        </div>
+
+        <div className="w-[17%] border-r border-black flex flex-col justify-between px-1 bg-gray-100">
+          <div className="mt-0.5">Prueba</div>
+          <div className="flex justify-between items-end mb-0.5">
+            <span>Presión</span>
+            <div className="bg-white border border-gray-400 w-[60%] h-[14px] px-1 text-right font-semibold">
+              {parametros?.pruebaPresion}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center">
+          <div className="w-[60%] h-full flex flex-col justify-center px-1 leading-none font-semibold border-r border-black text-right">
+            Con detector
+            <br />
+            de fugas
+          </div>
+          <div className="flex-1 h-full flex flex-col justify-between px-1">
+            <div className="text-right font-bold">%Vol</div>
+            <div className="bg-gray-100 border border-gray-400 h-[14px] w-full text-center font-semibold">
+              {parametros?.detectorFugas}
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

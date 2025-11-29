@@ -6,56 +6,72 @@ interface Props {
 }
 
 const Box = ({ checked }: { checked?: boolean }) => (
-  <span className="inline-block relative w-[12px] h-[12px] border border-black align-middle">
-    {checked && (
-      <span className="absolute inset-0 flex items-center justify-center text-[9px] leading-none">
-        X
-      </span>
-    )}
+  <span className="inline-flex items-center justify-center w-[10px] h-[10px] border border-black bg-white">
+    {checked && <span className="text-[8px] font-bold leading-none">X</span>}
   </span>
 );
 
 type Estado = "SI" | "NO" | "NA";
 
-const GroupCells = ({ code, state }: { code?: string; state?: Estado }) => (
-  <>
-    <td className="border border-black h-[30px] w-[44px] px-1 text-center align-middle">
-      <span className="text-[11px] font-semibold">{code ?? ""}</span>
-    </td>
+const GroupCells = ({
+  code,
+  state,
+}: {
+  code?: string | null;
+  state?: Estado;
+}) => {
+  if (!code) {
+    return (
+      <>
+        <td className="border border-black bg-gray-50"></td>
+        <td className="border border-black bg-gray-50"></td>
+        <td className="border border-black bg-gray-50"></td>
+        <td className="border border-black bg-gray-50"></td>
+      </>
+    );
+  }
 
-    <td className="border border-black h-[30px] w-[36px] text-center align-middle">
-      <Box checked={state === "SI"} />
-    </td>
-    <td className="border border-black h-[30px] w-[36px] text-center align-middle">
-      <Box checked={state === "NO"} />
-    </td>
-    <td className="border border-black h-[30px] w-[36px] text-center align-middle">
-      <Box checked={state === "NA"} />
-    </td>
-  </>
-);
+  return (
+    <>
+      {/* Código (E-01) */}
+      <td className="border border-black text-center align-middle font-semibold bg-gray-50">
+        {code}
+      </td>
+      {/* Casillas */}
+      <td className="border border-black text-center align-middle">
+        <Box checked={state === "SI"} />
+      </td>
+      <td className="border border-black text-center align-middle">
+        <Box checked={state === "NO"} />
+      </td>
+      <td className="border border-black text-center align-middle">
+        <Box checked={state === "NA"} />
+      </td>
+    </>
+  );
+};
 
 export const Defectologias = ({ inspeccion }: Props) => {
   const filas: Array<{ label: string; codes: (string | null)[] }> = [
     {
-      label: "Hermeticidad de la instalación",
+      label: "Hermeticidad de la instalacion",
       codes: ["E-01", "E-02", "E-03", "E-04", "E-05", "E-06"],
     },
     {
-      label: "Existencia y Operatividad válvulas",
+      label: "Existencia y Operatividad valvulas",
       codes: ["E-07", "E-08", "E-09", "E-10", "E-11", "E-12"],
     },
     {
-      label: "Trazado General de la instalación",
+      label: "Trazado General de la instalacion",
       codes: ["E-13", "E-14", "E-15", null, null, null],
     },
     { label: "Materiales", codes: ["E-16", null, null, null, null, null] },
     {
-      label: "Condiciones de Ventilación",
+      label: "Condiciones de Ventilacion",
       codes: ["E-17", "E-18", null, null, null, null],
     },
     {
-      label: "Medición de monóxido carbono (CO)",
+      label: "Medicion de monoxido carbono (CO)",
       codes: ["E-19", "E-20", "E-21", null, null, null],
     },
     {
@@ -75,142 +91,161 @@ export const Defectologias = ({ inspeccion }: Props) => {
 
   const getEstadoCodigo = (code?: string | null): Estado | undefined => {
     if (!code) return undefined;
-
-    if (!mapaResultados.has(code)) {
-      return "NA";
-    }
-
+    if (!mapaResultados.has(code)) return "NA";
     const res = mapaResultados.get(code);
-
     if (res === true) return "SI";
     if (res === false) return "NO";
     return "NA";
   };
 
-  const COLSPAN_TOTAL = 1 + 6 * 4 + 2 + 3;
+  const COLSPAN_TOTAL = 30;
 
   return (
-    <table className="table-fixed border-collapse text-xs leading-tight">
-      <thead>
-        <tr>
-          <th className="border border-black px-2 h-[28px] w-[430px] text-left">
-            DEFECTOLOGIA ENCONTRADA
-          </th>
+    <div className="w-full font-arial text-black">
+      <table className="w-full table-fixed border-collapse border border-black text-[7pt] leading-none">
+        <colgroup>
+          <col style={{ width: "22%" }} />
           {Array.from({ length: 6 }).map((_, i) => (
-            <th
-              key={`g${i}`}
-              className="border border-black h-[28px] text-center bg-gray-100"
-              colSpan={4}
-            >
-              Cumple
-            </th>
-          ))}
-          <th
-            className="border border-black h-[28px] text-center bg-gray-100"
-            colSpan={2}
-          >
-            REPARACIÓN INMEDIATA
-          </th>
-          <th
-            className="border border-black h-[28px] text-center bg-gray-100"
-            colSpan={3}
-          >
-            CUMPLE
-          </th>
-        </tr>
-
-        <tr>
-          <th className="border border-black px-2 h-[24px]" />
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Fragment key={`sub${i}`}>
-              <th className="border border-black h-[24px] w-[44px]"></th>
-              <th className="border border-black h-[24px] w-[36px]">SI</th>
-              <th className="border border-black h-[24px] w-[36px]">NO</th>
-              <th className="border border-black h-[24px] w-[36px]">NA</th>
+            <Fragment key={i}>
+              <col style={{ width: "3.5%" }} /> {/* Código */}
+              <col style={{ width: "2.33%" }} /> {/* SI */}
+              <col style={{ width: "2.33%" }} /> {/* NO */}
+              <col style={{ width: "2.33%" }} /> {/* NA */}
             </Fragment>
           ))}
-          <th className="border border-black h-[24px] w-[44px]">SI</th>
-          <th className="border border-black h-[24px] w-[44px]">NO</th>
-          <th className="border border-black h-[24px] w-[44px]">SI</th>
-          <th className="border border-black h-[24px] w-[44px]">NO</th>
-          <th className="border border-black h-[24px] w-[44px]">NA</th>
-        </tr>
-      </thead>
+          {/* Reparación Inmediata (aprox 6%) */}
+          <col style={{ width: "3%" }} /> {/* SI */}
+          <col style={{ width: "3%" }} /> {/* NO */}
+          {/* Cumple Final (aprox 9%) */}
+          <col style={{ width: "3%" }} /> {/* SI */}
+          <col style={{ width: "3%" }} /> {/* NO */}
+          <col style={{ width: "3%" }} /> {/* NA */}
+        </colgroup>
 
-      <tbody>
-        {filas.map((fila, idx) => {
-          // Estados por código en esta fila
-          const estadosPorCodigo: (Estado | undefined)[] = fila.codes.map(
-            (code) => getEstadoCodigo(code)
-          );
+        <thead>
+          {/* Fila 1: Encabezados Principales */}
+          <tr className="bg-gray-200">
+            <th className="border border-black px-1 py-1 text-left text-[8pt]">
+              DEFECTOLOGIA ENCONTRADA
+            </th>
+            {/* 6 Bloques "Cumple" */}
+            {Array.from({ length: 6 }).map((_, i) => (
+              <th
+                key={`h1-g${i}`}
+                className="border border-black text-center font-normal"
+                colSpan={4}
+              >
+                Cumple
+              </th>
+            ))}
+            <th
+              className="border border-black text-center font-normal"
+              colSpan={2}
+            >
+              REPARACIÓN INMEDIATA
+            </th>
+            <th
+              className="border border-black text-center font-normal"
+              colSpan={3}
+            >
+              CUMPLE
+            </th>
+          </tr>
 
-          // Solo consideramos códigos reales (no null en diseño)
-          const estadosValidos = estadosPorCodigo.filter(
-            (st, i) => fila.codes[i] && st
-          ) as Estado[];
+          {/* Fila 2: Sub-encabezados (SI, NO, NA) */}
+          <tr className="bg-white">
+            <th className="border border-black h-[14px]"></th>{" "}
+            {/* Espacio bajo Defectología */}
+            {/* 6 Grupos */}
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Fragment key={`h2-g${i}`}>
+                <th className="border border-black bg-gray-50"></th>{" "}
+                {/* Espacio para Código */}
+                <th className="border border-black font-normal">SI</th>
+                <th className="border border-black font-normal">NO</th>
+                <th className="border border-black font-normal">NA</th>
+              </Fragment>
+            ))}
+            {/* Reparación */}
+            <th className="border border-black font-normal">SI</th>
+            <th className="border border-black font-normal">NO</th>
+            {/* Cumple Final */}
+            <th className="border border-black font-normal">SI</th>
+            <th className="border border-black font-normal">NO</th>
+            <th className="border border-black font-normal">NA</th>
+          </tr>
+        </thead>
 
-          const hayNO = estadosValidos.includes("NO");
-          const todosSI =
-            estadosValidos.length > 0 &&
-            estadosValidos.every((st) => st === "SI");
-          const hayNA = estadosValidos.includes("NA");
+        <tbody>
+          {filas.map((fila, idx) => {
+            // Lógica para determinar el estado final de la fila
+            const estadosPorCodigo = fila.codes.map((code) =>
+              getEstadoCodigo(code)
+            );
+            const estadosValidos = estadosPorCodigo.filter(
+              (st, i) => fila.codes[i] && st
+            ) as Estado[];
 
-          let cumpleFila: Estado | undefined;
-          if (hayNO) {
-            cumpleFila = "NO";
-          } else if (todosSI) {
-            cumpleFila = "SI";
-          } else if (hayNA) {
-            cumpleFila = "NA";
-          }
+            const hayNO = estadosValidos.includes("NO");
+            const todosSI =
+              estadosValidos.length > 0 &&
+              estadosValidos.every((st) => st === "SI");
+            const hayNA = estadosValidos.includes("NA");
 
-          return (
-            <tr key={idx}>
-              <td className="border border-black px-2 py-1">{fila.label}</td>
+            let cumpleFila: Estado | undefined;
+            if (hayNO) cumpleFila = "NO";
+            else if (todosSI) cumpleFila = "SI";
+            else if (hayNA) cumpleFila = "NA";
 
-              {/* 6 grupos: Código + SI/NO/NA */}
-              {Array.from({ length: 6 }).map((_, g) => (
-                <GroupCells
-                  key={`r${idx}g${g}`}
-                  code={fila.codes[g] ?? undefined}
-                  state={estadosPorCodigo[g]}
-                />
-              ))}
+            return (
+              <tr key={idx} className="h-[20px]">
+                {" "}
+                {/* Altura reducida de fila */}
+                <td className="border border-black px-1 truncate">
+                  {fila.label}
+                </td>
+                {/* 6 Grupos de Códigos */}
+                {Array.from({ length: 6 }).map((_, g) => (
+                  <GroupCells
+                    key={`r${idx}g${g}`}
+                    code={fila.codes[g]}
+                    state={estadosPorCodigo[g]}
+                  />
+                ))}
+                {/* Reparación Inmediata (Vacío por defecto) */}
+                <td className="border border-black text-center align-middle">
+                  <Box />
+                </td>
+                <td className="border border-black text-center align-middle">
+                  <Box />
+                </td>
+                {/* Cumple Final Fila */}
+                <td className="border border-black text-center align-middle">
+                  <Box checked={cumpleFila === "SI"} />
+                </td>
+                <td className="border border-black text-center align-middle">
+                  <Box checked={cumpleFila === "NO"} />
+                </td>
+                <td className="border border-black text-center align-middle">
+                  <Box checked={cumpleFila === "NA"} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
 
-              {/* Reparación inmediata (sin lógica aún, se deja en blanco) */}
-              <td className="border border-black h-[30px] text-center">
-                <Box />
-              </td>
-              <td className="border border-black h-[30px] text-center">
-                <Box />
-              </td>
-
-              {/* Cumple final fila */}
-              <td className="border border-black h-[30px] text-center">
-                <Box checked={cumpleFila === "SI"} />
-              </td>
-              <td className="border border-black h-[30px] text-center">
-                <Box checked={cumpleFila === "NO"} />
-              </td>
-              <td className="border border-black h-[30px] text-center">
-                <Box checked={cumpleFila === "NA"} />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-
-      <tfoot>
-        <tr>
-          <td
-            className="border-t border-black px-2 py-1 text-[10px]"
-            colSpan={COLSPAN_TOTAL}
-          >
-            Los códigos de defectos (E01 al E25) y las demás abreviaturas se
-            discriminan en la parte posterior de este documento
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+        <tfoot>
+          <tr>
+            <td
+              className="border border-black px-2 py-0.5 text-[6.5pt] text-center italic"
+              colSpan={COLSPAN_TOTAL}
+            >
+              Los códigos de defectos (E01 al E25) y las demás abreviaturas se
+              discriminan en la parte posterior de este documento
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   );
 };

@@ -5,162 +5,116 @@ interface Props {
 }
 
 export const DatosUsuario = ({ inspeccion }: Props) => {
-  const nombreClient =
-    inspeccion?.ruta?.casa?.cliente?.primer_nombre +
-    " " +
-    inspeccion?.ruta?.casa?.cliente?.segundo_nombre +
-    " " +
-    inspeccion?.ruta?.casa?.cliente?.primer_apellido +
-    " " +
-    inspeccion?.ruta?.casa?.cliente?.segundo_apellido;
+  const nombreClient = [
+    inspeccion?.ruta?.casa?.cliente?.primer_nombre,
+    inspeccion?.ruta?.casa?.cliente?.segundo_nombre,
+    inspeccion?.ruta?.casa?.cliente?.primer_apellido,
+    inspeccion?.ruta?.casa?.cliente?.segundo_apellido,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const cliente = inspeccion?.ruta?.casa?.cliente;
+  const casa = inspeccion?.ruta?.casa;
+  const ciudad = casa?.ciudad;
 
   return (
-    <div className="overflow-x-auto overflow-y-hidden">
-      <div className="w-max">
-        <div className="grid grid-cols-[1030px_400px] border-t border-l border-r border-black text-xs leading-tight">
-          {/* IZQUIERDA: 1. DATOS DE USUARIO */}
-          <div className="border-r border-black">
-            <div className="px-2 py-1 border-b border-black bg-gray-100 font-bold text-center">
-              1. DATOS DE USUARIO
+    <div className="w-full text-[9pt] font-arial leading-tight text-black border-l border-r border-b border-black box-border">
+      <div className="flex w-full">
+        <div className="w-[72%] border-r border-black flex flex-col">
+          <div className="w-full bg-gray-200 font-bold text-center border-b border-black py-0.5">
+            1. DATOS DE USUARIO
+          </div>
+
+          <div className="flex w-full border-b border-black">
+            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Nombre:</span>
+              <span className="uppercase truncate">{nombreClient}</span>
             </div>
-
-            {/* Fila 1: Nombre | Cédula | Teléfono */}
-            <div className="grid grid-cols-[1fr_220px_220px]">
-              <div className="border-b border-black px-2 py-1">
-                <span className="font-semibold">Nombre: </span>
-                <span className="align-middle inline-block min-h-[22px]">
-                  {/* {usuario.nombre} */} {nombreClient}
-                </span>
-              </div>
-              <div className="border-l border-b border-black px-2 py-1">
-                <span className="font-semibold">Cédula: </span>
-                <span className="inline-block min-h-[22px]">
-                  {/* {usuario.cedula} */}{" "}
-                  {inspeccion?.ruta?.casa?.cliente?.numero_documento}
-                </span>
-              </div>
-              <div className="border-l border-b border-black px-2 py-1">
-                <span className="font-semibold">Teléfono: </span>
-                <span className="inline-block min-h-[22px]">
-                  {/* {usuario.telefono} */}{" "}
-                  {inspeccion?.ruta?.casa?.cliente?.telefono}
-                </span>
-              </div>
+            <div className="w-[140px] border-r border-black px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Cédula:</span>
+              <span>{cliente?.numero_documento}</span>
             </div>
-
-            {/* Fila 2: Dirección | Barrio */}
-            <div className="grid grid-cols-[1fr_420px]">
-              <div className="px-2 py-1 border-b border-black">
-                <span className="font-semibold">Dirección: </span>
-                <span className="inline-block min-h-[22px]">
-                  {/* {usuario.direccion} */}{" "}
-                  {inspeccion?.ruta?.casa?.direccion}
-                </span>
-              </div>
-              <div className="px-2 py-1 border-l border-b border-black">
-                <span className="font-semibold">Barrio: </span>
-                <span className="inline-block min-h-[22px]">
-                  {/* {usuario.barrio} */} {inspeccion?.ruta?.casa?.barrio}
-                </span>
-              </div>
-            </div>
-
-            {/* Fila 3/4: Cuenta+Código (apilado) | Medidor (ocupa 2 filas) | Dpto (2 filas) | Ciudad (2 filas) */}
-            <div className="grid grid-cols-[260px_1fr_240px_220px]">
-              {/* Col 1 (dos renglones apilados) */}
-              <div className="flex flex-col">
-                <div className="px-2 py-1 flex items-center justify">
-                  <div>
-                    <span className="font-semibold">Cuenta: </span>
-                    <br />
-                    <span className="font-semibold">Codigo: </span>
-                  </div>
-                  <span className="inline-block min-h-[22px]">
-                    {inspeccion?.ruta?.casa?.no_cuenta}
-                  </span>
-                </div>
-              </div>
-
-              {/* Col 2: Medidor (abarca 2 filas) */}
-              <div className="px-2 py-1 border-l border-r border-black row-span-2">
-                <span className="font-semibold">Medidor: </span>
-                <span className="inline-block min-h-[46px] align-top">
-                  {/* {usuario.medidor} */} {inspeccion?.ruta?.casa?.medidor}
-                </span>
-              </div>
-
-              {/* Col 3: Dpto (abarca 2 filas) */}
-              <div className="px-2 py-1 border-r border-black row-span-2">
-                <span className="font-semibold">Dpto: </span>
-                <span className="inline-block min-h-[46px] align-top">
-                  {/* {usuario.departamento} */}{" "}
-                  {inspeccion?.ruta?.casa?.ciudad?.departamento?.nombre}
-                </span>
-              </div>
-
-              {/* Col 4: Ciudad (abarca 2 filas) */}
-              <div className="px-2 py-1 row-span-2">
-                <span className="font-semibold">Ciudad: </span>
-                <span className="inline-block min-h-[46px] align-top">
-                  {/* {usuario.ciudad} */}{" "}
-                  {inspeccion?.ruta?.casa?.ciudad?.nombre}
-                </span>
-              </div>
+            <div className="w-[140px] px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Teléfono:</span>
+              <span>{cliente?.telefono}</span>
             </div>
           </div>
 
-          {/* DERECHA: 2. IDENTIFICACIÓN DEL ORGANISMO DE INSPECCIÓN */}
-          <div className="h-full">
-            <div className="px-2 py-1 border-b border-black bg-gray-100 font-bold text-center">
-              2. IDENTIFICACIÓN DEL ORGANISMO DE DE INSPECCIÓN
+          <div className="flex w-full border-b border-black">
+            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Dirección:</span>
+              <span className="uppercase truncate">{casa?.direccion}</span>
             </div>
+            <div className="w-[350px] px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Barrio:</span>
+              <span className="uppercase truncate">{casa?.barrio}</span>
+            </div>
+          </div>
 
-            {/* Cuerpo con dos columnas internas: info + teléfonos/NIT */}
-            <div className="grid grid-cols-[1fr_115px] h-full">
-              {/* Col izquierda (empresa/dirección/acreditación/distribuidora) */}
-              <div className=" border-black">
-                <div className="px-2 py-1 border-b border-r border-black">
-                  <span className="font-semibold">Empresa: </span>
-                  <span className="inline-block min-h-[20px]">
-                    {/* {oi.empresa} */} OI ELECTROGASES S A S
-                  </span>
-                </div>
-                <div className="px-2 py-1 border-b border-r border-black">
-                  <span className="font-semibold">Dirección: </span>
-                  <span className="inline-block">
-                    {/* {oi.direccion} */} Cl. 3N # 3E-111 Urb. Capellana —
-                    Cúcuta - Norte de Santander
-                  </span>
-                </div>
-                <div className="px-2 py-1 border-b border-r border-black">
-                  <span className="font-semibold">Acreditación N°: </span>
-                  <span>{/* {oi.acreditacion} */} 18-OIN-021</span>
-                </div>
+          <div className="flex w-full h-full">
+            <div className="w-[160px] border-r border-black px-1 py-0.5 flex flex-col justify-center">
+              <div className="flex items-center">
+                <span className="font-bold w-[50px]">Cuenta:</span>
+                <span>{casa?.no_cuenta}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-bold w-[50px]">Código:</span>
+                <span></span>
+              </div>
+            </div>
+            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Medidor:</span>
+              <span>{casa?.medidor}</span>
+            </div>
+            <div className="w-[160px] border-r border-black px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Dpto:</span>
+              <span className="uppercase">{ciudad?.departamento?.nombre}</span>
+            </div>
+            <div className="w-[160px] px-1 py-0.5 flex items-center">
+              <span className="font-bold mr-1">Ciudad:</span>
+              <span className="uppercase">{ciudad?.nombre}</span>
+            </div>
+          </div>
+        </div>
 
-                {/* Distribuidora al final */}
-                <div className="px-2 py-1 border-r">
-                  <span className="text-gray-700 mr-1">DISTRIBUIDORA:</span>
-                  <span className="font-semibold">
-                    {/* {oi.distribuidora} */} Colgas
-                  </span>
+        <div className="w-[28%] flex flex-col">
+          <div className="w-full bg-gray-200 font-bold text-center border-b border-black py-0.5 text-[8pt]">
+            2. IDENTIFICACIÓN DEL ORGANISMO DE DE INSPECCIÓN
+          </div>
+
+          <div className="flex flex-1">
+            <div className="flex-1 border-r border-black flex flex-col justify-between">
+              <div className="px-1 py-0.5">
+                <span className="font-normal block">
+                  Empresa: OI ELECTROGASES S.A.S
+                </span>
+                <span className="font-normal block leading-tight">
+                  Dirección: Cll. 3N # 3E-111 Urb. Capellana
+                  <br />
+                  Cúcuta - Norte De Santander
+                </span>
+                <div className="mt-0.5">
+                  <span className="font-bold">Acreditación N°: </span>
+                  <span className="font-bold">18-OIN-021</span>
                 </div>
               </div>
 
-              {/* Col derecha (teléfonos, NIT) */}
-              <div className="flex flex-col">
-                <div className="px-2 py-1 border-b border-black">
-                  <div className="font-semibold">Teléfonos:</div>
-                  <div className="leading-snug">
-                    {/* {oi.telefonos?.map(...)} */}
-                    3503723122
-                    <br />
-                    5492370
-                  </div>
-                </div>
-                <div className="px-2 py-1">
-                  <div className="font-semibold">NIT</div>
-                  <div>901106596-6</div>
-                </div>
+              <div className="px-1 py-0.5 border-t border-black text-[8pt]">
+                <span className="uppercase text-gray-600">DISTRIBUIDORA:</span>
+                <span className="ml-1 font-bold">COLGAS</span>
+              </div>
+            </div>
+
+            <div className="w-[90px] flex flex-col">
+              <div className="flex-1 border-b border-black px-1 py-0.5 text-center flex flex-col justify-center">
+                <div className="font-normal text-[8pt]">Teléfonos:</div>
+                <div className="font-bold text-[9pt]">3503732122</div>
+                <div className="font-bold text-[9pt]">5492370</div>
+              </div>
+              <div className="h-[30px] px-1 flex flex-col justify-center text-center">
+                <div className="text-[7pt]">NIT:</div>
+                <div className="text-[8pt] leading-none">901106969-6</div>
               </div>
             </div>
           </div>

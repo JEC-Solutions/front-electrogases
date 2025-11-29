@@ -5,77 +5,98 @@ interface Props {
 }
 
 export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
-
   const recintos = inspeccion?.evaluacionRecintos ?? [];
   const maxFilas = 5;
 
   return (
-     <div className={`overflow-x-auto`}>
-      <table className="w-[1248px] table-fixed border-collapse border border-black text-[11px] leading-none">
-        {/* Anchos de columnas (8 por lado = 16 total) */}
+    <div className="w-full font-arial text-black">
+      <div className="w-full border-r border-l bg-gray-200 font-bold text-center text-[9pt] py-1">
+        4. EVALUACION DE LOS RECINTOS Y TIPOS DE ARTEFACTOS
+      </div>
+
+      <table className="w-full table-fixed border-collapse border border-black text-[8pt] leading-none text-center">
+        {/* Definición de anchos de columna (Suma 50% por lado) */}
         <colgroup>
-          <col className="w-[180px]" />
-          <col className="w-[90px]" />
-          <col className="w-[110px]" />
-          <col className="w-[140px]" />
-          <col className="w-[140px]" />
-          <col className="w-[28px]" />
-          <col className="w-[28px]" />
-          <col className="w-[28px]" />
-          {/* derecha */}
-          <col className="w-[180px]" />
-          <col className="w-[90px]" />
-          <col className="w-[110px]" />
-          <col className="w-[140px]" />
-          <col className="w-[140px]" />
-          <col className="w-[28px]" />
-          <col className="w-[28px]" />
-          <col className="w-[28px]" />
+          {/* --- LADO IZQUIERDO --- */}
+          <col style={{ width: "14%" }} /> {/* Tipo Recinto */}
+          <col style={{ width: "7%" }} /> {/* Id Recinto */}
+          <col style={{ width: "8%" }} /> {/* Id Artefacto */}
+          <col style={{ width: "10%" }} /> {/* Potencia Inst */}
+          <col style={{ width: "8%" }} /> {/* Potencia Total */}
+          <col style={{ width: "3%" }} /> {/* A */}
+          <col style={{ width: "3%" }} /> {/* B */}
+          <col style={{ width: "3%" }} /> {/* C */}
+          {/* --- LADO DERECHO --- */}
+          <col style={{ width: "14%" }} />
+          <col style={{ width: "7%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "3%" }} />
+          <col style={{ width: "3%" }} />
+          <col style={{ width: "3%" }} />
         </colgroup>
 
         <thead>
-          {/* Fila 1: textos */}
+          {/* Fila 1: Encabezados Principales */}
           <tr className="bg-gray-100">
-            <th className="border border-black py-1">Tipo de Recinto</th>
-            <th className="border border-black py-1">Id. Recinto</th>
-            <th className="border border-black py-1">Id. Artefacto</th>
-            <th className="border border-black py-1">
+            {/* IZQUIERDA */}
+            <th className="border border-black py-2 font-semibold">
+              Tipo de Recinto
+            </th>
+            <th className="border border-black py-1 font-semibold">
+              Id. Recinto
+            </th>
+            <th className="border border-black py-1 font-semibold">
+              Id. Artefacto
+            </th>
+            <th className="border border-black py-1 font-semibold">
               Potencia Instalada (kW)
             </th>
-            <th className="border border-black py-1">Potencia Total en (kW)</th>
-            <th className="border border-black py-1" colSpan={3}>
+            <th className="border border-black py-1 font-semibold">
+              Potencia Total en (kW)
+            </th>
+            <th className="border border-black py-1 font-semibold" colSpan={3}>
               Tipo artefacto
             </th>
 
-            {/* derecha (con borde central marcado) */}
-            <th className="border border-black py-1 border-l-2">
+            {/* DERECHA (Borde izquierdo más grueso para separar visualmente) */}
+            <th className="border border-black border-l-2 py-2 font-semibold">
               Tipo de Recinto
             </th>
-            <th className="border border-black py-1">Id. Recinto</th>
-            <th className="border border-black py-1">Id. Artefacto</th>
-            <th className="border border-black py-1">
+            <th className="border border-black py-1 font-semibold">
+              Id. Recinto
+            </th>
+            <th className="border border-black py-1 font-semibold">
+              Id. Artefacto
+            </th>
+            <th className="border border-black py-1 font-semibold">
               Potencia Instalada (kW)
             </th>
-            <th className="border border-black py-1">Potencia Total en (kW)</th>
-            <th className="border border-black py-1" colSpan={3}>
+            <th className="border border-black py-1 font-semibold">
+              Potencia Total en (kW)
+            </th>
+            <th className="border border-black py-1 font-semibold" colSpan={3}>
               Tipo artefacto
             </th>
           </tr>
 
-          {/* Fila 2: A / B / C */}
+          {/* Fila 2: Sub-encabezados A, B, C */}
           <tr>
-            <th className="border border-black py-0.5" colSpan={5}></th>
-            <th className="border border-black py-0.5">A</th>
-            <th className="border border-black py-0.5">B</th>
-            <th className="border border-black py-0.5">C</th>
+            {/* IZQUIERDA */}
+            <th className="border border-black h-[14px]" colSpan={5}></th>
+            <th className="border border-black h-[14px]">A</th>
+            <th className="border border-black h-[14px]">B</th>
+            <th className="border border-black h-[14px]">C</th>
 
+            {/* DERECHA */}
             <th
-              className="border border-black py-0.5 border-l-2"
+              className="border border-black border-l-2 h-[14px]"
               colSpan={5}
             ></th>
-            <th className="border border-black py-0.5">A</th>
-            <th className="border border-black py-0.5">B</th>
-            <th className="border border-black py-0.5">C</th>
+            <th className="border border-black h-[14px]">A</th>
+            <th className="border border-black h-[14px]">B</th>
+            <th className="border border-black h-[14px]">C</th>
           </tr>
         </thead>
 
@@ -85,14 +106,12 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
             const right = recintos[filaIndex * 2 + 1];
 
             return (
-              <tr key={filaIndex} className="h-[24px]">
-                {/* izquierda */}
-                <td className="border border-black">
+              <tr key={filaIndex} className="h-[22px]">
+                {/* --- DATOS IZQUIERDA --- */}
+                <td className="border border-black truncate px-1 text-left">
                   {left?.tipoRecinto ?? ""}
                 </td>
-                <td className="border border-black">
-                  {left?.idRecinto ?? ""}
-                </td>
+                <td className="border border-black">{left?.idRecinto ?? ""}</td>
                 <td className="border border-black">
                   {left?.idArtefacto ?? ""}
                 </td>
@@ -102,18 +121,18 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                 <td className="border border-black">
                   {left?.potenciaConjunta ?? ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {left?.tipoArtefacto === "A" ? "X" : ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {left?.tipoArtefacto === "B" ? "X" : ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {left?.tipoArtefacto === "C" ? "X" : ""}
                 </td>
 
-                {/* derecha (primer td con borde central más grueso) */}
-                <td className="border border-black border-l-2">
+                {/* --- DATOS DERECHA --- */}
+                <td className="border border-black border-l-2 truncate px-1 text-left">
                   {right?.tipoRecinto ?? ""}
                 </td>
                 <td className="border border-black">
@@ -128,13 +147,13 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                 <td className="border border-black">
                   {right?.potenciaConjunta ?? ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {right?.tipoArtefacto === "A" ? "X" : ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {right?.tipoArtefacto === "B" ? "X" : ""}
                 </td>
-                <td className="border border-black">
+                <td className="border border-black font-bold">
                   {right?.tipoArtefacto === "C" ? "X" : ""}
                 </td>
               </tr>

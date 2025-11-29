@@ -11,10 +11,13 @@ interface EquipoApi {
   modelo?: string;
 }
 
+// Componente para línea con etiqueta (ej: "Marca: _______")
 const LabeledLine = ({ label, value }: { label: string; value?: string }) => (
-  <div className="flex items-center gap-1">
-    <span className="whitespace-nowrap">{label}</span>
-    <span className="block flex-1 border-b border-black h-[14px] text-[11px] leading-none">
+  <div className="flex items-end w-full overflow-hidden">
+    <span className="whitespace-nowrap font-semibold mr-1 leading-none">
+      {label}
+    </span>
+    <span className="flex-1 border-b border-black text-center leading-none h-[12px] truncate">
       {value ?? ""}
     </span>
   </div>
@@ -33,28 +36,32 @@ const EquipmentRow = ({
   leftData,
   rightData,
 }: EquipmentRowProps) => (
-  <tr className="h-[32px]">
-    {/* Lado izquierdo */}
-    <td className="border border-black px-2 align-middle">{leftLabel}</td>
-    <td className="border border-black px-2 align-middle">
+  <tr className="h-[26px]">
+    {/* --- LADO IZQUIERDO --- */}
+    <td className="border border-black px-1 align-middle font-semibold text-left">
+      {leftLabel}
+    </td>
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="N/S:" value={leftData?.ns} />
     </td>
-    <td className="border border-black px-2 align-middle">
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="Marca:" value={leftData?.marca} />
     </td>
-    <td className="border border-black px-2 align-middle">
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="Modelo:" value={leftData?.modelo} />
     </td>
 
-    {/* Lado derecho */}
-    <td className="border border-black px-2 align-middle">{rightLabel}</td>
-    <td className="border border-black px-2 align-middle">
+    {/* --- LADO DERECHO --- */}
+    <td className="border border-black px-1 align-middle font-semibold text-left">
+      {rightLabel}
+    </td>
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="N/S:" value={rightData?.ns} />
     </td>
-    <td className="border border-black px-2 align-middle">
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="Marca:" value={rightData?.marca} />
     </td>
-    <td className="border border-black px-2 align-middle">
+    <td className="border border-black px-1 align-middle">
       <LabeledLine label="Modelo:" value={rightData?.modelo} />
     </td>
   </tr>
@@ -75,62 +82,61 @@ export const Equipos = ({ inspeccion }: Props) => {
     };
   };
 
-  const detectorCO = getEquipoData("co"); // "Detector CO"
-  const detectorFugas = getEquipoData("fuga"); // "Detector Fugas"
+  const detectorCO = getEquipoData("co");
+  const detectorFugas = getEquipoData("fuga");
   const manometroBaja = getEquipoData("manómetro de baja");
   const flexometro = getEquipoData("flexómetro");
   const manometroMedia = getEquipoData("manómetro de media");
   const otro = getEquipoData("otro");
 
   return (
-    <div className="overflow-x-auto overflow-y-hidden">
-      <div className="min-w-[1248px]">
-        <table className="table-fixed border-collapse text-xs leading-tight w-full">
-          {/* Control de anchos por columna para que se parezca al formato original */}
-          <colgroup>
-            <col className="w-[210px]" /> {/* Etiq. izq */}
-            <col className="w-[140px]" /> {/* N/S   */}
-            <col className="w-[230px]" /> {/* Marca */}
-            <col className="w-[230px]" /> {/* Modelo */}
-            <col className="w-[210px]" /> {/* Etiq. der */}
-            <col className="w-[140px]" /> {/* N/S   */}
-            <col className="w-[230px]" /> {/* Marca */}
-            <col className="w-[230px]" /> {/* Modelo */}
-          </colgroup>
+    <div className="w-full font-arial text-black">
+      <table className="w-full table-fixed border-collapse border border-black text-[7.5pt] leading-none">
+        <colgroup>
+          {/* Lado Izquierdo */}
+          <col style={{ width: "14%" }} /> {/* Etiqueta */}
+          <col style={{ width: "8%" }} /> {/* N/S */}
+          <col style={{ width: "14%" }} /> {/* Marca */}
+          <col style={{ width: "14%" }} /> {/* Modelo */}
+          {/* Lado Derecho */}
+          <col style={{ width: "14%" }} /> {/* Etiqueta */}
+          <col style={{ width: "8%" }} /> {/* N/S */}
+          <col style={{ width: "14%" }} /> {/* Marca */}
+          <col style={{ width: "14%" }} /> {/* Modelo */}
+        </colgroup>
 
-          <thead>
-            <tr>
-              <th
-                className="bg-gray-100 font-bold text-center border border-black h-[28px]"
-                colSpan={8}
-              >
-                9. REGISTRO DE EQUIPOS UTILIZADOS EN LA INSPECCIÓN
-              </th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th
+              className="bg-gray-200 font-bold text-center border border-black py-1"
+              colSpan={8}
+            >
+              9. REGISTRO DE EQUIPOS UTILIZADOS EN LA INSPECCIÓN
+            </th>
+          </tr>
+        </thead>
 
-          <tbody>
-            <EquipmentRow
-              leftLabel="Detector de CO:"
-              rightLabel="Manómetro de baja"
-              leftData={detectorCO}
-              rightData={manometroBaja}
-            />
-            <EquipmentRow
-              leftLabel="Detector de fugas:"
-              rightLabel="Flexómetro:"
-              leftData={detectorFugas}
-              rightData={flexometro}
-            />
-            <EquipmentRow
-              leftLabel="Manómetro de media"
-              rightLabel="Otro:"
-              leftData={manometroMedia}
-              rightData={otro}
-            />
-          </tbody>
-        </table>
-      </div>
+        <tbody>
+          <EquipmentRow
+            leftLabel="Detector de CO:"
+            rightLabel="Manometro de baja"
+            leftData={detectorCO}
+            rightData={manometroBaja}
+          />
+          <EquipmentRow
+            leftLabel="Detector de fugas:"
+            rightLabel="Flexometro:"
+            leftData={detectorFugas}
+            rightData={flexometro}
+          />
+          <EquipmentRow
+            leftLabel="Manometro de media"
+            rightLabel="Otro:"
+            leftData={manometroMedia}
+            rightData={otro}
+          />
+        </tbody>
+      </table>
     </div>
   );
 };

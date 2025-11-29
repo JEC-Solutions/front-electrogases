@@ -22,7 +22,7 @@ export const Acta = () => {
   return (
     <div
       className="
-        w-full                
+        w-full 
         max-w-[1246px]         
         min-h-[297mm]
         bg-white
@@ -31,10 +31,13 @@ export const Acta = () => {
         text-black
         relative
         mx-auto
-        shadow
-        print:w-[380mm]      
-        print:min-h-[297mm]
+        shadow-lg              
+        print:w-full           
+        print:max-w-none       
+        print:min-h-0
         print:shadow-none
+        print:m-0
+        box-border
       "
     >
       {/* HEADER: ancho total 1246px con 5 secciones */}
@@ -53,67 +56,31 @@ export const Acta = () => {
       <TrazaVacioInterno inspeccion={inspeccion} />
 
       {/* EVALUACION DE RECINTOS */}
-      <div className="overflow-y-hidden">
-        <div className="w-max">
-          <div className="px-2 py-1 border-l border-r border-black bg-gray-100 font-bold text-center">
-            4. EVALUACION DE LOS RECINTOS Y TIPOS DE ARTEFACTOS
-          </div>
-          <EvalRecintosTablaSimple inspeccion={inspeccion} />
-        </div>
-      </div>
+      <EvalRecintosTablaSimple inspeccion={inspeccion} />
 
       {/* ISOMETRICOS */}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <div className="min-w-[1248px]">
-          <SeccionIsometricos
-            inspeccion={inspeccion}
-            isometricoBase64={isometricoBase64}
-            esquemaPlantaBase64={esquemaPlantaBase64}
-          />
-        </div>
-      </div>
+      <SeccionIsometricos
+        inspeccion={inspeccion}
+        isometricoBase64={isometricoBase64}
+        esquemaPlantaBase64={esquemaPlantaBase64}
+      />
 
       {/* 7. VENTILACION */}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <div className="min-w-[1248px]">
-          <TablaVentilacion inspeccion={inspeccion} />
-        </div>
-      </div>
+      <TablaVentilacion inspeccion={inspeccion} />
 
       {/* 8. PARAMETROS DE EVALUACION */}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <div className="w-max">
-          <div className="border-t border-black">
-            <div className="border-l border-r border-black bg-gray-100 font-bold text-center text-xs py-1">
-              8. PARÁMETROS DE EVALUACIÓN / RESOLUCIÓN 90902 DE 2013 /
-              RESOLUCIÓN 41385 DE 2017
-            </div>
+      <ParametrosEvaluacion inspeccion={inspeccion} />
 
-            <ParametrosEvaluacion inspeccion={inspeccion} />
-          </div>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto overflow-y-hidden">
-        <div className="w-max">
-          <Defectologias inspeccion={inspeccion} />
-        </div>
-      </div>
+      <Defectologias inspeccion={inspeccion} />
 
       {/* 9 EQUIPOS*/}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <Equipos inspeccion={inspeccion} />
-      </div>
+      <Equipos inspeccion={inspeccion} />
 
       {/* 10 DECLARACION*/}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <Declaracion />
-      </div>
+      <Declaracion />
 
-      {/* 11 - 12  REGISTRO*/}
-      <div className="overflow-x-auto overflow-y-hidden">
-        <Registro inspeccion={inspeccion} firmaBase64={firmaBase64} />
-      </div>
+      {/* 11 - 12  REGISTRO */}
+      <Registro inspeccion={inspeccion} firmaBase64={firmaBase64} />
     </div>
   );
 };
