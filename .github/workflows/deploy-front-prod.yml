@@ -36,7 +36,9 @@ jobs:
             ghcr.io/${{ env.OWNER_LC }}/electrogases-web:prod-latest
             ghcr.io/${{ env.OWNER_LC }}/electrogases-web:prod-${{ github.sha }}
           build-args: |
-            VITE_API_URL=${{ secrets.VITE_API_URL_PROD }}
+            VITE_URL_API_DEV=${{ secrets.VITE_URL_API_DEV }}
+            VITE_URL_API_PROD=${{ secrets.VITE_URL_API_PROD }}
+            VITE_PROD=true
 
       - name: Remote deploy (SSH)
         uses: appleboy/ssh-action@v1.0.3
