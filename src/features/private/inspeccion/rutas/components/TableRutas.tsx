@@ -195,7 +195,7 @@ export const TableRutas = ({
               placeholder="Inspector"
               style={{ width: 220 }}
               options={inspectores.map((i) => ({
-                value: i.id_usuario,
+                value: i.persona?.id_persona,
                 label: `${i.persona?.primer_nombre ?? ""} ${
                   i.persona?.primer_apellido ?? ""
                 }`.trim(),
