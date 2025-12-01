@@ -1,4 +1,4 @@
-name: Deploy dev (ElectroGases Front)
+name: Deploy dev (ElectroGases Front) 
 
 on:
   push:
