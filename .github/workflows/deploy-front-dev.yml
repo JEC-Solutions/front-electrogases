@@ -49,5 +49,5 @@ jobs:
           script: |
             docker network create stack || true
             cd ~/stack/apps/electrogases
-            docker compose -p electrogases-dev -f docker-compose.dev.yml up -d --pull always --force-recreate
+            docker compose -p electrogases-dev -f docker-compose.dev.yml up -d --pull always --force-recreate web
             docker image prune -f
