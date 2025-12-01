@@ -1,10 +1,7 @@
 import axios from "axios";
 
-const isProd = import.meta.env.VITE_PROD === "true";
-
-const baseURL = isProd
-  ? import.meta.env.VITE_URL_API_PROD ?? "/api"
-  : import.meta.env.VITE_URL_API_DEV ?? "/api";
+const baseURL =
+  import.meta.env.VITE_URL_API_PROD || import.meta.env.VITE_URL_API_DEV;
 
 export const electroApi = axios.create({
   baseURL,
