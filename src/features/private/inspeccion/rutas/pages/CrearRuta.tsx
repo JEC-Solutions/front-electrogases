@@ -16,7 +16,6 @@ export const CrearRuta = () => {
     methods,
     onSubmit,
     dataTipoVisita,
-    resultados,
     getUserDocument,
     inspectores,
   } = useCrearRutas();
@@ -113,7 +112,6 @@ export const CrearRuta = () => {
         {currentStep === 2 && (
           <StepRuta
             methods={methods}
-            resultados={resultados}
             inspectores={inspectores}
           />
         )}
