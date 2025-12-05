@@ -73,7 +73,7 @@ export interface IActa {
   clasesInspeccion: any[];
   evaluacionRecintos: any[];
   evaluacionCondiciones: any[];
-  equiposUtilizados: EquiposUtilizado[]
+  equiposUtilizados: EquiposUtilizado[];
   isometricos: any[];
   esquemaPlanta: any[];
   lineaMatriz: any;
@@ -81,7 +81,9 @@ export interface IActa {
   ruta: Ruta;
   volumenRecintos: VolumenRecinto[];
   resultadoDefectologias: ResultadoDefectologia[];
-  parametrosEvaluacion: ParametrosEvaluacion[]
+  parametrosEvaluacion: ParametrosEvaluacion[];
+  declaracionConformidad: DeclaracionConformidad[];
+  numero_reporte_critico: string;
 }
 
 export interface InstalacionExistente {
@@ -191,31 +193,47 @@ export interface Defectologia {
 }
 
 export interface ParametrosEvaluacion {
-  id_parametros_evaluacion: number
-  lecturaInicialAire: number
-  lecturaFinalAire: number
-  tiempoPruebaAire: number
-  lecturaInicialMedidor: number
-  lecturaFinalMedidor: number
-  lecturaInicialMedidor2: number
-  lecturaFinalMedidor2: number
-  tiempoPruebaMedidor: number
-  pruebaPresion: number
-  detectorFugas: number
-  createdAt: string
-  updatedAt: string
+  id_parametros_evaluacion: number;
+  lecturaInicialAire: number;
+  lecturaFinalAire: number;
+  tiempoPruebaAire: number;
+  lecturaInicialMedidor: number;
+  lecturaFinalMedidor: number;
+  lecturaInicialMedidor2: number;
+  lecturaFinalMedidor2: number;
+  tiempoPruebaMedidor: number;
+  pruebaPresion: number;
+  detectorFugas: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface EquiposUtilizado {
-  id_equipos_utilizados: number
-  equiposUtilizados: string
-  ns: string
-  marca: string
-  modelo: string
+  id_equipos_utilizados: number;
+  equiposUtilizados: string;
+  ns: string;
+  marca: string;
+  modelo: string;
 }
 export interface ITipoImagen {
-  id: number
-  nombre: string
-  descripcion: string
-  activo: boolean
+  id: number;
+  nombre: string;
+  descripcion: string;
+  activo: boolean;
+}
+
+export interface DeclaracionConformidad {
+  id_declaracion_conformidad: number;
+  declaracion1: boolean;
+  declaracion2: boolean;
+  declaracion3: any;
+  defectos: any;
+  instalacionConforme: boolean;
+  continuaServicio: boolean;
+  observaciones: string;
+  nombreCliente: string;
+  cedulaCliente: string;
+  vinculoCliente: string;
+  firmaCliente: string;
+  cuotas: number;
 }

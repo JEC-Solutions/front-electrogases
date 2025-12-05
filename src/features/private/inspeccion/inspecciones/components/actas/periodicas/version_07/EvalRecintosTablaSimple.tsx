@@ -5,7 +5,17 @@ interface Props {
 }
 
 export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
-  const recintos = inspeccion?.evaluacionRecintos ?? [];
+  const rawRecintos = inspeccion?.evaluacionRecintos ?? [];
+
+  // Deduplicate based on id_evaluacion_recintos
+  const recintos = rawRecintos.filter(
+    (recinto, index, self) =>
+      index ===
+      self.findIndex(
+        (t) => t.id_evaluacion_recintos === recinto.id_evaluacion_recintos
+      )
+  );
+
   const maxFilas = 5;
 
   return (

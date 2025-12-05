@@ -8,7 +8,7 @@ function Box({ checked = false }: { checked?: boolean }) {
   return (
     <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white">
       {checked ? (
-        <span className="-mt-[2px] text-[10px] leading-none font-bold">✓</span>
+        <span className="-mt-[2px] text-[10px] leading-none font-bold">x</span>
       ) : null}
     </span>
   );
