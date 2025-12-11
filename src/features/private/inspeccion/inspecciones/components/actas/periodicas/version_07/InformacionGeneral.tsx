@@ -10,7 +10,7 @@ function Box({ checked = false }: { checked?: boolean }) {
   return (
     <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white">
       {checked ? (
-        <span className="-mt-[2px] text-[10px] leading-none font-bold">✓</span>
+        <span className="-mt-[2px] text-[10px] leading-none font-bold">x</span>
       ) : null}
     </span>
   );
@@ -29,7 +29,7 @@ function DigitBox({
       {checked && (
         <span className="absolute inset-0 flex items-center justify-center">
           <span className="rotate-12 -mt-[1px] text-[12px] leading-none font-bold text-black">
-            ✓
+            x
           </span>
         </span>
       )}
@@ -38,9 +38,11 @@ function DigitBox({
 }
 
 export const InformacionGeneral = ({ inspeccion }: Props) => {
-  const primeraVisita = inspeccion?.instalacionExistente === null;
+  const primeraVisita = inspeccion?.instalacionExistente?.numeroVisita === 1;
   const segundaVisita = inspeccion?.instalacionExistente?.numeroVisita === 2;
   const terceraVisita = inspeccion?.instalacionExistente?.numeroVisita === 3;
+
+  console.log(inspeccion);
 
   const hayInspeccionAnterior =
     !!inspeccion?.instalacionExistente?.id_instalacion_existente;
@@ -51,6 +53,12 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
   const dateSol = formatDateYMD(inspeccion?.created_at) || "-";
   const timeStart = formatTimeWithAmPm(inspeccion?.hora_inicio || "");
   const timeEnd = formatTimeWithAmPm(inspeccion?.hora_fin || "");
+
+  const clases = inspeccion?.clasesInspeccion || [];
+
+  const hasClase = (nombre: string) => {
+    return clases.some((c) => c.nombre === nombre);
+  };
 
   return (
     <div className="w-full text-[8pt] font-arial text-black border-l border-r border-b border-black box-border">
@@ -230,16 +238,20 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
 
           <div className="flex-1 flex flex-col justify-around py-1 px-2">
             <div className="flex items-center justify-between">
-              <span>Comercial:</span> <Box />
+              <span>Comercial:</span>
+              <Box checked={hasClase("COMERCIAL")} />
             </div>
             <div className="flex items-center justify-between">
-              <span>Residencial:</span> <Box />
+              <span>Residencial:</span>
+              <Box checked={hasClase("RESIDENCIAL")} />
             </div>
             <div className="flex items-center justify-between">
-              <span>Multiusuario:</span> <Box />
+              <span>Multiusuario:</span>
+              <Box checked={hasClase("MULTIUSUARIO")} />
             </div>
             <div className="flex items-center justify-between">
-              <span>Uniusuario:</span> <Box />
+              <span>Uniusuario:</span>
+              <Box checked={hasClase("UNIUSUARIO")} />
             </div>
           </div>
         </div>

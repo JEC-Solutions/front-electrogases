@@ -1,25 +1,18 @@
-import { Col, DatePicker, Input, Row, Select, TimePicker } from "antd";
+import { Col, DatePicker, Row, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
-import { IResultados } from "@/features/private/inspeccion/rutas/interfaces";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 
 interface Props {
-  resultados: IResultados[];
   inspectores: IUsuarios[];
   methods: any;
 }
 
-export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
+export const StepRuta = ({ methods, inspectores }: Props) => {
   const {
     control,
     formState: { errors },
   } = methods;
-
-  const formatResultados = resultados.map((resultado) => ({
-    value: resultado.id_resultado,
-    label: resultado.nombre,
-  }));
 
   const formatInspectores =
     inspectores?.map((inspector) => ({
@@ -86,27 +79,6 @@ export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
 
       <Col xs={24} md={8}>
         <div className="mb-4">
-          <label>Resultado de la inspección</label>
-          <Controller
-            name="ruta.id_resultado"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                allowClear
-                showSearch
-                placeholder="Seleccione resultado"
-                style={{ width: "100%" }}
-                optionFilterProp="label"
-                options={formatResultados}
-              />
-            )}
-          />
-        </div>
-      </Col>
-
-      <Col xs={24} md={8}>
-        <div className="mb-4">
           <label>Inspector asignado</label>
           <Controller
             name="ruta.id_inspector"
@@ -130,20 +102,6 @@ export const StepRuta = ({ methods, resultados, inspectores }: Props) => {
               {errors.ruta.id_inspector.message as string}
             </span>
           )}
-        </div>
-      </Col>
-
-      <Col xs={24} md={8}>
-        <div className="mb-4">
-          <label htmlFor="numero_acta">Número de acta</label>
-          <Controller
-            name="ruta.numero_acta"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <Input id="numero_acta" placeholder="Número de acta" {...field} />
-            )}
-          />
         </div>
       </Col>
     </Row>

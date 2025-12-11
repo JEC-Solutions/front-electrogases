@@ -6,6 +6,9 @@ import {
 import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
 import { Controller } from "react-hook-form";
 import { useRoles } from "../../roles/hooks";
+import Upload, { RcFile } from "antd/es/upload";
+import { UploadOutlined } from "@ant-design/icons";
+import Swal from "sweetalert2";
 
 interface Props {
   open: boolean;
@@ -15,6 +18,14 @@ interface Props {
   currentUsuario: IUsuarios | null;
   documentos: ITipoDocumentos[];
 }
+
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
 
 export const ModalUsuarios = ({
   open,
@@ -300,6 +311,120 @@ export const ModalUsuarios = ({
                       </span>
                     )}
                   </>
+                )}
+              />
+            </div>
+          </Col>
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label>Firma (Imagen PNG - Máx 5MB)</label>
+              <Controller
+                name="firma_base64"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <Upload
+                    maxCount={1}
+                    accept=".png,.jpg,.jpeg"
+                    beforeUpload={async (file) => {
+                      const isPngOrJpg =
+                        file.type === "image/jpeg" || file.type === "image/png";
+                      if (!isPngOrJpg) {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "Solo puedes subir archivos JPG o PNG!",
+                        });
+                        return Upload.LIST_IGNORE;
+                      }
+
+                      const isLt5M = file.size / 1024 / 1024 < 5;
+                      if (!isLt5M) {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "La imagen debe pesar menos de 5MB!",
+                        });
+                        return Upload.LIST_IGNORE;
+                      }
+
+                      const base64 = await getBase64(file);
+                      onChange(base64);
+                      return false;
+                    }}
+                    onRemove={() => onChange("")}
+                    fileList={
+                      value
+                        ? [
+                            {
+                              uid: "-1",
+                              name: "firma_seleccionada.png",
+                              status: "done",
+                            },
+                          ]
+                        : []
+                    }
+                  >
+                    <Button icon={<UploadOutlined />}>Cargar Firma</Button>
+                  </Upload>
+                )}
+              />
+            </div>
+          </Col>
+
+          {/* COLUMNA SELLO */}
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label>Sello (Imagen PNG - Máx 5MB)</label>
+              <Controller
+                name="sello_base64"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <Upload
+                    maxCount={1}
+                    accept=".png,.jpg,.jpeg"
+                    beforeUpload={async (file) => {
+                      const isPngOrJpg =
+                        file.type === "image/jpeg" || file.type === "image/png";
+                      if (!isPngOrJpg) {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "Solo puedes subir archivos JPG o PNG!",
+                        });
+                        return Upload.LIST_IGNORE;
+                      }
+
+                      const isLt5M = file.size / 1024 / 1024 < 5;
+                      if (!isLt5M) {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "La imagen debe pesar menos de 5MB!",
+                        });
+                        return Upload.LIST_IGNORE;
+                      }
+
+                      const base64 = await getBase64(file);
+                      onChange(base64);
+                      return false;
+                    }}
+                    onRemove={() => onChange("")}
+                    fileList={
+                      value
+                        ? [
+                            {
+                              uid: "-1",
+                              name: "sello_seleccionado.png",
+                              status: "done",
+                            },
+                          ]
+                        : []
+                    }
+                  >
+                    <Button icon={<UploadOutlined />}>Cargar Sello</Button>
+                  </Upload>
                 )}
               />
             </div>

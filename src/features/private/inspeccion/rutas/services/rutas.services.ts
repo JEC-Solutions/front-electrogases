@@ -2,7 +2,7 @@ import { electroApi } from "@/api";
 import {
   IAsignar,
   IRuta,
-  IPdfRuta
+  IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
 
 export const getRutas = async () => {
@@ -33,10 +33,6 @@ export const getInspectores = async () => {
   return await electroApi.get("/usuarios/inspectores");
 };
 
-export const getResultados = async () => {
-  return await electroApi.get("/resultados");
-};
-
 export const getClienteByDocument = async (documento: string) => {
   return await electroApi.get(`/cliente/documento/${documento}`);
 };
@@ -50,5 +46,5 @@ export const historialRuta = async (id: number) => {
 };
 
 export const generatePdf = async (data: IPdfRuta) => {
-  return await electroApi.post('/ruta/pdf', data)
-}
+  return await electroApi.post("/ruta/pdf", data);
+};

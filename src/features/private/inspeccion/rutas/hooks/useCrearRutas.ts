@@ -1,8 +1,7 @@
 import * as rutaServices from "@/features/private/inspeccion/rutas/services/rutas.services";
 import {
   IRuta,
-  ITipoVisita,
-  IResultados,
+  ITipoVisita
 } from "@/features/private/inspeccion/rutas/interfaces";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { IUser } from "@/features/private/configuracion/usuarios/interfaces";
@@ -40,22 +39,6 @@ export const useCrearRutas = () => {
     queryFn: async () => {
       try {
         const { data } = await rutaServices.getInspectores();
-        return data.data;
-      } catch (error: any) {
-        handleAxiosError(error);
-        throw error;
-      }
-    },
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
-  });
-
-  // Get resultados
-  const { data: resultados = [] } = useQuery<IResultados[]>({
-    queryKey: ["resultados"],
-    queryFn: async () => {
-      try {
-        const { data } = await rutaServices.getResultados();
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -167,7 +150,6 @@ export const useCrearRutas = () => {
     methods: methodsRutas,
     onSubmit,
     dataTipoVisita,
-    resultados,
     getUserDocument,
     inspectores,
   };

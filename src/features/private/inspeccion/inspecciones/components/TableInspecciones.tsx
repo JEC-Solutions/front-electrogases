@@ -13,15 +13,27 @@ import {
   Spin,
   Empty,
   Image,
+  Input,
+  DatePicker,
+  Row,
+  Col,
+  Card,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   CameraOutlined,
   EyeOutlined,
   FilePdfOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Swal from "sweetalert2";
+import dayjs, { Dayjs } from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+
+dayjs.extend(isBetween);
+
+const { RangePicker } = DatePicker;
 
 interface Props {
   inspecciones: IInspecciones[];
@@ -50,6 +62,14 @@ export const TableInspecciones = ({
   const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
   const [imageList, setImageList] = useState<any[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
+
+  // --- Estados para los filtros ---
+  const [searchTermActa, setSearchTermActa] = useState("");
+  const [searchTermInspector, setSearchTermInspector] = useState("");
+  const [selectedTipo, setSelectedTipo] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<
+    [Dayjs | null, Dayjs | null] | null
+  >(null);
 
   const handleRedirect = (id: number) => {
     navigate(`/dashboard/inspecciones/${id}`);
@@ -102,6 +122,69 @@ export const TableInspecciones = ({
       setLoadingImages(false);
     }
   };
+
+  // --- Lógica de filtrado ---
+  const filteredInspecciones = useMemo(() => {
+    return inspecciones.filter((item) => {
+      // 1. Filtro por Número de Acta
+      const acta = item.ruta?.numero_acta || "";
+      const matchesActa = acta
+        .toLowerCase()
+        .includes(searchTermActa.toLowerCase());
+
+      // 2. Filtro por Inspector (nombre completo)
+      const persona = item.ruta?.persona;
+      const nombreCompleto = persona
+        ? [
+            persona.primer_nombre,
+            persona.segundo_nombre,
+            persona.primer_apellido,
+            persona.segundo_apellido,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase()
+        : "";
+      const matchesInspector = nombreCompleto.includes(
+        searchTermInspector.toLowerCase()
+      );
+
+      // 3. Filtro por Tipo de Inspección
+      // Asumimos que item.tipoInspeccion.nombre existe
+      const matchesTipo = selectedTipo
+        ? item.tipoInspeccion?.nombre === selectedTipo
+        : true;
+
+      // 4. Filtro por Fechas (Rango)
+      let matchesDate = true;
+      if (dateRange && dateRange[0] && dateRange[1]) {
+        const fechaInsp = dayjs(item.fecha_inspeccion);
+        // isBetween(start, end, unit, inclusivity): [] -> inclusivity '[]' incluye start y end
+        matchesDate = fechaInsp.isBetween(
+          dateRange[0],
+          dateRange[1],
+          "day",
+          "[]"
+        );
+      }
+
+      return matchesActa && matchesInspector && matchesTipo && matchesDate;
+    });
+  }, [
+    inspecciones,
+    searchTermActa,
+    searchTermInspector,
+    selectedTipo,
+    dateRange,
+  ]);
+
+  // Obtener lista única de tipos de inspección para el Select
+  const tiposDeInspeccionOptions = useMemo(() => {
+    const tipos = inspecciones
+      .map((i) => i.tipoInspeccion?.nombre)
+      .filter(Boolean);
+    return Array.from(new Set(tipos)).map((t) => ({ label: t, value: t }));
+  }, [inspecciones]);
 
   const columns: ColumnsType<IInspecciones> = [
     {
@@ -193,9 +276,61 @@ export const TableInspecciones = ({
 
   return (
     <div className="overflow-x-auto">
+      {/* --- SECCIÓN DE FILTROS --- */}
+      <Card
+        size="small"
+        style={{ marginBottom: 16 }}
+        title={
+          <Space>
+            <SearchOutlined /> Filtros de Búsqueda
+          </Space>
+        }
+      >
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={12} md={6}>
+            <label style={{ fontWeight: 500 }}>Rango Fechas:</label>
+            <RangePicker
+              style={{ width: "100%" }}
+              /* @ts-ignore */
+              onChange={(val) => setDateRange(val)}
+              format="YYYY-MM-DD"
+              placeholder={["Inicio", "Fin"]}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <label style={{ fontWeight: 500 }}>Tipo Inspección:</label>
+            <Select
+              allowClear
+              style={{ width: "100%" }}
+              placeholder="Todos"
+              options={tiposDeInspeccionOptions}
+              onChange={(val) => setSelectedTipo(val)}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <label style={{ fontWeight: 500 }}>Inspector:</label>
+            <Input
+              placeholder="Buscar por nombre..."
+              value={searchTermInspector}
+              onChange={(e) => setSearchTermInspector(e.target.value)}
+              allowClear
+            />
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <label style={{ fontWeight: 500 }}>Número Acta:</label>
+            <Input
+              placeholder="Buscar acta..."
+              value={searchTermActa}
+              onChange={(e) => setSearchTermActa(e.target.value)}
+              allowClear
+            />
+          </Col>
+        </Row>
+      </Card>
+
       <Table
         columns={columns}
-        dataSource={inspecciones}
+        dataSource={filteredInspecciones}
         rowKey="id_inspeccion"
         className="custom-table"
         scroll={{ x: 600 }}

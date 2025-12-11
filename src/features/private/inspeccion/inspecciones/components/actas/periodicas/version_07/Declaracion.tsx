@@ -1,10 +1,28 @@
-const Box = () => (
-  <span className="inline-block w-[14px] h-[14px] border border-black align-middle bg-white" />
-);
+import { IActa } from "@/features/private/inspeccion/inspecciones/interfaces";
 
-export const Declaracion = () => {
+interface Props {
+  inspeccion: IActa | undefined;
+}
+
+function Box({ checked = false }: { checked?: boolean }) {
   return (
-    <div className="w-full font-arial text-black mt-1">
+    <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white">
+      {checked ? (
+        <span className="-mt-[2px] text-[10px] leading-none font-bold">x</span>
+      ) : null}
+    </span>
+  );
+}
+
+export const Declaracion = ({ inspeccion }: Props) => {
+  const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
+
+  const numReporte: any = inspeccion?.numero_reporte_critico || "";
+
+  const defectosVal: any = conformidad?.defectos;
+
+  return (
+    <div className="w-full font-arial text-black">
       <div className="w-full border border-black text-[7.5pt] leading-snug">
         <div className="bg-gray-200 font-bold text-center py-1 border-b border-black">
           10. DECLARACIÓN DE CONFORMIDAD
@@ -18,8 +36,10 @@ export const Declaracion = () => {
             o superior a 50 ppm:
           </p>
           <span className="flex items-center gap-3 whitespace-nowrap">
-            <span className="font-semibold">SI</span> <Box />
-            <span className="font-semibold ml-1">NO</span> <Box />
+            <span className="font-semibold">SI</span>{" "}
+            <Box checked={conformidad.declaracion1} />
+            <span className="font-semibold ml-1">NO</span>{" "}
+            <Box checked={!conformidad.declaracion1} />
           </span>
         </div>
 
@@ -57,7 +77,9 @@ export const Declaracion = () => {
             <span className="font-bold whitespace-nowrap mr-1">
               N° DE REPORTE POR DEFECTO CRITICO
             </span>
-            <span className="border-b border-black flex-1 h-[12px]"></span>
+            <span className="border-b border-black flex-1 h-[12px]">
+              {numReporte}
+            </span>
           </div>
         </div>
 
@@ -68,8 +90,10 @@ export const Declaracion = () => {
             etiqueta que soporta esta inspección.
           </span>
           <span className="flex items-center gap-3 whitespace-nowrap">
-            <span className="font-semibold">SI</span> <Box />
-            <span className="font-semibold ml-1">NO</span> <Box />
+            <span className="font-semibold">SI</span>{" "}
+            <Box checked={conformidad.declaracion1} />
+            <span className="font-semibold ml-1">NO</span>{" "}
+            <Box checked={!conformidad.declaracion1} />
           </span>
         </div>
       </div>
@@ -84,15 +108,15 @@ export const Declaracion = () => {
           <div className="h-[24px] flex items-center justify-around px-1">
             <div className="flex items-center gap-1">
               <span>Sin defectos:</span>
-              <Box />
+              <Box checked={defectosVal === null} />
             </div>
             <div className="flex items-center gap-1">
               <span>Defectos no criticos:</span>
-              <Box />
+              <Box checked={defectosVal === true} />
             </div>
             <div className="flex items-center gap-1">
               <span>Defectos Criticos:</span>
-              <Box />
+              <Box checked={defectosVal === false} />
             </div>
           </div>
         </div>
@@ -101,8 +125,9 @@ export const Declaracion = () => {
         <div className="w-[30%] border-r border-black flex items-center justify-between px-2">
           <span className="font-bold text-[9pt]">INSTALACIÓN CONFORME:</span>
           <div className="flex items-center gap-1 font-bold text-[9pt]">
-            <span>SI</span> <Box />
-            <span className="ml-2">NO</span> <Box />
+            <span>SI</span> <Box checked={conformidad.instalacionConforme} />
+            <span className="ml-2">NO</span>{" "}
+            <Box checked={!conformidad.instalacionConforme} />
           </div>
         </div>
 
@@ -110,8 +135,9 @@ export const Declaracion = () => {
         <div className="w-[30%] flex items-center justify-between px-2">
           <span className="font-bold">Predio Continua En Servicio :</span>
           <div className="flex items-center gap-1 font-bold">
-            <span>Si</span> <Box />
-            <span className="ml-2">No</span> <Box />
+            <span>Si</span> <Box checked={conformidad.continuaServicio} />
+            <span className="ml-2">No</span>{" "}
+            <Box checked={!conformidad.continuaServicio} />
           </div>
         </div>
       </div>
@@ -127,7 +153,7 @@ export const Declaracion = () => {
           </span>
         </div>
         {/* Espacio en blanco para escribir */}
-        <div className="h-[60px] w-full"></div>
+        <div className="h-[60px] w-full">{conformidad.observaciones}</div>
       </div>
     </div>
   );
