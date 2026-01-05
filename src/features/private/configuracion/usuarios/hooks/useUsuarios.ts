@@ -196,6 +196,7 @@ export const useUsuarios = () => {
         "persona.id_tipo_documento",
         currentUsuarios.persona?.tipo_documento?.id_tipo_documento
       );
+      methodsUsuarios.setValue("id_rol", currentUsuarios?.rol?.id_rol);
       methodsUsuarios.setValue(
         "persona.numero_documento",
         currentUsuarios.persona.numero_documento
@@ -220,10 +221,7 @@ export const useUsuarios = () => {
         "persona.telefono",
         currentUsuarios.persona.telefono
       );
-      methodsUsuarios.setValue(
-        "persona.email",
-        currentUsuarios.persona.email
-      );
+      methodsUsuarios.setValue("persona.email", currentUsuarios.persona.email);
     } else {
       methodsUsuarios.reset();
     }
