@@ -8,11 +8,7 @@ import {
   Space,
   Table,
   Tooltip,
-  Modal,
   Select,
-  Spin,
-  Empty,
-  Image,
   Input,
   DatePicker,
   Row,
@@ -27,9 +23,9 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useState, useMemo } from "react";
-import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { ModalImagenesInspeccion } from "./ModalImagenesInspeccion";
 
 dayjs.extend(isBetween);
 
@@ -59,9 +55,6 @@ export const TableInspecciones = ({
   const [currentInspeccionId, setCurrentInspeccionId] = useState<number | null>(
     null
   );
-  const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
-  const [imageList, setImageList] = useState<any[]>([]);
-  const [loadingImages, setLoadingImages] = useState(false);
 
   // --- Estados para los filtros ---
   const [searchTermActa, setSearchTermActa] = useState("");
@@ -77,8 +70,6 @@ export const TableInspecciones = ({
 
   const openImageModal = (id: number) => {
     setCurrentInspeccionId(id);
-    setSelectedTypeId(null);
-    setImageList([]);
     setIsModalOpen(true);
   };
 
@@ -87,52 +78,13 @@ export const TableInspecciones = ({
     setCurrentInspeccionId(null);
   };
 
-  const handleTypeChange = async (tipoId: number) => {
-    if (!currentInspeccionId) return;
-
-    setSelectedTypeId(tipoId);
-    setLoadingImages(true);
-    setImageList([]);
-
-    try {
-      const res = await getImagenPorTipo(currentInspeccionId, tipoId);
-
-      const responseData = res?.data?.imagenes || [];
-
-      const imagesArray = Array.isArray(responseData)
-        ? responseData
-        : responseData
-        ? [responseData]
-        : [];
-
-      const validImages = imagesArray.filter(
-        (img: any) => img && img.imagenBase64
-      );
-
-      setImageList(validImages);
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Hubo un problema al intentar conectar con el servidor.",
-        confirmButtonText: "Entendido",
-      });
-    } finally {
-      setLoadingImages(false);
-    }
-  };
-
-  // --- Lógica de filtrado ---
   const filteredInspecciones = useMemo(() => {
     return inspecciones.filter((item) => {
-      // 1. Filtro por Número de Acta
       const acta = item.ruta?.numero_acta || "";
       const matchesActa = acta
         .toLowerCase()
         .includes(searchTermActa.toLowerCase());
 
-      // 2. Filtro por Inspector (nombre completo)
       const persona = item.ruta?.persona;
       const nombreCompleto = persona
         ? [
@@ -149,17 +101,13 @@ export const TableInspecciones = ({
         searchTermInspector.toLowerCase()
       );
 
-      // 3. Filtro por Tipo de Inspección
-      // Asumimos que item.tipoInspeccion.nombre existe
       const matchesTipo = selectedTipo
         ? item.tipoInspeccion?.nombre === selectedTipo
         : true;
 
-      // 4. Filtro por Fechas (Rango)
       let matchesDate = true;
       if (dateRange && dateRange[0] && dateRange[1]) {
         const fechaInsp = dayjs(item.fecha_inspeccion);
-        // isBetween(start, end, unit, inclusivity): [] -> inclusivity '[]' incluye start y end
         matchesDate = fechaInsp.isBetween(
           dateRange[0],
           dateRange[1],
@@ -337,91 +285,14 @@ export const TableInspecciones = ({
       />
 
       {/* --- MODAL DE IMÁGENES --- */}
-      <Modal
-        title="Visualizador de Imágenes"
-        open={isModalOpen}
-        onCancel={closeImageModal}
-        footer={[
-          <Button key="close" onClick={closeImageModal}>
-            Cerrar
-          </Button>,
-        ]}
-        width={700}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          {/* 1. SELECCIONADOR DE TIPO */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "bold",
-              }}
-            >
-              Seleccione el tipo de imagen a visualizar:
-            </label>
-            <Select
-              style={{ width: "100%" }}
-              placeholder="Ej: Foto Fachada, Firma..."
-              loading={isLoadingTipos}
-              onChange={handleTypeChange}
-              value={selectedTypeId}
-              options={tiposImagenes.map((tipo) => ({
-                label: `${tipo.descripcion}`,
-                value: tipo.id,
-              }))}
-            />
-          </div>
-
-          {/* 2. ÁREA DE VISUALIZACIÓN */}
-          <div
-            style={{
-              minHeight: "300px",
-              border: "1px dashed #d9d9d9",
-              borderRadius: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#fafafa",
-              padding: "20px",
-            }}
-          >
-            {loadingImages ? (
-              <Spin tip="Cargando imagen..." size="large" />
-            ) : !selectedTypeId ? (
-              <Empty description="Seleccione un tipo de imagen arriba" />
-            ) : imageList.length > 0 ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                  justifyContent: "center",
-                }}
-              >
-                {imageList.map((imgItem, idx) => {
-                  const rawBase64 = imgItem.imagenBase64;
-                  const src = rawBase64?.startsWith("data:image")
-                    ? rawBase64
-                    : `data:image/png;base64,${rawBase64}`;
-
-                  return (
-                    <Image
-                      key={idx}
-                      width={200}
-                      src={src}
-                      alt="Evidencia"
-                      style={{ objectFit: "contain", maxHeight: "300px" }}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <Empty description="No hay imágenes para este tipo" />
-            )}
-          </div>
-        </div>
-      </Modal>
+      <ModalImagenesInspeccion
+        isModalOpen={isModalOpen}
+        onClose={closeImageModal}
+        currentInspeccionId={currentInspeccionId}
+        tiposImagenes={tiposImagenes}
+        isLoadingTipos={isLoadingTipos}
+        getImagenPorTipo={getImagenPorTipo}
+      />
     </div>
   );
 };
