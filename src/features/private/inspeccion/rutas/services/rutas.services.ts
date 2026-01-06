@@ -48,3 +48,7 @@ export const historialRuta = async (id: number) => {
 export const generatePdf = async (data: IPdfRuta) => {
   return await electroApi.post("/ruta/pdf", data);
 };
+
+export const searchCasas = async (query: string) => {
+  return await electroApi.get(`/casa/search?q=${encodeURIComponent(query)}`);
+};
