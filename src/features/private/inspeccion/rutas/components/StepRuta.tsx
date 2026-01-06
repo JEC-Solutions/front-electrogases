@@ -1,14 +1,24 @@
-import { Col, DatePicker, Row, Select, TimePicker } from "antd";
+import {
+  Col,
+  DatePicker,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  TimePicker,
+} from "antd";
 import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
+import { ITipoVisita } from "@/features/private/inspeccion/rutas/interfaces";
 
 interface Props {
   inspectores: IUsuarios[];
+  tiposVisita: ITipoVisita[];
   methods: any;
 }
 
-export const StepRuta = ({ methods, inspectores }: Props) => {
+export const StepRuta = ({ methods, inspectores, tiposVisita }: Props) => {
   const {
     control,
     formState: { errors },
@@ -20,6 +30,12 @@ export const StepRuta = ({ methods, inspectores }: Props) => {
       label: `${inspector.persona?.primer_nombre ?? ""} ${
         inspector.persona?.primer_apellido ?? ""
       }`,
+    })) ?? [];
+
+  const formatTipoVisita =
+    tiposVisita?.map((visita) => ({
+      value: visita.id_tipo_visita,
+      label: visita.nombre,
     })) ?? [];
 
   return (
@@ -102,6 +118,86 @@ export const StepRuta = ({ methods, inspectores }: Props) => {
               {errors.ruta.id_inspector.message as string}
             </span>
           )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label>Tipo de visita</label>
+          <Controller
+            name="ruta.id_tipo_visita"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                allowClear
+                showSearch
+                placeholder="Seleccione tipo de visita (opcional)"
+                style={{ width: "100%" }}
+                optionFilterProp="label"
+                options={formatTipoVisita}
+                value={field.value ?? null}
+                onChange={(v) => field.onChange(v ?? null)}
+              />
+            )}
+          />
+          {errors?.ruta?.id_tipo_visita && (
+            <span style={{ color: "red" }}>
+              {errors.ruta.id_tipo_visita.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label>Valor del servicio</label>
+          <Controller
+            name="ruta.valor_servicio"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Valor del servicio (opcional)"
+                min={0}
+                precision={0}
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
+                formatter={(value) =>
+                  value === undefined || value === null
+                    ? ""
+                    : new Intl.NumberFormat("es-CO", {
+                        style: "currency",
+                        currency: "COP",
+                        maximumFractionDigits: 0,
+                      }).format(Number(value))
+                }
+                parser={(value) => {
+                  const onlyDigits = value?.toString().replace(/[^\d]/g, "");
+                  return onlyDigits ? Number(onlyDigits) : undefined;
+                }}
+              />
+            )}
+          />
+        </div>
+      </Col>
+
+      <Col xs={24}>
+        <div className="mb-4">
+          <label>Observaciones</label>
+          <Controller
+            name="ruta.observaciones"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <Input.TextArea
+                rows={3}
+                placeholder="Observaciones (opcional)"
+                {...field}
+              />
+            )}
+          />
         </div>
       </Col>
     </Row>

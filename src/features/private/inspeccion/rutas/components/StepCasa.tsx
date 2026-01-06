@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import {
   Col,
   Input,
-  InputNumber,
   Row,
   Select,
   AutoComplete,
@@ -14,7 +13,6 @@ import {
 } from "antd";
 import { SearchOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Controller } from "react-hook-form";
-import { ITipoVisita } from "@/features/private/inspeccion/rutas/interfaces";
 import { useGlobalDptos } from "@/features/global/hooks";
 import { searchCasas } from "@/features/private/inspeccion/rutas/services/rutas.services";
 import debounce from "lodash/debounce";
@@ -25,8 +23,6 @@ interface ICasaSearch {
   medidor: string;
   direccion: string;
   barrio: string;
-  valor_servicio: string;
-  observaciones: string;
   cliente?: {
     id_cliente: number;
     primer_nombre: string;
@@ -47,18 +43,13 @@ interface ICasaSearch {
       nombre: string;
     };
   };
-  tipo_visita?: {
-    id_tipo_visita: number;
-    nombre: string;
-  };
 }
 
 interface Props {
   methods: any;
-  tiposVisita: ITipoVisita[];
 }
 
-export const StepCasa = ({ methods, tiposVisita }: Props) => {
+export const StepCasa = ({ methods }: Props) => {
   const { ciudades, departamentos, getCityByDpto } = useGlobalDptos();
   const {
     control,
@@ -72,14 +63,9 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCasa, setSelectedCasa] = useState<ICasaSearch | null>(null);
+  const [searchValue, setSearchValue] = useState("");
 
-  // Watch for id_casa to know if we have a selected casa
   const watchedIdCasa = watch("casa.id_casa");
-
-  const formatTipoVisita = tiposVisita.map((visita) => ({
-    value: visita.id_tipo_visita,
-    label: visita.nombre,
-  }));
 
   const formatCiudades = ciudades.map((ciudad) => ({
     value: ciudad.codigo,
@@ -137,6 +123,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
   const handleSelectCasa = (_value: string, option: any) => {
     const casa: ICasaSearch = option.casa;
     setSelectedCasa(casa);
+    setSearchValue(`${casa.direccion} - ${casa.barrio}`);
 
     // Set casa fields
     setValue("casa.id_casa", casa.id_casa);
@@ -144,9 +131,6 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
     setValue("casa.medidor", casa.medidor || "");
     setValue("casa.direccion", casa.direccion);
     setValue("casa.barrio", casa.barrio);
-    setValue("casa.valor_servicio", casa.valor_servicio || "");
-    setValue("casa.observaciones", casa.observaciones || "");
-    setValue("casa.id_tipo_visita", casa.tipo_visita?.id_tipo_visita);
 
     // Set location
     if (casa.ciudad?.departamento) {
@@ -180,6 +164,7 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
 
   const handleClearSelection = () => {
     setSelectedCasa(null);
+    setSearchValue("");
     setValue("casa.id_casa", undefined);
     setValue("casa.no_cuenta", "");
     setValue("casa.medidor", "");
@@ -212,7 +197,11 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
           <AutoComplete
             style={{ width: "100%", marginTop: 4 }}
             options={searchOptions}
-            onSearch={debouncedSearch}
+            value={searchValue}
+            onSearch={(text) => {
+              setSearchValue(text);
+              debouncedSearch(text);
+            }}
             onSelect={handleSelectCasa}
             disabled={isFieldDisabled}
           >
@@ -378,71 +367,6 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
 
         <Col xs={24} md={8}>
           <div className="mb-4">
-            <label htmlFor="valor_servicio">Valor del servicio</label>
-            <Controller
-              name="casa.valor_servicio"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <InputNumber
-                  id="valor_servicio"
-                  style={{ width: "100%" }}
-                  placeholder="Valor del servicio"
-                  min={0}
-                  precision={0}
-                  value={field.value}
-                  onChange={(val) => field.onChange(val)}
-                  disabled={isFieldDisabled}
-                  formatter={(value) =>
-                    value === undefined || value === null
-                      ? ""
-                      : new Intl.NumberFormat("es-CO", {
-                          style: "currency",
-                          currency: "COP",
-                          maximumFractionDigits: 0,
-                        }).format(Number(value))
-                  }
-                  parser={(value) => {
-                    const onlyDigits = value?.toString().replace(/[^\d]/g, "");
-                    return onlyDigits ? Number(onlyDigits) : undefined;
-                  }}
-                />
-              )}
-            />
-          </div>
-        </Col>
-
-        <Col xs={24} md={8}>
-          <div className="mb-4">
-            <label htmlFor="id_tipo_visita">Tipo de visita</label>
-            <Controller
-              name="casa.id_tipo_visita"
-              control={control}
-              rules={{ required: "Este campo es requerido" }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  id="id_tipo_visita"
-                  allowClear
-                  showSearch
-                  placeholder="Seleccione el tipo de visita"
-                  style={{ width: "100%" }}
-                  optionFilterProp="label"
-                  options={formatTipoVisita}
-                  disabled={isFieldDisabled}
-                />
-              )}
-            />
-            {errors?.casa?.id_tipo_visita && (
-              <span style={{ color: "red" }}>
-                {errors.casa.id_tipo_visita.message as string}
-              </span>
-            )}
-          </div>
-        </Col>
-
-        <Col xs={24} md={8}>
-          <div className="mb-4">
             <label htmlFor="id_ciudad">Departamento</label>
             <Controller
               name="casa.id_departamento"
@@ -502,25 +426,6 @@ export const StepCasa = ({ methods, tiposVisita }: Props) => {
                 {errors.casa.id_ciudad.message as string}
               </span>
             )}
-          </div>
-        </Col>
-
-        <Col xs={24}>
-          <div className="mb-4">
-            <label>Observaciones</label>
-            <Controller
-              name="casa.observaciones"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <Input.TextArea
-                  rows={3}
-                  placeholder="Observaciones"
-                  {...field}
-                  disabled={isFieldDisabled}
-                />
-              )}
-            />
           </div>
         </Col>
       </Row>

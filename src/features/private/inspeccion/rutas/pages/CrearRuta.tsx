@@ -12,13 +12,8 @@ import { useNavigate } from "react-router-dom";
 const { Step } = Steps;
 
 export const CrearRuta = () => {
-  const {
-    methods,
-    onSubmit,
-    dataTipoVisita,
-    getUserDocument,
-    inspectores,
-  } = useCrearRutas();
+  const { methods, onSubmit, dataTipoVisita, getUserDocument, inspectores } =
+    useCrearRutas();
 
   const navigate = useNavigate();
 
@@ -105,14 +100,13 @@ export const CrearRuta = () => {
           <StepCliente methods={methods} onFindDocument={getUserDocument} />
         )}
 
-        {currentStep === 1 && (
-          <StepCasa methods={methods} tiposVisita={dataTipoVisita} />
-        )}
+        {currentStep === 1 && <StepCasa methods={methods} />}
 
         {currentStep === 2 && (
           <StepRuta
             methods={methods}
             inspectores={inspectores}
+            tiposVisita={dataTipoVisita}
           />
         )}
 

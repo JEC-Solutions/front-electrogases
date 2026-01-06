@@ -1,7 +1,7 @@
 import * as rutaServices from "@/features/private/inspeccion/rutas/services/rutas.services";
 import {
   IRuta,
-  ITipoVisita
+  ITipoVisita,
 } from "@/features/private/inspeccion/rutas/interfaces";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { IUser } from "@/features/private/configuracion/usuarios/interfaces";
@@ -88,6 +88,54 @@ export const useCrearRutas = () => {
 
     onError: (error: any) => {
       Swal.close();
+
+      const responseData = error.response?.data;
+
+      const conflictData = responseData?.data || responseData;
+
+      if (error.response?.status === 409 && conflictData?.conflicto) {
+        const { no_cuenta, diferencias } = conflictData;
+
+        const tablaDiferencias = diferencias
+          .map(
+            (diff: any) => `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px; text-align: left; font-weight: bold;">${diff.campo}</td>
+              <td style="padding: 8px; color: #16a34a;">${diff.valor_registrado}</td>
+              <td style="padding: 8px; color: #dc2626;">${diff.valor_ingresado}</td>
+            </tr>
+          `
+          )
+          .join("");
+
+        Swal.fire({
+          icon: "warning",
+          title: "Conflicto de Datos",
+          width: "600px",
+          html: `
+            <div style="text-align: left; margin-bottom: 10px;">
+              El número de cuenta <b>${no_cuenta}</b> ya existe, pero la información física no coincide. 
+              <br/><small>Verifique si digitó bien la cuenta o los datos de la casa.</small>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px;">
+              <thead style="background-color: #f3f4f6;">
+                <tr>
+                  <th style="padding: 8px; text-align: left;">Campo</th>
+                  <th style="padding: 8px; text-align: left;">En Base de Datos</th>
+                  <th style="padding: 8px; text-align: left;">Ingresado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tablaDiferencias}
+              </tbody>
+            </table>
+          `,
+          confirmButtonText: "Entendido, voy a revisar",
+        });
+        return;
+      }
+
       handleAxiosError(error);
     },
 
@@ -96,6 +144,7 @@ export const useCrearRutas = () => {
     },
   });
 
+  // Obtener cliente por documento
   const { data: usuario } = useQuery<IUser>({
     queryKey: ["usuario", numeroDoc],
     enabled: !!numeroDoc,
@@ -137,7 +186,10 @@ export const useCrearRutas = () => {
       methodsRutas.setValue("cliente.primer_nombre", usuario.primer_nombre);
       methodsRutas.setValue("cliente.segundo_nombre", usuario.segundo_nombre);
       methodsRutas.setValue("cliente.primer_apellido", usuario.primer_apellido);
-      methodsRutas.setValue("cliente.segundo_apellido", usuario.segundo_apellido);
+      methodsRutas.setValue(
+        "cliente.segundo_apellido",
+        usuario.segundo_apellido
+      );
       methodsRutas.setValue("cliente.telefono", usuario.telefono);
       methodsRutas.setValue(
         "cliente.id_tipo_documento",
