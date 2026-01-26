@@ -30,9 +30,19 @@ export const getTiposImagenes = async () => {
 
 export const getImagenesByTipo = async (
   inspeccionId: number,
-  tipoImagenId: number
+  tipoImagenId: number,
 ) => {
   return await electroApi.get(
-    `/inspeccion/imagenes/${inspeccionId}/tipo/${tipoImagenId}`
+    `/inspeccion/imagenes/${inspeccionId}/tipo/${tipoImagenId}`,
+  );
+};
+
+export const downloadMassivePdf = async (ids: number[]) => {
+  return await electroApi.post(
+    `/inspeccion/generate-pdf-massive`,
+    { ids },
+    {
+      responseType: "blob",
+    },
   );
 };

@@ -1,10 +1,12 @@
 import * as inspeccionServices from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
-import { IInspecciones, ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfaces";
+import {
+  IInspecciones,
+  ITipoImagen,
+} from "@/features/private/inspeccion/inspecciones/interfaces";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { downloadBase64 } from "@/utils/downloadBase64";
 import Swal from "sweetalert2";
-
 
 export const useInspecciones = () => {
   const queryClient = useQueryClient();
@@ -85,6 +87,58 @@ export const useInspecciones = () => {
     },
   });
 
+  const downloadMassiveMutation = useMutation({
+    mutationFn: async (ids: number[]) => {
+      Swal.fire({
+        title: "Generando PDFs...",
+        text: `Preparando ${ids.length} documento(s), por favor espere...`,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const { data } = await inspeccionServices.downloadMassivePdf(ids);
+      return data;
+    },
+    onSuccess: (data) => {
+      try {
+        const blob = new Blob([data], { type: "application/zip" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `Inspecciones_${new Date().toISOString().split("T")[0]}.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        Swal.fire({
+          icon: "success",
+          title: "¡Descarga completada!",
+          text: "El archivo ZIP se ha descargado correctamente.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error procesando la descarga masiva:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Error de procesamiento",
+          text: "El archivo se recibió pero no se pudo descargar.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema al generar los PDFs.",
+        confirmButtonText: "Entendido",
+      });
+    },
+  });
+
   const { data: tiposImagenes = [], isLoading: isLoadingTipos } = useQuery<
     ITipoImagen[]
   >({
@@ -103,7 +157,7 @@ export const useInspecciones = () => {
 
   const getImagenPorTipo = async (
     inspeccionId: number,
-    tipoImagenId: number
+    tipoImagenId: number,
   ) => {
     try {
       return await queryClient.fetchQuery({
@@ -111,7 +165,7 @@ export const useInspecciones = () => {
         queryFn: async () => {
           const { data } = await inspeccionServices.getImagenesByTipo(
             inspeccionId,
-            tipoImagenId
+            tipoImagenId,
           );
           return data;
         },
@@ -129,6 +183,7 @@ export const useInspecciones = () => {
     isError,
     error,
     downloadPdf: downloadMutation.mutate,
+    downloadMassivePdf: downloadMassiveMutation.mutate,
     isDownloading: downloadMutation.isPending,
     // imagenes
     getImagenPorTipo,

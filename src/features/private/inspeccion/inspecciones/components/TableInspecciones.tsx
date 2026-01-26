@@ -18,6 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   CameraOutlined,
+  DownloadOutlined,
   EyeOutlined,
   FilePdfOutlined,
   SearchOutlined,
@@ -34,9 +35,10 @@ const { RangePicker } = DatePicker;
 interface Props {
   inspecciones: IInspecciones[];
   downloadPdf: (id: number) => void;
+  downloadMassivePdf: (ids: number[]) => void;
   getImagenPorTipo: (
     inspeccionId: number,
-    tipoImagenId: number
+    tipoImagenId: number,
   ) => Promise<any>;
   tiposImagenes: ITipoImagen[];
   isLoadingTipos: boolean;
@@ -45,6 +47,7 @@ interface Props {
 export const TableInspecciones = ({
   inspecciones,
   downloadPdf,
+  downloadMassivePdf,
   getImagenPorTipo,
   tiposImagenes,
   isLoadingTipos,
@@ -53,8 +56,9 @@ export const TableInspecciones = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentInspeccionId, setCurrentInspeccionId] = useState<number | null>(
-    null
+    null,
   );
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   // --- Estados para los filtros ---
   const [searchTermActa, setSearchTermActa] = useState("");
@@ -98,7 +102,7 @@ export const TableInspecciones = ({
             .toLowerCase()
         : "";
       const matchesInspector = nombreCompleto.includes(
-        searchTermInspector.toLowerCase()
+        searchTermInspector.toLowerCase(),
       );
 
       const matchesTipo = selectedTipo
@@ -112,7 +116,7 @@ export const TableInspecciones = ({
           dateRange[0],
           dateRange[1],
           "day",
-          "[]"
+          "[]",
         );
       }
 
@@ -233,6 +237,16 @@ export const TableInspecciones = ({
             <SearchOutlined /> Filtros de Búsqueda
           </Space>
         }
+        extra={
+          <Button
+            type="primary"
+            icon={<DownloadOutlined />}
+            disabled={selectedRowKeys.length === 0}
+            onClick={() => downloadMassivePdf(selectedRowKeys as number[])}
+          >
+            Descargar PDFs ({selectedRowKeys.length})
+          </Button>
+        }
       >
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} md={6}>
@@ -282,6 +296,10 @@ export const TableInspecciones = ({
         rowKey="id_inspeccion"
         className="custom-table"
         scroll={{ x: 600 }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (keys) => setSelectedRowKeys(keys),
+        }}
       />
 
       {/* --- MODAL DE IMÁGENES --- */}

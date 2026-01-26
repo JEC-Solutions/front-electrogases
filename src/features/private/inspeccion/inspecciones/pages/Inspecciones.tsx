@@ -9,6 +9,7 @@ export const Inspecciones = () => {
     isError,
     isLoading,
     downloadPdf,
+    downloadMassivePdf,
     getImagenPorTipo,
     isLoadingTipos,
     tiposImagenes,
@@ -40,6 +41,7 @@ export const Inspecciones = () => {
           <TableInspecciones
             inspecciones={inspecciones}
             downloadPdf={downloadPdf}
+            downloadMassivePdf={downloadMassivePdf}
             getImagenPorTipo={getImagenPorTipo}
             tiposImagenes={tiposImagenes}
             isLoadingTipos={isLoadingTipos}
