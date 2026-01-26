@@ -32,10 +32,12 @@ dayjs.extend(isBetween);
 
 const { RangePicker } = DatePicker;
 
+type PrintType = "all" | "first_page" | "first_two_pages";
+
 interface Props {
   inspecciones: IInspecciones[];
   downloadPdf: (id: number) => void;
-  downloadMassivePdf: (ids: number[]) => void;
+  downloadMassivePdf: (ids: number[], printType?: PrintType) => void;
   getImagenPorTipo: (
     inspeccionId: number,
     tipoImagenId: number,
@@ -59,6 +61,7 @@ export const TableInspecciones = ({
     null,
   );
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [printType, setPrintType] = useState<PrintType>("all");
 
   // --- Estados para los filtros ---
   const [searchTermActa, setSearchTermActa] = useState("");
@@ -238,14 +241,28 @@ export const TableInspecciones = ({
           </Space>
         }
         extra={
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            disabled={selectedRowKeys.length === 0}
-            onClick={() => downloadMassivePdf(selectedRowKeys as number[])}
-          >
-            Descargar PDFs ({selectedRowKeys.length})
-          </Button>
+          <Space>
+            <Select
+              value={printType}
+              onChange={(val) => setPrintType(val)}
+              style={{ width: 180 }}
+              options={[
+                { label: "Todas las páginas", value: "all" },
+                { label: "Solo primera página", value: "first_page" },
+                { label: "Primeras 2 páginas", value: "first_two_pages" },
+              ]}
+            />
+            <Button
+              type="primary"
+              icon={<DownloadOutlined />}
+              disabled={selectedRowKeys.length === 0}
+              onClick={() =>
+                downloadMassivePdf(selectedRowKeys as number[], printType)
+              }
+            >
+              Descargar PDFs ({selectedRowKeys.length})
+            </Button>
+          </Space>
         }
       >
         <Row gutter={[16, 16]}>

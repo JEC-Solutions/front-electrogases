@@ -88,7 +88,13 @@ export const useInspecciones = () => {
   });
 
   const downloadMassiveMutation = useMutation({
-    mutationFn: async (ids: number[]) => {
+    mutationFn: async ({
+      ids,
+      printType,
+    }: {
+      ids: number[];
+      printType?: string;
+    }) => {
       Swal.fire({
         title: "Generando PDFs...",
         text: `Preparando ${ids.length} documento(s), por favor espere...`,
@@ -97,7 +103,10 @@ export const useInspecciones = () => {
           Swal.showLoading();
         },
       });
-      const { data } = await inspeccionServices.downloadMassivePdf(ids);
+      const { data } = await inspeccionServices.downloadMassivePdf(
+        ids,
+        printType,
+      );
       return data;
     },
     onSuccess: (data) => {
@@ -177,13 +186,17 @@ export const useInspecciones = () => {
     }
   };
 
+  const handleDownloadMassivePdf = (ids: number[], printType?: string) => {
+    downloadMassiveMutation.mutate({ ids, printType });
+  };
+
   return {
     inspecciones,
     isLoading,
     isError,
     error,
     downloadPdf: downloadMutation.mutate,
-    downloadMassivePdf: downloadMassiveMutation.mutate,
+    downloadMassivePdf: handleDownloadMassivePdf,
     isDownloading: downloadMutation.isPending,
     // imagenes
     getImagenPorTipo,
