@@ -35,3 +35,7 @@ export const getHistorialAccesosInspectores = async (
     `/reportes/historial-accesos?fechaInicio=${fechaInicio}&&fechaFin=${fechaFin}`,
   );
 };
+
+export const getInspectoresActivos = async () => {
+  return await electroApi.get(`/reportes/inspectores-activos`);
+};

@@ -54,6 +54,11 @@ export const useInicio = () => {
       ),
   });
 
+  const inspectoresActivosQuery = useQuery({
+    queryKey: ["inspectores-activos"],
+    queryFn: () => inicioServices.getInspectoresActivos(),
+  });
+
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
     if (dates) {
       setSelectedDates({
@@ -91,5 +96,12 @@ export const useInicio = () => {
       historialAccesosQuery.data?.data?.data?.desglose || [],
     historialAccesosTotal: historialAccesosQuery.data?.data?.data?.total || 0,
     isLoadingHistorialAccesos: historialAccesosQuery.isLoading,
+
+    // Datos inspectores activos
+    inspectoresActivosData:
+      inspectoresActivosQuery.data?.data?.data?.inspectores || [],
+    inspectoresActivosTotal:
+      inspectoresActivosQuery.data?.data?.data?.total || 0,
+    isLoadingInspectoresActivos: inspectoresActivosQuery.isLoading,
   };
 };

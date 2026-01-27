@@ -6,6 +6,7 @@ import {
   DistribucionGasChart,
   EquiposUtilizadosChart,
   HistorialAccesosChart,
+  InspectoresActivosChart,
 } from "@/features/private/inicio/components";
 import dayjs from "dayjs";
 
@@ -28,6 +29,9 @@ export const Inicio = () => {
     historialAccesosData,
     historialAccesosTotal,
     isLoadingHistorialAccesos,
+    inspectoresActivosData,
+    inspectoresActivosTotal,
+    isLoadingInspectoresActivos,
   } = useInicio();
 
   return (
@@ -89,6 +93,15 @@ export const Inicio = () => {
             data={historialAccesosData}
             total={historialAccesosTotal}
             isLoading={isLoadingHistorialAccesos}
+          />
+        </Col>
+
+        {/* Tabla 5 - Inspectores activos */}
+        <Col xs={24}>
+          <InspectoresActivosChart
+            data={inspectoresActivosData}
+            total={inspectoresActivosTotal}
+            isLoading={isLoadingInspectoresActivos}
           />
         </Col>
       </Row>
