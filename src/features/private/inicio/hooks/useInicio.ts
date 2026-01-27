@@ -45,6 +45,15 @@ export const useInicio = () => {
       ),
   });
 
+  const historialAccesosQuery = useQuery({
+    queryKey: ["historial-accesos-inspectores", queryDates],
+    queryFn: () =>
+      inicioServices.getHistorialAccesosInspectores(
+        queryDates.inicio,
+        queryDates.fin,
+      ),
+  });
+
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
     if (dates) {
       setSelectedDates({
@@ -76,5 +85,11 @@ export const useInicio = () => {
     equiposData: equiposQuery.data?.data?.data?.desglose || [],
     equiposTotal: equiposQuery.data?.data?.data?.total || 0,
     isLoadingEquipos: equiposQuery.isLoading,
+
+    // Datos historial de accesos
+    historialAccesosData:
+      historialAccesosQuery.data?.data?.data?.desglose || [],
+    historialAccesosTotal: historialAccesosQuery.data?.data?.data?.total || 0,
+    isLoadingHistorialAccesos: historialAccesosQuery.isLoading,
   };
 };
