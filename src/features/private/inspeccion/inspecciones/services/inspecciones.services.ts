@@ -46,3 +46,11 @@ export const downloadMassivePdf = async (ids: number[], printType?: string) => {
     },
   );
 };
+
+export const getSolicitudesEdicion = async (id: number) => {
+  return await electroApi.get(`/inspeccion/${id}/solicitudes-edicion`);
+};
+
+export const responderSolicitudEdicion = async (id: number, data: any) => {
+  return await electroApi.put(`/inspeccion/solicitud-edicion/${id}`, data);
+};

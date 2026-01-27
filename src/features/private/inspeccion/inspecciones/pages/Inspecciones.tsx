@@ -13,6 +13,9 @@ export const Inspecciones = () => {
     getImagenPorTipo,
     isLoadingTipos,
     tiposImagenes,
+    fetchSolicitudesEdicion,
+    responderSolicitud,
+    isRespondiendo,
   } = useInspecciones();
 
   return (
@@ -45,6 +48,9 @@ export const Inspecciones = () => {
             getImagenPorTipo={getImagenPorTipo}
             tiposImagenes={tiposImagenes}
             isLoadingTipos={isLoadingTipos}
+            fetchSolicitudesEdicion={fetchSolicitudesEdicion}
+            responderSolicitud={responderSolicitud}
+            isRespondiendo={isRespondiendo}
           />
         )}
       </Card>

@@ -190,6 +190,77 @@ export const useInspecciones = () => {
     downloadMassiveMutation.mutate({ ids, printType });
   };
 
+  // Obtener solicitudes de edición para una inspección
+  const fetchSolicitudesEdicion = async (inspeccionId: number) => {
+    try {
+      const { data } =
+        await inspeccionServices.getSolicitudesEdicion(inspeccionId);
+      return data?.data || [];
+    } catch (error: any) {
+      console.error("Error obteniendo solicitudes de edición:", error);
+      handleAxiosError(error);
+      return [];
+    }
+  };
+
+  // Responder solicitud de edición (aprobar o rechazar)
+  const responderSolicitudMutation = useMutation({
+    mutationFn: async ({
+      idSolicitud,
+      estado,
+      observacion_ingeniero,
+    }: {
+      idSolicitud: number;
+      estado: "APROBADO" | "RECHAZADO";
+      observacion_ingeniero?: string;
+    }) => {
+      const { data } = await inspeccionServices.responderSolicitudEdicion(
+        idSolicitud,
+        { estado, observacion_ingeniero },
+      );
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["inspecciones"] });
+      Swal.fire({
+        icon: "success",
+        title: "¡Solicitud procesada!",
+        text: data?.message || "La solicitud ha sido procesada correctamente.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo procesar la solicitud.",
+        confirmButtonText: "Entendido",
+      });
+    },
+  });
+
+  const handleResponderSolicitud = (
+    idSolicitud: number,
+    estado: "APROBADO" | "RECHAZADO",
+    observacion_ingeniero?: string,
+    onSuccess?: () => void,
+  ) => {
+    responderSolicitudMutation.mutate(
+      {
+        idSolicitud,
+        estado,
+        observacion_ingeniero,
+      },
+      {
+        onSuccess: () => {
+          onSuccess?.();
+        },
+      },
+    );
+  };
+
   return {
     inspecciones,
     isLoading,
@@ -202,5 +273,9 @@ export const useInspecciones = () => {
     getImagenPorTipo,
     isLoadingTipos,
     tiposImagenes,
+    // solicitudes de edición
+    fetchSolicitudesEdicion,
+    responderSolicitud: handleResponderSolicitud,
+    isRespondiendo: responderSolicitudMutation.isPending,
   };
 };

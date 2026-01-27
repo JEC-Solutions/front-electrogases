@@ -26,6 +26,7 @@ export interface IInspecciones {
   updated_at: string;
   tipoInspeccion: TipoInspeccion;
   ruta: Ruta;
+  solicitudesPendientes?: number;
 }
 
 export interface TipoInspeccion {
