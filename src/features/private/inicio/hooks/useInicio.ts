@@ -18,7 +18,7 @@ export const useInicio = () => {
     {
       inicio: today,
       fin: today,
-    }
+    },
   );
 
   const inspeccionQuery = useQuery({
@@ -26,7 +26,7 @@ export const useInicio = () => {
     queryFn: () =>
       inicioServices.getReporteTipoInspeccion(
         queryDates.inicio,
-        queryDates.fin
+        queryDates.fin,
       ),
   });
 
@@ -34,6 +34,15 @@ export const useInicio = () => {
     queryKey: ["reporte-tipo-gas", queryDates],
     queryFn: () =>
       inicioServices.getReporteTipoGas(queryDates.inicio, queryDates.fin),
+  });
+
+  const equiposQuery = useQuery({
+    queryKey: ["reporte-equipos-utilizados", queryDates],
+    queryFn: () =>
+      inicioServices.getReporteEquiposUtilizados(
+        queryDates.inicio,
+        queryDates.fin,
+      ),
   });
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
@@ -54,12 +63,18 @@ export const useInicio = () => {
     handleDateChange,
     handleFiltrar,
 
-    // Datos
+    // Datos inspecciones
     inspeccionesData: inspeccionQuery.data?.data?.data || [],
     isLoadingInspecciones: inspeccionQuery.isLoading,
 
+    // Datos gas
     gasData: gasQuery.data?.data?.data?.desglose || [],
     gasTotal: gasQuery.data?.data?.data?.total || 0,
     isLoadingGas: gasQuery.isLoading,
+
+    // Datos equipos
+    equiposData: equiposQuery.data?.data?.data?.desglose || [],
+    equiposTotal: equiposQuery.data?.data?.data?.total || 0,
+    isLoadingEquipos: equiposQuery.isLoading,
   };
 };

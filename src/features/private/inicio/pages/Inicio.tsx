@@ -4,6 +4,7 @@ import { useInicio } from "@/features/private/inicio/hooks";
 import {
   InspeccionesPorTipoChart,
   DistribucionGasChart,
+  EquiposUtilizadosChart,
 } from "@/features/private/inicio/components";
 import dayjs from "dayjs";
 
@@ -20,6 +21,9 @@ export const Inicio = () => {
     gasData,
     gasTotal,
     isLoadingGas,
+    equiposData,
+    equiposTotal,
+    isLoadingEquipos,
   } = useInicio();
 
   return (
@@ -49,7 +53,7 @@ export const Inicio = () => {
       </Row>
 
       <Row gutter={[16, 16]}>
-        {/* Gráfica 1 */}
+        {/* Gráfica 1 - Inspecciones por tipo */}
         <Col xs={24} md={12} lg={14}>
           <InspeccionesPorTipoChart
             data={inspeccionesData}
@@ -57,12 +61,21 @@ export const Inicio = () => {
           />
         </Col>
 
-        {/* Gráfica 2 */}
+        {/* Gráfica 2 - Distribución de gas */}
         <Col xs={24} md={12} lg={10}>
           <DistribucionGasChart
             data={gasData}
             total={gasTotal}
             isLoading={isLoadingGas}
+          />
+        </Col>
+
+        {/* Gráfica 3 - Equipos utilizados */}
+        <Col xs={24}>
+          <EquiposUtilizadosChart
+            data={equiposData}
+            total={equiposTotal}
+            isLoading={isLoadingEquipos}
           />
         </Col>
       </Row>

@@ -17,3 +17,12 @@ export const getReporteTipoGas = async (
     `/reportes/tipos-gas?fechaInicio=${fechaInicio}&&fechaFin=${fechaFin}`
   );
 };
+
+export const getReporteEquiposUtilizados = async (
+  fechaInicio: string,
+  fechaFin: string
+) => {
+  return await electroApi.get(
+    `/reportes/equipos-utilizados?fechaInicio=${fechaInicio}&&fechaFin=${fechaFin}`
+  );
+};
