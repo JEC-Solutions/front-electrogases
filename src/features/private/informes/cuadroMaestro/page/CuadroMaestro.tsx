@@ -1,12 +1,39 @@
 import { useCuadroMaestro } from "@/features/private/informes/cuadroMaestro/hooks";
 import { TableCuadroMaestro } from "@/features/private/informes/cuadroMaestro/components";
-import { Spin } from "antd";
+import { Button, Spin, Space, Typography } from "antd";
+import { FileExcelOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 
 export const CuadroMaestro = () => {
-  const { cuadroMaestro, isLoading, isError, error } = useCuadroMaestro();
+  const { cuadroMaestro, isLoading, isError, error, exportExcel, isExporting } =
+    useCuadroMaestro();
 
   return (
     <div className="mt-8">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16,
+        }}
+      >
+        <Title level={4} style={{ margin: 0 }}>
+          Cuadro Maestro
+        </Title>
+        <Space>
+          <Button
+            type="primary"
+            icon={<FileExcelOutlined />}
+            onClick={exportExcel}
+            loading={isExporting}
+          >
+            Exportar Excel
+          </Button>
+        </Space>
+      </div>
+
       {isLoading ? (
         <div
           style={{

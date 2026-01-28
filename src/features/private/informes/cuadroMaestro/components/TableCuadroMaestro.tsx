@@ -183,17 +183,12 @@ export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
       key: "resultado",
       width: 120,
       render: (_, record) => {
-        const resultado = record.ruta?.resultado?.nombre;
-        if (!resultado) return "-";
+        const declaracion = record.declaracionConformidad?.[0];
+        if (!declaracion) return "-";
 
-        let color = "default";
-        if (resultado.toUpperCase().includes("CONFORME")) {
-          color = "green";
-        } else if (resultado.toUpperCase().includes("NO CONFORME")) {
-          color = "red";
-        } else if (resultado.toUpperCase().includes("PENDIENTE")) {
-          color = "orange";
-        }
+        const isConforme = declaracion.instalacionConforme;
+        const resultado = isConforme ? "CONFORME" : "NO CONFORME";
+        const color = isConforme ? "green" : "red";
 
         return <Tag color={color}>{resultado}</Tag>;
       },
