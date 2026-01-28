@@ -21,6 +21,7 @@ import {
   Inspecciones,
   Acta,
 } from "@/features/private/inspeccion/inspecciones/pages";
+import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/page";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -112,7 +113,7 @@ export const Dashboard = () => {
             {/* Informes */}
             <Route
               path="/informes/cuadro_maestro"
-              element={<p>cuadro maestro</p>}
+              element={<CuadroMaestro />}
             />
 
             {/* Ruta catch-all dentro dashboard */}
