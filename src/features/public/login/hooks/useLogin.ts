@@ -58,6 +58,16 @@ export const useLogin = () => {
     },
 
     onSuccess: ({ data }) => {
+      if (data.data.is_inspector) {
+        Swal.fire({
+          icon: "warning",
+          title: "Acceso denegado",
+          text: "No tiene permitido ingresar a esta plataforma.",
+          confirmButtonText: "Aceptar",
+        });
+        return;
+      }
+
       if (data.data.change_password) {
         Swal.fire({
           icon: "warning",
