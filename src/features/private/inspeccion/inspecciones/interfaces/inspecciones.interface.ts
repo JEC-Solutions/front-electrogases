@@ -22,11 +22,11 @@ export interface IInspecciones {
   fecha_licencia_contruccion: string;
   existe_linea: boolean;
   existe_vacio: boolean;
+  editar_informe: boolean;
   created_at: string;
   updated_at: string;
   tipoInspeccion: TipoInspeccion;
   ruta: Ruta;
-  solicitudesPendientes?: number;
 }
 
 export interface TipoInspeccion {

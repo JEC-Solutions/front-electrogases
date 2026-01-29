@@ -190,42 +190,19 @@ export const useInspecciones = () => {
     downloadMassiveMutation.mutate({ ids, printType });
   };
 
-  // Obtener solicitudes de edición para una inspección
-  const fetchSolicitudesEdicion = async (inspeccionId: number) => {
-    try {
+  // Autorizar edición de informe
+  const autorizarEdicionMutation = useMutation({
+    mutationFn: async (inspeccionId: number) => {
       const { data } =
-        await inspeccionServices.getSolicitudesEdicion(inspeccionId);
-      return data?.data || [];
-    } catch (error: any) {
-      console.error("Error obteniendo solicitudes de edición:", error);
-      handleAxiosError(error);
-      return [];
-    }
-  };
-
-  // Responder solicitud de edición (aprobar o rechazar)
-  const responderSolicitudMutation = useMutation({
-    mutationFn: async ({
-      idSolicitud,
-      estado,
-      observacion_ingeniero,
-    }: {
-      idSolicitud: number;
-      estado: "APROBADO" | "RECHAZADO";
-      observacion_ingeniero?: string;
-    }) => {
-      const { data } = await inspeccionServices.responderSolicitudEdicion(
-        idSolicitud,
-        { estado, observacion_ingeniero },
-      );
+        await inspeccionServices.autorizarEdicionInforme(inspeccionId);
       return data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["inspecciones"] });
       Swal.fire({
         icon: "success",
-        title: "¡Solicitud procesada!",
-        text: data?.message || "La solicitud ha sido procesada correctamente.",
+        title: "¡Edición autorizada!",
+        text: data?.message || "La edición del informe ha sido autorizada.",
         timer: 2000,
         showConfirmButton: false,
       });
@@ -235,31 +212,11 @@ export const useInspecciones = () => {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "No se pudo procesar la solicitud.",
+        text: "No se pudo autorizar la edición.",
         confirmButtonText: "Entendido",
       });
     },
   });
-
-  const handleResponderSolicitud = (
-    idSolicitud: number,
-    estado: "APROBADO" | "RECHAZADO",
-    observacion_ingeniero?: string,
-    onSuccess?: () => void,
-  ) => {
-    responderSolicitudMutation.mutate(
-      {
-        idSolicitud,
-        estado,
-        observacion_ingeniero,
-      },
-      {
-        onSuccess: () => {
-          onSuccess?.();
-        },
-      },
-    );
-  };
 
   return {
     inspecciones,
@@ -273,9 +230,8 @@ export const useInspecciones = () => {
     getImagenPorTipo,
     isLoadingTipos,
     tiposImagenes,
-    // solicitudes de edición
-    fetchSolicitudesEdicion,
-    responderSolicitud: handleResponderSolicitud,
-    isRespondiendo: responderSolicitudMutation.isPending,
+    // autorizar edición
+    autorizarEdicion: autorizarEdicionMutation.mutate,
+    isAutorizando: autorizarEdicionMutation.isPending,
   };
 };

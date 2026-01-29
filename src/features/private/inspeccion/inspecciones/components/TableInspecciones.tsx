@@ -14,12 +14,7 @@ import {
   Row,
   Col,
   Card,
-  Badge,
-  Modal,
-  List,
-  Tag,
   Popconfirm,
-  Spin,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
@@ -28,9 +23,7 @@ import {
   EyeOutlined,
   FilePdfOutlined,
   SearchOutlined,
-  EditOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { useState, useMemo } from "react";
 import dayjs, { Dayjs } from "dayjs";
@@ -40,20 +33,8 @@ import { ModalImagenesInspeccion } from "./ModalImagenesInspeccion";
 dayjs.extend(isBetween);
 
 const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 
 type PrintType = "all" | "first_page" | "first_two_pages";
-
-interface ISolicitudEdicion {
-  id_solicitud: number;
-  observacion_inspector: string | null;
-  estado: "PENDIENTE" | "APROBADO" | "RECHAZADO";
-  observacion_ingeniero: string | null;
-  id_usuario_solicitante: number;
-  id_usuario_aprobador: number | null;
-  fecha_solicitud: string;
-  fecha_aprobacion: string | null;
-}
 
 interface Props {
   inspecciones: IInspecciones[];
@@ -65,16 +46,8 @@ interface Props {
   ) => Promise<any>;
   tiposImagenes: ITipoImagen[];
   isLoadingTipos: boolean;
-  fetchSolicitudesEdicion: (
-    inspeccionId: number,
-  ) => Promise<ISolicitudEdicion[]>;
-  responderSolicitud: (
-    idSolicitud: number,
-    estado: "APROBADO" | "RECHAZADO",
-    observacion_ingeniero?: string,
-    onSuccess?: () => void,
-  ) => void;
-  isRespondiendo: boolean;
+  autorizarEdicion: (inspeccionId: number) => void;
+  isAutorizando: boolean;
 }
 
 export const TableInspecciones = ({
@@ -84,9 +57,8 @@ export const TableInspecciones = ({
   getImagenPorTipo,
   tiposImagenes,
   isLoadingTipos,
-  fetchSolicitudesEdicion,
-  responderSolicitud,
-  isRespondiendo,
+  autorizarEdicion,
+  isAutorizando,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -105,12 +77,6 @@ export const TableInspecciones = ({
     [Dayjs | null, Dayjs | null] | null
   >(null);
 
-  // --- Estados para el modal de solicitudes ---
-  const [isSolicitudesModalOpen, setIsSolicitudesModalOpen] = useState(false);
-  const [solicitudes, setSolicitudes] = useState<ISolicitudEdicion[]>([]);
-  const [isLoadingSolicitudes, setIsLoadingSolicitudes] = useState(false);
-  const [observacionIngeniero, setObservacionIngeniero] = useState("");
-
   const handleRedirect = (id: number) => {
     navigate(`/dashboard/inspecciones/${id}`);
   };
@@ -123,41 +89,6 @@ export const TableInspecciones = ({
   const closeImageModal = () => {
     setIsModalOpen(false);
     setCurrentInspeccionId(null);
-  };
-
-  const openSolicitudesModal = async (id: number) => {
-    setCurrentInspeccionId(id);
-    setIsLoadingSolicitudes(true);
-    setIsSolicitudesModalOpen(true);
-    try {
-      const data = await fetchSolicitudesEdicion(id);
-      setSolicitudes(data);
-    } catch (error) {
-      console.error("Error cargando solicitudes:", error);
-    } finally {
-      setIsLoadingSolicitudes(false);
-    }
-  };
-
-  const closeSolicitudesModal = () => {
-    setIsSolicitudesModalOpen(false);
-    setCurrentInspeccionId(null);
-    setSolicitudes([]);
-    setObservacionIngeniero("");
-  };
-
-  const handleResponder = (
-    idSolicitud: number,
-    estado: "APROBADO" | "RECHAZADO",
-  ) => {
-    responderSolicitud(idSolicitud, estado, observacionIngeniero, async () => {
-      // Refrescar las solicitudes después de responder
-      if (currentInspeccionId) {
-        const data = await fetchSolicitudesEdicion(currentInspeccionId);
-        setSolicitudes(data);
-      }
-    });
-    setObservacionIngeniero("");
   };
 
   const filteredInspecciones = useMemo(() => {
@@ -261,27 +192,39 @@ export const TableInspecciones = ({
       render: (_, record) => record?.ruta?.numero_acta || "",
     },
     {
-      title: "Solicitudes",
-      key: "solicitudes",
+      title: "Autorizar Edición",
+      key: "autorizarEdicion",
       align: "center",
       render: (_, record) => {
-        const count = record.solicitudesPendientes || 0;
+        const yaAutorizado = record.editar_informe;
         return (
           <Tooltip
-            title={count > 0 ? `${count} pendiente(s)` : "Ver historial"}
+            title={
+              yaAutorizado
+                ? "Edición ya autorizada"
+                : "Autorizar edición del informe"
+            }
           >
-            <Button
-              type="text"
-              onClick={() => openSolicitudesModal(record.id_inspeccion)}
-            >
-              {count > 0 ? (
-                <Badge count={count} style={{ backgroundColor: "#faad14" }}>
-                  <EditOutlined style={{ fontSize: 18, color: "#faad14" }} />
-                </Badge>
-              ) : (
-                <EditOutlined style={{ fontSize: 18, color: "#999" }} />
-              )}
-            </Button>
+            {yaAutorizado ? (
+              <CheckCircleOutlined style={{ fontSize: 18, color: "#52c41a" }} />
+            ) : (
+              <Popconfirm
+                title="¿Autorizar edición de este informe?"
+                onConfirm={() => autorizarEdicion(record.id_inspeccion)}
+                okText="Sí, autorizar"
+                cancelText="Cancelar"
+              >
+                <Button
+                  type="text"
+                  loading={isAutorizando}
+                  icon={
+                    <CheckCircleOutlined
+                      style={{ fontSize: 18, color: "#faad14" }}
+                    />
+                  }
+                />
+              </Popconfirm>
+            )}
           </Tooltip>
         );
       },
@@ -429,125 +372,6 @@ export const TableInspecciones = ({
         isLoadingTipos={isLoadingTipos}
         getImagenPorTipo={getImagenPorTipo}
       />
-
-      {/* --- MODAL DE SOLICITUDES DE EDICIÓN --- */}
-      <Modal
-        title="Solicitudes de Edición Pendientes"
-        open={isSolicitudesModalOpen}
-        onCancel={closeSolicitudesModal}
-        footer={null}
-        width={700}
-      >
-        {isLoadingSolicitudes ? (
-          <div style={{ textAlign: "center", padding: 40 }}>
-            <Spin size="large" />
-          </div>
-        ) : solicitudes.length === 0 ? (
-          <div style={{ textAlign: "center", padding: 20, color: "#999" }}>
-            No hay solicitudes de edición para esta inspección.
-          </div>
-        ) : (
-          <List
-            itemLayout="vertical"
-            dataSource={solicitudes}
-            renderItem={(item) => (
-              <List.Item
-                key={item.id_solicitud}
-                style={{
-                  backgroundColor:
-                    item.estado === "PENDIENTE" ? "#fffbe6" : "#f5f5f5",
-                  marginBottom: 12,
-                  padding: 16,
-                  borderRadius: 8,
-                  border:
-                    item.estado === "PENDIENTE"
-                      ? "1px solid #faad14"
-                      : "1px solid #d9d9d9",
-                }}
-              >
-                <div style={{ marginBottom: 8 }}>
-                  <Tag
-                    color={
-                      item.estado === "PENDIENTE"
-                        ? "warning"
-                        : item.estado === "APROBADO"
-                          ? "success"
-                          : "error"
-                    }
-                  >
-                    {item.estado}
-                  </Tag>
-                  <span style={{ color: "#999", fontSize: 12, marginLeft: 8 }}>
-                    {new Date(item.fecha_solicitud).toLocaleString("es-CO")}
-                  </span>
-                </div>
-
-                <div style={{ marginBottom: 12 }}>
-                  <strong>Observación del inspector:</strong>
-                  <p style={{ margin: "4px 0", color: "#333" }}>
-                    {item.observacion_inspector || "Sin observación"}
-                  </p>
-                </div>
-
-                {item.observacion_ingeniero && (
-                  <div style={{ marginBottom: 12 }}>
-                    <strong>Respuesta del ingeniero:</strong>
-                    <p style={{ margin: "4px 0", color: "#333" }}>
-                      {item.observacion_ingeniero}
-                    </p>
-                  </div>
-                )}
-
-                {item.estado === "PENDIENTE" && (
-                  <div>
-                    <TextArea
-                      placeholder="Observación del ingeniero (opcional)"
-                      value={observacionIngeniero}
-                      onChange={(e) => setObservacionIngeniero(e.target.value)}
-                      rows={2}
-                      style={{ marginBottom: 12 }}
-                    />
-                    <Space>
-                      <Popconfirm
-                        title="¿Aprobar esta solicitud?"
-                        onConfirm={() =>
-                          handleResponder(item.id_solicitud, "APROBADO")
-                        }
-                        okText="Sí, aprobar"
-                        cancelText="Cancelar"
-                      >
-                        <Button
-                          type="primary"
-                          icon={<CheckCircleOutlined />}
-                          loading={isRespondiendo}
-                        >
-                          Aprobar
-                        </Button>
-                      </Popconfirm>
-                      <Popconfirm
-                        title="¿Rechazar esta solicitud?"
-                        onConfirm={() =>
-                          handleResponder(item.id_solicitud, "RECHAZADO")
-                        }
-                        okText="Sí, rechazar"
-                        cancelText="Cancelar"
-                      >
-                        <Button
-                          danger
-                          icon={<CloseCircleOutlined />}
-                          loading={isRespondiendo}
-                        >
-                          Rechazar
-                        </Button>
-                      </Popconfirm>
-                    </Space>
-                  </div>
-                )}
-              </List.Item>
-            )}
-          />
-        )}
-      </Modal>
     </div>
   );
 };
