@@ -58,7 +58,7 @@ export interface IActa {
   hora_inicio: string;
   hora_fin: string;
   solicitud_usuario: boolean;
-  numero_certificado: string;
+  numero_certificado: any;
   reemplazo_informe: boolean;
   numero_informe: string;
   vacio_interno: boolean;
@@ -66,25 +66,27 @@ export interface IActa {
   fecha_licencia_contruccion: string;
   existe_linea: boolean;
   existe_vacio: boolean;
+  empresa: string;
+  version: any;
+  editar_informe: boolean;
   created_at: string;
   updated_at: string;
   instalacionNueva: any;
   instalacionExistente: InstalacionExistente;
   tipoInspeccion: TipoInspeccion;
-  clasesInspeccion: any[];
-  evaluacionRecintos: any[];
-  evaluacionCondiciones: any[];
+  clasesInspeccion: ClasesInspeccion[];
+  evaluacionRecintos: EvaluacionRecinto[];
+  evaluacionCondiciones: EvaluacionCondicione[];
   equiposUtilizados: EquiposUtilizado[];
   isometricos: any[];
   esquemaPlanta: any[];
   lineaMatriz: any;
-  vacioInterno: VacioInterno;
+  vacioInterno: any;
   ruta: Ruta;
   volumenRecintos: VolumenRecinto[];
   resultadoDefectologias: ResultadoDefectologia[];
   parametrosEvaluacion: ParametrosEvaluacion[];
   declaracionConformidad: DeclaracionConformidad[];
-  numero_reporte_critico: string;
 }
 
 export interface InstalacionExistente {
@@ -95,16 +97,99 @@ export interface InstalacionExistente {
   updatedAt: string;
 }
 
+export interface TipoInspeccion {
+  id_tipo_inspeccion: number;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClasesInspeccion {
+  id_clase_inspeccion: number;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
+  claseUso: ClaseUso;
+}
+
+export interface ClaseUso {
+  id_clase_uso: number;
+  nombre: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EvaluacionRecinto {
+  id_evaluacion_recintos: number;
+  tipoRecinto: string;
+  idRecinto: string;
+  idArtefacto: string;
+  potenciaInstalada: number;
+  potenciaConjunta: number;
+  tipoArtefacto: string;
+  volumenRecinto: any;
+  volumenADY1: any;
+  volumenADY2: any;
+  volumenADY3: any;
+  volumenADY4: any;
+  volumenTotal: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EvaluacionCondicione {
+  id_evaluacion_condiciones: number;
+  idRecinto: string;
+  co: number;
+  coDiluido: number;
+  volumenRecinto: number;
+  potenciaArtefactos: number;
+  cumpleArtefactos: boolean;
+  metodoVentilacion: any;
+  tipoVentilacionSuperior: any;
+  areaMinimaSuperior: any;
+  areaAberturaSuperior: any;
+  tipoVentilacionInferior: any;
+  areaMinimaInferior: any;
+  areaAberturaInferior: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EquiposUtilizado {
+  id_equipos_utilizados: number;
+  equiposUtilizados: string;
+  ns: string;
+  marca: string;
+  modelo: string;
+}
+
 export interface Ruta {
   id_ruta: number;
   fecha: string;
   hora: string;
   numero_acta: string;
   estado: boolean;
+  valor_servicio: string;
+  observaciones: string;
+  medio_generado: string;
   created_at: string;
   updated_at: string;
-  casa: Casa;
   persona: Persona;
+  casa: Casa;
+}
+
+export interface Persona {
+  id_persona: number;
+  primer_nombre: string;
+  segundo_nombre: string;
+  primer_apellido: string;
+  segundo_apellido: string;
+  telefono: string;
+  numero_documento: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Casa {
@@ -113,8 +198,6 @@ export interface Casa {
   medidor: string;
   direccion: string;
   barrio: string;
-  valor_servicio: string;
-  observaciones: string;
   created_at: string;
   updated_at: string;
   cliente: Cliente;
@@ -145,22 +228,6 @@ export interface Ciudad {
 export interface Departamento {
   codigo: string;
   nombre: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface VacioInterno {
-  id_vacio_interno: number;
-  ventilacion: boolean;
-  area_planta: string;
-  lado_minimo: string;
-  nro_pisos: number;
-  cubierto: boolean;
-  area_cubierta: string;
-  cumple: boolean;
-  forma: number;
-  id_documento_legal: string;
-  fecha: string;
   created_at: string;
   updated_at: string;
 }
@@ -207,20 +274,6 @@ export interface ParametrosEvaluacion {
   detectorFugas: number;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface EquiposUtilizado {
-  id_equipos_utilizados: number;
-  equiposUtilizados: string;
-  ns: string;
-  marca: string;
-  modelo: string;
-}
-export interface ITipoImagen {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  activo: boolean;
 }
 
 export interface DeclaracionConformidad {

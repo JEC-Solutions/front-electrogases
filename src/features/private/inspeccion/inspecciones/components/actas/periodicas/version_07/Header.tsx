@@ -5,10 +5,16 @@ interface Props {
 }
 
 export const Header = ({ inspeccion }: Props) => {
+  const borderClass = "border-black";
+
   return (
-    <div className="w-full border border-black bg-white text-black font-arial box-border">
-      <div className="flex h-[110px]">
-        <div className="w-[100px] border-r border-black flex items-center justify-center p-2">
+    <div
+      className={`w-full border ${borderClass} bg-white text-black font-arial box-border`}
+    >
+      <div className="flex w-full h-[100px]">
+        <div
+          className={`w-[60px] border-r ${borderClass} flex items-center justify-center p-1`}
+        >
           <img
             src="/imagenes/Electrogases.png"
             alt="Electrogases"
@@ -16,63 +22,73 @@ export const Header = ({ inspeccion }: Props) => {
           />
         </div>
 
-        <div className="w-[200px] border-r border-black flex flex-col items-center justify-center p-1">
-          <div className="flex-1 flex items-center justify-center">
+        <div
+          className={`w-[170px] border-r ${borderClass} flex flex-col items-center justify-center p-1`}
+        >
+          <div className="flex-1 flex items-center justify-center mb-1">
             <img
               src="/imagenes/onac_logo.png"
               alt="Onac Acreditado"
-              className="max-h-[60px] object-contain"
+              className="max-h-[45px] object-contain"
             />
           </div>
-          <div className="text-[7pt] text-center font-semibold leading-tight mt-1">
+          <div className="text-[7.5pt] text-center leading-tight">
             <div>ISO/IEC 17020:2012</div>
             <div>18-OIN-021</div>
           </div>
         </div>
 
-        <div className="flex-1 border-r border-black flex flex-col justify-center items-center text-center p-1">
-          <div className="font-bold text-[10pt] leading-tight">
+        <div
+          className={`flex-1 border-r ${borderClass} flex flex-col justify-center items-center text-center px-1 py-1`}
+        >
+          <div className="font-bold text-[9pt] leading-tight">
             Informe de inspección de Instalaciones existentes para suministro de
             gases
           </div>
-          <div className="font-bold text-[10pt] leading-tight">
+          <div className="font-bold text-[9pt] leading-tight">
             combustibles destinadas a usos Residenciales ó comerciales
           </div>
-          <div className="font-bold text-[11pt] uppercase mt-1 leading-tight">
+
+          <div className="font-bold text-[10pt] uppercase mt-2 mb-1 leading-tight">
             REVISIÓN PERIÓDICA - SOLICITUD DEL USUARIO
           </div>
-          <div className="font-bold text-[10pt] mt-1 leading-tight">
+
+          <div className="font-bold text-[9pt] leading-tight">
             GN - GLP Resolución Min. Minas &nbsp;&nbsp; 90902/2013 / 41385/2017
           </div>
         </div>
 
-        <div className="w-[220px] border-r border-black flex flex-col">
-          <div className="h-[25px] border-b border-black flex items-center justify-center text-[9pt] font-semibold bg-gray-50">
+        <div className={`w-[180px] border-r ${borderClass} flex flex-col`}>
+          <div
+            className={`h-[30px] border-b ${borderClass} flex items-center justify-center text-[9pt] pt-1`}
+          >
             N° DE INFORME:
           </div>
 
-          <div className="flex-1 flex items-center px-4 relative">
-            <span className="text-[18pt] font-normal absolute left-4">P</span>
-            <div className="w-full text-center">
-              <span className="text-[14pt] font-bold text-red-600">
+          <div className="flex-1 flex items-center px-3 relative">
+            <span className="text-[16pt] font-normal absolute left-3">P</span>
+
+            <div className="w-full text-center pl-4">
+              <span className="text-[12pt] font-bold text-red-600">
                 {inspeccion?.ruta?.numero_acta || ""}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-[180px] flex flex-col text-[9pt]">
-          <div className="flex-1 border-b border-black flex items-center justify-between px-2">
-            <span className="font-semibold">CODIGO:</span>
-            <span>F-IP-01-01</span>
+        <div className="w-[150px] flex flex-col text-[8.5pt]">
+          <div
+            className={`flex-1 border-b ${borderClass} flex items-center justify-center text-center px-1`}
+          >
+            CODIGO: F-IP-01-01
           </div>
-          <div className="flex-1 border-b border-black flex items-center justify-between px-2">
-            <span className="font-semibold">VERSIÓN:</span>
-            <span>07</span>
+          <div
+            className={`flex-1 border-b ${borderClass} flex items-center justify-center text-center px-1`}
+          >
+            VERSIÓN: 07
           </div>
-          <div className="flex-1 flex items-center justify-between px-2">
-            <span className="font-semibold">FECHA:</span>
-            <span>2025-01-10</span>
+          <div className="flex-1 flex items-center justify-center text-center px-1">
+            FECHA: 2025-01-10
           </div>
         </div>
       </div>

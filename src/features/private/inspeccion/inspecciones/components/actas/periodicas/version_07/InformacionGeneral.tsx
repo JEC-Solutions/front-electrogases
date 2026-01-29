@@ -42,8 +42,6 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
   const segundaVisita = inspeccion?.instalacionExistente?.numeroVisita === 2;
   const terceraVisita = inspeccion?.instalacionExistente?.numeroVisita === 3;
 
-  console.log(inspeccion);
-
   const hayInspeccionAnterior =
     !!inspeccion?.instalacionExistente?.id_instalacion_existente;
 

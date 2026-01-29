@@ -18,104 +18,121 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
   const casa = inspeccion?.ruta?.casa;
   const ciudad = casa?.ciudad;
 
-  return (
-    <div className="w-full text-[9pt] font-arial leading-tight text-black border-l border-r border-b border-black box-border">
-      <div className="flex w-full">
-        <div className="w-[72%] border-r border-black flex flex-col">
-          <div className="w-full bg-gray-200 font-bold text-center border-b border-black py-0.5">
-            1. DATOS DE USUARIO
-          </div>
+  // Clases utilitarias para mantener consistencia
+  const borderClass = "border-black";
+  const labelClass = "font-bold mr-1";
+  const cellClass = "px-1 py-[1px] flex items-center";
 
-          <div className="flex w-full border-b border-black">
-            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Nombre:</span>
+  return (
+    <div className="w-full font-arial text-[7.5pt] leading-tight text-black border-b border-r border-l border-black box-border">
+      <div className={`flex w-full border-b ${borderClass}`}>
+        <div
+          className={`w-[70%] border-r ${borderClass} font-bold text-center py-[2px]`}
+        >
+          1. DATOS DE USUARIO
+        </div>
+        <div className="w-[30%] font-bold text-center py-[2px]">
+          2. IDENTIFICACIÓN DEL ORGANISMO DE INSPECCIÓN
+        </div>
+      </div>
+
+      <div className="flex w-full">
+        <div className={`w-[70%] flex flex-col border-r ${borderClass}`}>
+          <div className={`flex w-full border-b ${borderClass}`}>
+            <div className={`flex-1 border-r ${borderClass} ${cellClass}`}>
+              <span className={labelClass}>Nombre:</span>
               <span className="uppercase truncate">{nombreClient}</span>
             </div>
-            <div className="w-[140px] border-r border-black px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Cédula:</span>
-              <span>{cliente?.numero_documento}</span>
+            <div className={`w-[20%] border-r ${borderClass} ${cellClass}`}>
+              <span className={labelClass}>Cédula:</span>
+              <span className="truncate">{cliente?.numero_documento}</span>
             </div>
-            <div className="w-[140px] px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Teléfono:</span>
-              <span>{cliente?.telefono}</span>
+            <div className={`w-[20%] ${cellClass}`}>
+              <span className={labelClass}>Teléfono:</span>
+              <span className="truncate">{cliente?.telefono}</span>
             </div>
           </div>
 
-          <div className="flex w-full border-b border-black">
-            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Dirección:</span>
+          {/* Fila 2: Dirección | Barrio */}
+          <div className={`flex w-full border-b ${borderClass}`}>
+            <div className={`flex-1 border-r ${borderClass} ${cellClass}`}>
+              <span className={labelClass}>Dirección:</span>
               <span className="uppercase truncate">{casa?.direccion}</span>
             </div>
-            <div className="w-[350px] px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Barrio:</span>
+            <div className={`w-[40%] ${cellClass}`}>
+              <span className={labelClass}>Barrio:</span>
               <span className="uppercase truncate">{casa?.barrio}</span>
             </div>
           </div>
 
-          <div className="flex w-full h-full">
-            <div className="w-[160px] border-r border-black px-1 py-0.5 flex flex-col justify-center">
+          <div className="flex w-full flex-1">
+            <div
+              className={`w-[25%] border-r ${borderClass} px-1 py-[1px] flex flex-col justify-center`}
+            >
               <div className="flex items-center">
-                <span className="font-bold w-[50px]">Cuenta:</span>
-                <span>{casa?.no_cuenta}</span>
+                <span className={`${labelClass} w-[45px]`}>Cuenta:</span>
+                <span className="truncate">{casa?.no_cuenta}</span>
               </div>
               <div className="flex items-center">
-                <span className="font-bold w-[50px]">Código:</span>
-                <span></span>
+                <span className={`${labelClass} w-[45px]`}>Código:</span>
+
+                <span className="truncate"></span>
               </div>
             </div>
-            <div className="flex-1 border-r border-black px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Medidor:</span>
-              <span>{casa?.medidor}</span>
+            <div className={`w-[25%] border-r ${borderClass} ${cellClass}`}>
+              <span className={labelClass}>Medidor:</span>
+              <span className="truncate">{casa?.medidor}</span>
             </div>
-            <div className="w-[160px] border-r border-black px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Dpto:</span>
-              <span className="uppercase">{ciudad?.departamento?.nombre}</span>
+            <div className={`w-[25%] border-r ${borderClass} ${cellClass}`}>
+              <span className={labelClass}>Dpto:</span>
+              <span className="uppercase truncate">
+                {ciudad?.departamento?.nombre}
+              </span>
             </div>
-            <div className="w-[160px] px-1 py-0.5 flex items-center">
-              <span className="font-bold mr-1">Ciudad:</span>
-              <span className="uppercase">{ciudad?.nombre}</span>
+            <div className={`w-[25%] ${cellClass}`}>
+              <span className={labelClass}>Ciudad:</span>
+              <span className="uppercase truncate">{ciudad?.nombre}</span>
             </div>
           </div>
         </div>
 
-        <div className="w-[28%] flex flex-col">
-          <div className="w-full bg-gray-200 font-bold text-center border-b border-black py-0.5 text-[8pt]">
-            2. IDENTIFICACIÓN DEL ORGANISMO DE DE INSPECCIÓN
-          </div>
-
-          <div className="flex flex-1">
-            <div className="flex-1 border-r border-black flex flex-col justify-between">
-              <div className="px-1 py-0.5">
-                <span className="font-normal block">
-                  Empresa: OI ELECTROGASES S.A.S
-                </span>
-                <span className="font-normal block leading-tight">
-                  Dirección: Cll. 3N # 3E-111 Urb. Capellana
-                  <br />
-                  Cúcuta - Norte De Santander
-                </span>
-                <div className="mt-0.5">
-                  <span className="font-bold">Acreditación N°: </span>
-                  <span className="font-bold">18-OIN-021</span>
-                </div>
+        <div className="w-[30%] flex">
+          <div className={`flex-1 border-r ${borderClass} flex flex-col`}>
+            <div className="flex-1 px-1 py-[2px] text-[7pt]">
+              <div className="whitespace-nowrap">
+                Empresa: OI ELECTROGASES S.A.S
               </div>
-
-              <div className="px-1 py-0.5 border-t border-black text-[8pt]">
-                <span className="uppercase text-gray-600">DISTRIBUIDORA:</span>
-                <span className="ml-1 font-bold">COLGAS</span>
+              <div className="leading-none whitespace-nowrap">
+                Dirección: Cll. 3N # 3E-111 Urb. Capillana
+              </div>
+              <div>Cúcuta - Norte De Santander</div>
+              <div className="font-bold mt-[1px]">
+                Acreditación N°: 18-OIN-021
               </div>
             </div>
 
-            <div className="w-[90px] flex flex-col">
-              <div className="flex-1 border-b border-black px-1 py-0.5 text-center flex flex-col justify-center">
-                <div className="font-normal text-[8pt]">Teléfonos:</div>
-                <div className="font-bold text-[9pt]">3503732122</div>
-                <div className="font-bold text-[9pt]">5492370</div>
-              </div>
-              <div className="h-[30px] px-1 flex flex-col justify-center text-center">
-                <div className="text-[7pt]">NIT:</div>
-                <div className="text-[8pt] leading-none">901106969-6</div>
-              </div>
+            <div
+              className={`border-t ${borderClass} px-1 py-[2px] h-[22px] flex items-center`}
+            >
+              <span className="text-[6.5pt] mr-1 text-gray-700">
+                DISTRIBUIDORA:
+              </span>
+              <span className="font-bold uppercase">COLGAS</span>{" "}
+            </div>
+          </div>
+
+          <div className="w-[75px] flex flex-col text-center">
+            <div className="flex-1 flex flex-col justify-center py-[2px]">
+              <div className="text-[6.5pt]">Teléfonos:</div>
+              <div className="font-bold leading-none">3503732122</div>
+              <div className="font-bold leading-none mt-[2px]">5492370</div>
+            </div>
+
+            <div
+              className={`border-t ${borderClass} h-[22px] flex flex-col justify-center`}
+            >
+              <div className="text-[6pt] leading-none">NIT:</div>
+              <div className="leading-none">901106969-6</div>
             </div>
           </div>
         </div>
