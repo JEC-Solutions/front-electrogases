@@ -2,6 +2,7 @@ export interface IRuta {
   cliente: Cliente;
   casa: Casa;
   ruta: Ruta;
+  medio_generado: string;
 }
 
 export interface Cliente {

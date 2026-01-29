@@ -178,7 +178,11 @@ export const useCrearRutas = () => {
   };
 
   const onSubmit = (form: IRuta) => {
-    rutaMutation.mutate(form);
+    const formatData = {
+      ...form,
+      medio_generado: "web"
+    }
+    rutaMutation.mutate(formatData);
   };
 
   useEffect(() => {
