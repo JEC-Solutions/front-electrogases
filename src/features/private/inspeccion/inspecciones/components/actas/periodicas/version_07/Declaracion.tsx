@@ -23,7 +23,7 @@ export const Declaracion = ({ inspeccion }: Props) => {
 
   return (
     <div className="w-full font-arial text-black">
-      <div className="w-full border border-black text-[7.5pt] leading-snug">
+      <div className="w-full border-b border-r border-l border-black text-[7.5pt] leading-snug">
         <div className="bg-gray-200 font-bold text-center py-1 border-b border-black">
           10. DECLARACIÓN DE CONFORMIDAD
         </div>
