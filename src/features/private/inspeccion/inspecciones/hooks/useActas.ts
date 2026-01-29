@@ -93,10 +93,40 @@ export const useActa = () => {
     refetchOnWindowFocus: false,
   });
 
-  const isLoadingImagenes =
-    isLoadingFirma || isLoadingEsquema || isLoadingIsometrico;
+  // 5) Firma y Sello del Inspector
+  const {
+    data: firmaSelloInspector,
+    isLoading: isLoadingFirmaSello,
+    isError: isErrorFirmaSello,
+  } = useQuery<{ firma: string | null; sello: string | null }>({
+    queryKey: ["inspeccion-firma-sello-inspector", numericId],
+    queryFn: async () => {
+      try {
+        const { data } = await inspeccionServices.getFirmaSelloInspector(
+          numericId!,
+        );
+        return {
+          firma: data.data.firma,
+          sello: data.data.sello,
+        };
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    enabled: !!numericId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 
-  const isErrorImagenes = isErrorFirma || isErrorEsquema || isErrorIsometrico;
+  const isLoadingImagenes =
+    isLoadingFirma ||
+    isLoadingEsquema ||
+    isLoadingIsometrico ||
+    isLoadingFirmaSello;
+
+  const isErrorImagenes =
+    isErrorFirma || isErrorEsquema || isErrorIsometrico || isErrorFirmaSello;
 
   return {
     // inspección
@@ -109,6 +139,8 @@ export const useActa = () => {
     firmaBase64,
     esquemaPlantaBase64,
     isometricoBase64,
+    firmaInspectorBase64: firmaSelloInspector?.firma ?? null,
+    selloInspectorBase64: firmaSelloInspector?.sello ?? null,
     isLoadingImagenes,
     isErrorImagenes,
   };

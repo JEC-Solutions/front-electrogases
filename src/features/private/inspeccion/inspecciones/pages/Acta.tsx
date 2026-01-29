@@ -19,8 +19,14 @@ import { useNavigate } from "react-router-dom";
 
 export const Acta = () => {
   const navigate = useNavigate();
-  const { inspeccion, isometricoBase64, esquemaPlantaBase64, firmaBase64 } =
-    useActa();
+  const {
+    inspeccion,
+    isometricoBase64,
+    esquemaPlantaBase64,
+    firmaBase64,
+    firmaInspectorBase64,
+    selloInspectorBase64,
+  } = useActa();
 
   return (
     <>
@@ -90,7 +96,12 @@ export const Acta = () => {
         <Declaracion inspeccion={inspeccion} />
 
         {/* 11 - 12  REGISTRO */}
-        <Registro inspeccion={inspeccion} firmaBase64={firmaBase64} />
+        <Registro
+          inspeccion={inspeccion}
+          firmaClienteBase64={firmaBase64}
+          firmaInspectorBase64={firmaInspectorBase64}
+          selloInspectorBase64={selloInspectorBase64}
+        />
       </div>
     </>
   );

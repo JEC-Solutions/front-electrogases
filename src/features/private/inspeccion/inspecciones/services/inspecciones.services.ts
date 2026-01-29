@@ -50,3 +50,9 @@ export const downloadMassivePdf = async (ids: number[], printType?: string) => {
 export const autorizarEdicionInforme = async (id: number) => {
   return await electroApi.patch(`/inspeccion/${id}/autorizar-edicion`);
 };
+
+export const getFirmaSelloInspector = async (id: number) => {
+  return await electroApi.get(
+    `/inspeccion/imagenes/firma-sello-inspector/${id}`,
+  );
+};

@@ -58,25 +58,32 @@ export const SeccionIsometricos = ({
 
       {/* --- CONTENIDO --- */}
       <div className="flex w-full h-[220px]">
-        <div className="w-[37%] border-r border-black flex items-center justify-center overflow-hidden">
+        {/* 5. ISOMETRICO (37%) */}
+        {/* Cambiado a 'relative' para contener la imagen absoluta */}
+        <div className="w-[37%] border-r border-black relative">
           {isometricoBase64 ? (
             <img
               src={isometricoBase64}
               alt="Isométrico"
-              className="max-w-full max-h-full"
+              // w-full h-full obliga a llenar el espacio.
+              // object-fill estira la imagen para cubrir todo (puede distorsionar si el ratio no coincide).
+              // Usa object-cover si prefieres recortar en lugar de estirar.
+              className="absolute inset-0 w-full h-full object-fill"
             />
           ) : null}
         </div>
-        {/* 6. ÁREA ESQUEMA (37%) */}
-        <div className="w-[37%] border-r border-black flex items-center justify-center overflow-hidden">
+
+        {/* 6. ESQUEMA EN PLANTA (37%) */}
+        <div className="w-[37%] border-r border-black relative">
           {esquemaPlantaBase64 ? (
             <img
               src={esquemaPlantaBase64}
               alt="Esquema"
-              className="max-w-full max-h-full"
+              className="absolute inset-0 w-full h-full object-fill"
             />
           ) : null}
         </div>
+
         {/* 6.1 TABLA VOLÚMENES (26%) */}
         <div className="w-[26%] flex text-[8pt]">
           {/* Columna 1: RA -> ADY6 */}
@@ -117,7 +124,6 @@ export const SeccionIsometricos = ({
               <LineInput label="RD:" value={RD?.volumenTotal} />
               <LineInput label="RE:" value={RE?.volumenTotal} />
               <LineInput label="RF:" value={RF?.volumenTotal} />
-              {/* Espaciadores vacíos para alinear visualmente con las columnas de al lado que tienen más filas */}
               <div className="h-[12px]"></div>
               <div className="h-[12px]"></div>
               <div className="h-[12px]"></div>

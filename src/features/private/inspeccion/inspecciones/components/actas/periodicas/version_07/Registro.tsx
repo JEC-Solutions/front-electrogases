@@ -2,118 +2,142 @@ import { IActa } from "@/features/private/inspeccion/inspecciones/interfaces";
 
 interface Props {
   inspeccion: IActa | undefined;
-  firmaBase64: string | undefined;
+  firmaClienteBase64?: string | null;
+  firmaInspectorBase64?: string | null;
+  selloInspectorBase64?: string | null;
 }
 
-const Line = ({
-  className = "",
-  value = "",
-}: {
-  className?: string;
-  value?: string;
-}) => (
-  <span
-    className={`inline-block border-b border-black text-[7.5pt] leading-none ${className}`}
-  >
-    {value}
-  </span>
-);
-
-export const Registro = ({ inspeccion, firmaBase64 }: Props) => {
+export const Registro = ({
+  inspeccion,
+  firmaClienteBase64,
+  firmaInspectorBase64,
+  selloInspectorBase64,
+}: Props) => {
   const nombreInspector =
-    (inspeccion?.ruta?.persona?.primer_nombre ?? "") +
-    " " +
-    (inspeccion?.ruta?.persona?.segundo_nombre ?? "") +
-    " " +
-    (inspeccion?.ruta?.persona?.primer_apellido ?? "") +
-    " " +
-    (inspeccion?.ruta?.persona?.segundo_apellido ?? "");
+    [
+      inspeccion?.ruta?.persona?.primer_nombre,
+      inspeccion?.ruta?.persona?.segundo_nombre,
+      inspeccion?.ruta?.persona?.primer_apellido,
+      inspeccion?.ruta?.persona?.segundo_apellido,
+    ]
+      .filter(Boolean)
+      .join(" ") || "";
+
+  const borderClass = "border-black";
+  const textClass = "text-[7.5pt] font-arial leading-tight text-black";
+  const headerClass =
+    "bg-[#e5e7eb] font-bold text-center py-[2px] border-b border-black text-[8pt]";
+  const cellPadding = "px-1 py-[2px]";
 
   return (
-    <div className="w-full font-arial text-black text-[7.5pt]">
-      <div className="border border-black leading-tight">
-        <div className="grid grid-cols-[2fr_1fr] w-full">
-          <div className="border-r border-black flex flex-col">
-            <div className="bg-gray-200 font-bold text-center py-1 border-b border-black text-[8pt]">
-              11. REGISTRO DE CLIENTE / QUIEN ATIENDE LA VISITA
-            </div>
-            <div className="px-2 py-1 border-b border-black">
-              Declaro que conozco el resultado de la Inspecciones y las acciones
-              a seguir en caso de encontrar defectos en la instalación.
+    <div className={`w-full border ${borderClass} ${textClass} mt-[-1px]`}>
+      <div className="flex w-full">
+        <div className={`w-1/2 flex flex-col border-r ${borderClass}`}>
+          <div className={headerClass}>
+            11. REGISTRO DE CLIENTE / QUIEN ATIENDE LA VISITA
+          </div>
+
+          <div className={`border-b ${borderClass} ${cellPadding}`}>
+            Declaro que conozco el resultado de la Inspecciones y las acciones a
+            seguir en caso de encontrar defectos en la instalación.
+          </div>
+
+          <div className={`border-b ${borderClass} ${cellPadding}`}>
+            Con la Firma de este documento el usuario autoriza el cobro de la
+            revisión a{" "}
+            <span className="inline-block border-b border-black w-16 mx-1"></span>{" "}
+            cuotas
+          </div>
+
+          <div
+            className={`border-b ${borderClass} ${cellPadding} flex items-end h-[20px]`}
+          >
+            <span className="whitespace-nowrap mr-1">
+              Nombre quien atiende la visita:
+            </span>
+          </div>
+
+          <div className="flex flex-1 min-h-[70px]">
+            <div
+              className={`w-[60%] border-r ${borderClass} relative flex flex-col`}
+            >
+              <div className={cellPadding}>Firma:</div>
+              {firmaClienteBase64 && (
+                <img
+                  src={firmaClienteBase64}
+                  alt="Firma Cliente"
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[120%] max-h-[120%] object-contain mix-blend-multiply"
+                />
+              )}
             </div>
 
-            <div className="px-2 py-1 border-b border-black">
-              Con la Firma de este documento el usuario autoriza el cobro de la
-              revisión a <Line className="w-24 align-middle mx-1" /> cuotas
-            </div>
-
-            <div className="px-2 py-1 border-b border-black flex items-center">
-              <span className="mr-2 whitespace-nowrap">
-                Nombre quien atiende la visita:
-              </span>
-              <Line className="flex-1" />
-            </div>
-
-            <div className="grid grid-cols-[1fr_0.9fr] flex-1">
-              <div className="border-r border-black flex flex-col">
-                <div className="px-2 py-1 border-b border-black">Firma:</div>
-                <div className="flex-1 flex items-center justify-center relative">
-                  {firmaBase64 ? (
-                    <img
-                      src={firmaBase64}
-                      alt="Firma cliente"
-                      className="max-h-[90%] max-w-[20%] object-contain"
-                    />
-                  ) : null}
-                  <Line className="absolute inset-x-4 bottom-2 border-black/50" />
-                </div>
+            <div className="w-[40%] flex flex-col">
+              <div
+                className={`flex-1 border-b ${borderClass} ${cellPadding} flex flex-col justify-start`}
+              >
+                <span className="mb-4">Cédula:</span>
               </div>
-              <div className="flex flex-col">
-                <div className="px-2 py-1 border-b border-black flex items-center gap-2">
-                  <span className="whitespace-nowrap">Cédula:</span>
-                  <Line className="flex-1" />
-                </div>
-                <div className="px-2 py-1 flex items-center gap-2">
-                  <span className="whitespace-nowrap">Vínculo:</span>
-                  <Line className="flex-1" />
-                </div>
-                <div className="flex-1" />
+              <div
+                className={`flex-1 ${cellPadding} flex flex-col justify-start`}
+              >
+                <span className="mb-4">Vinculo:</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col">
-            <div className="bg-gray-200 font-bold text-center py-1 border-b border-black text-[8pt]">
-              12. REGISTRO DE DATOS DEL INSPECTOR
-            </div>
-            <div className="grid grid-cols-[1.5fr_1fr] flex-1">
-              <div className="border-r border-black flex flex-col">
-                <div className="px-2 py-1 border-b border-black flex items-center gap-2">
-                  <span className="whitespace-nowrap">
-                    Nombre del Inspector:
-                  </span>
-                  <Line className="flex-1" value={nombreInspector} />
-                </div>
-                <div className="px-2 py-1 border-b border-black flex items-center gap-2">
-                  <span className="whitespace-nowrap">Certificado No.:</span>
-                  <Line className="flex-1" />
-                </div>
-                <div className="px-2 py-1 border-b border-black flex items-center gap-2">
-                  <span className="whitespace-nowrap">Registro SIC No.:</span>
-                  <Line className="flex-1" />
-                </div>
-                <div className="px-2 py-1 flex items-center gap-2">
-                  <span className="whitespace-nowrap">Competencia:</span>
-                  <Line className="flex-1" />
-                </div>
-                <div className="flex-1" /> {/* Espacio de relleno */}
+        <div className="w-1/2 flex flex-col">
+          <div className={headerClass}>12. REGISTRO DE DATOS DEL INSPECTOR</div>
+
+          <div className="flex flex-1">
+            <div className={`w-[60%] border-r ${borderClass} flex flex-col`}>
+              <div
+                className={`flex-1 border-b ${borderClass} ${cellPadding} flex flex-col justify-start min-h-[35px]`}
+              >
+                <span>Nombre del Inspector:</span>
+                <span className="font-bold ml-1 mt-1">{nombreInspector}</span>
               </div>
-              {/* Columna derecha: firma / sello */}
-              <div className="flex flex-col">
-                <div className="px-2 py-1 border-b border-black">Firma:</div>
-                <div className="h-[72px] border-b border-black" />
-                <div className="px-2 py-1 border-b border-black">Sello:</div>
-                <div className="flex-1" />
+
+              <div
+                className={`flex-1 border-b ${borderClass} ${cellPadding} min-h-[25px]`}
+              >
+                Certificado No.:
+              </div>
+
+              <div
+                className={`flex-1 border-b ${borderClass} ${cellPadding} min-h-[25px]`}
+              >
+                Registro SIC No.:
+              </div>
+
+              <div className={`flex-1 ${cellPadding} min-h-[25px]`}>
+                Competencia:
+              </div>
+            </div>
+
+            <div className="w-[40%] flex flex-col">
+              <div
+                className={`h-[50%] border-b ${borderClass} relative flex flex-col`}
+              >
+                <div className={cellPadding}>Firma:</div>
+                {firmaInspectorBase64 && (
+                  <img
+                    src={firmaInspectorBase64}
+                    alt="Firma Inspector"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[95%] max-h-[90%] object-contain mix-blend-multiply"
+                  />
+                )}
+              </div>
+
+              <div className="h-[50%] relative flex flex-col">
+                <div className={cellPadding}>Sello:</div>
+                {selloInspectorBase64 && (
+                  <img
+                    src={selloInspectorBase64}
+                    alt="Sello Inspector"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[90%] max-h-[80%] object-contain mix-blend-multiply"
+                  />
+                )}
               </div>
             </div>
           </div>
