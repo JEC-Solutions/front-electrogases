@@ -14,7 +14,6 @@ const Box = ({ checked = false }: { checked?: boolean }) => (
 
 export const Declaracion = ({ inspeccion }: Props) => {
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
-  const numReporte = "";
 
   const isSinDefectos = conformidad.defectos === null;
   const isNoCriticos = conformidad.defectos === false;
@@ -41,9 +40,16 @@ export const Declaracion = ({ inspeccion }: Props) => {
         </div>
         <div className="flex items-center whitespace-nowrap">
           <span className="font-semibold mr-[2px]">SI</span>{" "}
-          <Box checked={conformidad.declaracion1} />
+          <Box checked={conformidad.declaracion1 === true} />
           <span className="font-semibold ml-2 mr-[2px]">NO</span>{" "}
-          <Box checked={!conformidad.declaracion1} />
+          <Box checked={conformidad.declaracion1 === false} />
+          <span className="font-semibold ml-2 mr-[2px]">NA</span>{" "}
+          <Box
+            checked={
+              conformidad.declaracion1 === null ||
+              conformidad.declaracion1 === undefined
+            }
+          />
         </div>
       </div>
 
@@ -72,18 +78,25 @@ export const Declaracion = ({ inspeccion }: Props) => {
       </div>
 
       <div
-        className={`px-1 py-[2px] border-b ${borderClass} flex items-end w-full`}
+        className={`px-1 py-[2px] border-b ${borderClass} flex items-end justify-between`}
       >
-        <span className="mr-1">
+        <span className="flex-1 mr-2">
           Se le informa al usuario que el resultado de la inspección sera
           reportado a la distribuidora en los tiempos establecidos según
           resolucion 90902 de 2013
         </span>
-        <span className="font-bold whitespace-nowrap mr-1">
-          N° DE REPORTE POR DEFECTO CRITICO
-        </span>
-        <div className="flex-1 border-b border-black text-center h-[12px] leading-none">
-          {numReporte}
+        <div className="flex items-center whitespace-nowrap">
+          <span className="font-semibold mr-[2px]">SI</span>{" "}
+          <Box checked={conformidad.declaracion2 === true} />
+          <span className="font-semibold ml-2 mr-[2px]">NO</span>{" "}
+          <Box checked={conformidad.declaracion2 === false} />
+          <span className="font-semibold ml-2 mr-[2px]">NA</span>{" "}
+          <Box
+            checked={
+              conformidad.declaracion2 === null ||
+              conformidad.declaracion2 === undefined
+            }
+          />
         </div>
       </div>
 
@@ -96,9 +109,9 @@ export const Declaracion = ({ inspeccion }: Props) => {
         </span>
         <div className="flex items-center">
           <span className="mr-[2px]">SI</span>{" "}
-          <Box checked={conformidad.declaracion1} />
+          <Box checked={conformidad.declaracion3 === true} />
           <span className="ml-2 mr-[2px]">NO</span>{" "}
-          <Box checked={!conformidad.declaracion1} />
+          <Box checked={conformidad.declaracion3 === false} />
         </div>
       </div>
 
