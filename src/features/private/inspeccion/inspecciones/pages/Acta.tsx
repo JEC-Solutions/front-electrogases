@@ -10,6 +10,7 @@ export const Acta = () => {
   const navigate = useNavigate();
   const {
     inspeccion,
+    isLoading,
     isometricoBase64,
     esquemaPlantaBase64,
     firmaBase64,
@@ -18,6 +19,17 @@ export const Acta = () => {
   } = useActa();
 
   const isPeriodica = inspeccion?.tipoInspeccion.id_tipo_inspeccion === 1;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Cargando inspección...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
