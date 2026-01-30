@@ -6,8 +6,10 @@ interface Props {
 }
 
 const Box = ({ checked }: { checked?: boolean }) => (
-  <span className="inline-flex items-center justify-center w-[10px] h-[10px] border border-black bg-white">
-    {checked && <span className="text-[8px] font-bold leading-none">X</span>}
+  <span className="inline-flex items-center justify-center w-[9px] h-[9px] border border-black bg-white">
+    {checked && (
+      <span className="text-[7px] font-bold leading-none -mt-[1px]">✓</span>
+    )}
   </span>
 );
 
@@ -16,35 +18,39 @@ type Estado = "SI" | "NO" | "NA";
 const GroupCells = ({
   code,
   state,
+  isLastGroup = false,
 }: {
   code?: string | null;
   state?: Estado;
+  isLastGroup?: boolean;
 }) => {
   if (!code) {
     return (
       <>
-        <td className="border border-black bg-gray-50"></td>
-        <td className="border border-black bg-gray-50"></td>
-        <td className="border border-black bg-gray-50"></td>
-        <td className="border border-black bg-gray-50"></td>
+        <td className="border-r  border-b border-dotted border-gray-400"></td>
+
+        <td className="border-r  border-b border-dotted border-gray-400"></td>
+        <td className="border-r  border-b border-dotted border-gray-400"></td>
+        <td
+          className={`border-r ${isLastGroup ? "border-black" : "border-gray-400"} border-b border-dotted border-gray-400`}
+        ></td>
       </>
     );
   }
 
   return (
     <>
-      {/* Código (E-01) */}
-      <td className="border border-black text-center align-middle font-semibold bg-gray-50">
+      <td className="border border-black text-center align-middle font-semibold text-[6.5pt] bg-white h-[16px]">
         {code}
       </td>
-      {/* Casillas */}
-      <td className="border border-black text-center align-middle">
+
+      <td className="border border-black text-center align-middle bg-white">
         <Box checked={state === "SI"} />
       </td>
-      <td className="border border-black text-center align-middle">
+      <td className="border border-black text-center align-middle bg-white">
         <Box checked={state === "NO"} />
       </td>
-      <td className="border border-black text-center align-middle">
+      <td className="border border-black text-center align-middle bg-white">
         <Box checked={state === "NA"} />
       </td>
     </>
@@ -52,7 +58,7 @@ const GroupCells = ({
 };
 
 export const Defectologias = ({ inspeccion }: Props) => {
-  const filas: Array<{ label: string; codes: (string | null)[] }> = [
+  const filas = [
     {
       label: "Hermeticidad de la instalacion",
       codes: ["E-01", "E-02", "E-03", "E-04", "E-05", "E-06"],
@@ -65,7 +71,10 @@ export const Defectologias = ({ inspeccion }: Props) => {
       label: "Trazado General de la instalacion",
       codes: ["E-13", "E-14", "E-15", null, null, null],
     },
-    { label: "Materiales", codes: ["E-16", null, null, null, null, null] },
+    {
+      label: "Materiales",
+      codes: ["E-16", null, null, null, null, null],
+    },
     {
       label: "Condiciones de Ventilacion",
       codes: ["E-17", "E-18", null, null, null, null],
@@ -101,126 +110,123 @@ export const Defectologias = ({ inspeccion }: Props) => {
   const COLSPAN_TOTAL = 30;
 
   return (
-    <div className="w-full font-arial text-black">
+    <div className="w-full font-arial text-black mt-[-1px]">
       <table className="w-full table-fixed border-collapse border border-black text-[7pt] leading-none">
         <colgroup>
-          <col style={{ width: "22%" }} />
+          <col style={{ width: "18%" }} />
           {Array.from({ length: 6 }).map((_, i) => (
             <Fragment key={i}>
-              <col style={{ width: "3.5%" }} /> {/* Código */}
-              <col style={{ width: "2.33%" }} /> {/* SI */}
-              <col style={{ width: "2.33%" }} /> {/* NO */}
-              <col style={{ width: "2.33%" }} /> {/* NA */}
+              <col style={{ width: "2.5%" }} />
+              <col style={{ width: "1.8%" }} />
+              <col style={{ width: "1.8%" }} />
+              <col style={{ width: "1.8%" }} />
             </Fragment>
           ))}
-          {/* Reparación Inmediata (aprox 6%) */}
-          <col style={{ width: "3%" }} /> {/* SI */}
-          <col style={{ width: "3%" }} /> {/* NO */}
-          {/* Cumple Final (aprox 9%) */}
-          <col style={{ width: "3%" }} /> {/* SI */}
-          <col style={{ width: "3%" }} /> {/* NO */}
-          <col style={{ width: "3%" }} /> {/* NA */}
+          <col style={{ width: "3%" }} />
+          <col style={{ width: "3%" }} />
+          <col style={{ width: "2.5%" }} />
+          <col style={{ width: "2.5%" }} />
+          <col style={{ width: "2.5%" }} />
         </colgroup>
 
         <thead>
-          {/* Fila 1: Encabezados Principales */}
-          <tr className="bg-gray-200">
-            <th className="border border-black px-1 py-1 text-left text-[8pt]">
+          <tr className="bg-gray-100 h-[14px]">
+            <th
+              className="border border-black px-1 text-center font-normal align-middle"
+              rowSpan={2}
+            >
               DEFECTOLOGIA ENCONTRADA
             </th>
-            {/* 6 Bloques "Cumple" */}
+
             {Array.from({ length: 6 }).map((_, i) => (
               <th
                 key={`h1-g${i}`}
-                className="border border-black text-center font-normal"
+                className="border border-black text-center font-normal text-[6.5pt]"
                 colSpan={4}
               >
                 Cumple
               </th>
             ))}
+
             <th
-              className="border border-black text-center font-normal"
+              className="border border-black text-center font-normal text-[6.5pt]"
               colSpan={2}
             >
               REPARACIÓN INMEDIATA
             </th>
+
             <th
-              className="border border-black text-center font-normal"
+              className="border border-black text-center font-normal text-[6.5pt]"
               colSpan={3}
             >
               CUMPLE
             </th>
           </tr>
 
-          {/* Fila 2: Sub-encabezados (SI, NO, NA) */}
-          <tr className="bg-white">
-            <th className="border border-black h-[14px]"></th>{" "}
-            {/* Espacio bajo Defectología */}
-            {/* 6 Grupos */}
+          <tr className="bg-gray-100 h-[14px]">
             {Array.from({ length: 6 }).map((_, i) => (
               <Fragment key={`h2-g${i}`}>
-                <th className="border border-black bg-gray-50"></th>{" "}
-                {/* Espacio para Código */}
-                <th className="border border-black font-normal">SI</th>
-                <th className="border border-black font-normal">NO</th>
-                <th className="border border-black font-normal">NA</th>
+                <th className="border border-black"></th>
+                <th className="border border-black font-normal text-[6pt]">
+                  SI
+                </th>
+                <th className="border border-black font-normal text-[6pt]">
+                  NO
+                </th>
+                <th className="border border-black font-normal text-[6pt]">
+                  NA
+                </th>
               </Fragment>
             ))}
-            {/* Reparación */}
-            <th className="border border-black font-normal">SI</th>
-            <th className="border border-black font-normal">NO</th>
-            {/* Cumple Final */}
-            <th className="border border-black font-normal">SI</th>
-            <th className="border border-black font-normal">NO</th>
-            <th className="border border-black font-normal">NA</th>
+
+            <th className="border border-black font-normal text-[6pt]">SI</th>
+            <th className="border border-black font-normal text-[6pt]">NO</th>
+
+            <th className="border border-black font-normal text-[6pt]">SI</th>
+            <th className="border border-black font-normal text-[6pt]">NO</th>
+            <th className="border border-black font-normal text-[6pt]">NA</th>
           </tr>
         </thead>
 
         <tbody>
           {filas.map((fila, idx) => {
-            // Lógica para determinar el estado final de la fila
-            const estadosPorCodigo = fila.codes.map((code) =>
-              getEstadoCodigo(code)
-            );
-            const estadosValidos = estadosPorCodigo.filter(
-              (st, i) => fila.codes[i] && st
-            ) as Estado[];
+            const estados = fila.codes
+              .filter((code): code is string => code !== null)
+              .map((code) => getEstadoCodigo(code));
 
-            const hayNO = estadosValidos.includes("NO");
-            const todosSI =
-              estadosValidos.length > 0 &&
-              estadosValidos.every((st) => st === "SI");
-            const hayNA = estadosValidos.includes("NA");
-
-            let cumpleFila: Estado | undefined;
-            if (hayNO) cumpleFila = "NO";
-            else if (todosSI) cumpleFila = "SI";
-            else if (hayNA) cumpleFila = "NA";
+            const cumpleFila: Estado = estados.includes("NO")
+              ? "NO"
+              : estados.every((e) => e === "NA")
+                ? "NA"
+                : "SI";
 
             return (
-              <tr key={idx} className="h-[20px]">
-                {" "}
-                {/* Altura reducida de fila */}
-                <td className="border border-black px-1 truncate">
-                  {fila.label}
+              <tr key={idx} className="h-[16px]">
+                <td className="border border-black px-1 truncate text-left border-r-0 relative">
+                  <span className="relative z-10 bg-white pr-1">
+                    {fila.label}
+                  </span>
+
+                  <div className="absolute inset-x-0 top-1/2 border-b border-dotted border-gray-400 z-0"></div>
                 </td>
-                {/* 6 Grupos de Códigos */}
+
                 {Array.from({ length: 6 }).map((_, g) => (
                   <GroupCells
                     key={`r${idx}g${g}`}
                     code={fila.codes[g]}
-                    state={estadosPorCodigo[g]}
+                    state={getEstadoCodigo(fila.codes[g])}
+                    isLastGroup={g === 5}
                   />
                 ))}
-                {/* Reparación Inmediata (Vacío por defecto) */}
+
                 <td className="border border-black text-center align-middle">
                   <Box />
                 </td>
                 <td className="border border-black text-center align-middle">
                   <Box />
                 </td>
-                {/* Cumple Final Fila */}
-                <td className="border border-black text-center align-middle">
+
+                <td className="border border-black text-center align-middle border-l-[2px] border-l-black">
                   <Box checked={cumpleFila === "SI"} />
                 </td>
                 <td className="border border-black text-center align-middle">
@@ -237,7 +243,7 @@ export const Defectologias = ({ inspeccion }: Props) => {
         <tfoot>
           <tr>
             <td
-              className="border border-black px-2 py-0.5 text-[6.5pt] text-center italic"
+              className="border border-black px-2 py-[1px] text-[6.5pt] text-center"
               colSpan={COLSPAN_TOTAL}
             >
               Los códigos de defectos (E01 al E25) y las demás abreviaturas se

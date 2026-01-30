@@ -27,11 +27,11 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
     <div className="w-full font-arial text-[7.5pt] leading-tight text-black border-b border-r border-l border-black box-border">
       <div className={`flex w-full border-b ${borderClass}`}>
         <div
-          className={`w-[70%] border-r ${borderClass} font-bold text-center py-[2px]`}
+          className={`w-[70%] bg-[#e5e7eb] border-r ${borderClass} font-bold text-center py-[2px]`}
         >
           1. DATOS DE USUARIO
         </div>
-        <div className="w-[30%] font-bold text-center py-[2px]">
+        <div className="w-[30%] bg-[#e5e7eb] font-bold text-center py-[2px]">
           2. IDENTIFICACIÓN DEL ORGANISMO DE INSPECCIÓN
         </div>
       </div>

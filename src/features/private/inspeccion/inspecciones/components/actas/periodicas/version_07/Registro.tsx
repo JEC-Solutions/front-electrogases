@@ -26,7 +26,7 @@ export const Registro = ({
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
   const headerClass =
-    "bg-[#e5e7eb] font-bold text-center py-[2px] border-b border-black text-[8pt]";
+    "bg-[#e5e7eb] font-bold text-center py-[2px] border-b border-black text-[7pt]";
   const cellPadding = "px-1 py-[2px]";
 
   return (

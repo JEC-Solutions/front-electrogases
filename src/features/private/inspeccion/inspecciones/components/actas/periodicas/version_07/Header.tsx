@@ -60,7 +60,7 @@ export const Header = ({ inspeccion }: Props) => {
 
         <div className={`w-[180px] border-r ${borderClass} flex flex-col`}>
           <div
-            className={`h-[30px] border-b ${borderClass} flex items-center justify-center text-[9pt] pt-1`}
+            className={`h-[30px] bg-[#e5e7eb] border-b ${borderClass} flex items-center justify-center text-[9pt] pt-1 font-semibold`}
           >
             N° DE INFORME:
           </div>

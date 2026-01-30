@@ -11,15 +11,14 @@ interface EquipoApi {
   modelo?: string;
 }
 
-// Componente para línea con etiqueta (ej: "Marca: _______")
 const LabeledLine = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex items-end w-full overflow-hidden">
-    <span className="whitespace-nowrap font-semibold mr-1 leading-none">
+    <span className="whitespace-nowrap mr-[2px] leading-none text-[7pt]">
       {label}
     </span>
-    <span className="flex-1 border-b border-black text-center leading-none h-[12px] truncate">
+    <div className="flex-1 border-b border-black text-center leading-none h-[10px] truncate text-[7pt]">
       {value ?? ""}
-    </span>
+    </div>
   </div>
 );
 
@@ -36,9 +35,8 @@ const EquipmentRow = ({
   leftData,
   rightData,
 }: EquipmentRowProps) => (
-  <tr className="h-[26px]">
-    {/* --- LADO IZQUIERDO --- */}
-    <td className="border border-black px-1 align-middle font-semibold text-left">
+  <tr className="h-[20px]">
+    <td className="border border-black px-1 align-middle text-left whitespace-nowrap">
       {leftLabel}
     </td>
     <td className="border border-black px-1 align-middle">
@@ -51,8 +49,7 @@ const EquipmentRow = ({
       <LabeledLine label="Modelo:" value={leftData?.modelo} />
     </td>
 
-    {/* --- LADO DERECHO --- */}
-    <td className="border border-black px-1 align-middle font-semibold text-left">
+    <td className="border border-black px-1 align-middle text-left whitespace-nowrap">
       {rightLabel}
     </td>
     <td className="border border-black px-1 align-middle">
@@ -72,7 +69,7 @@ export const Equipos = ({ inspeccion }: Props) => {
 
   const getEquipoData = (keyword: string) => {
     const eq = equipos.find((e) =>
-      e.equiposUtilizados?.toLowerCase().includes(keyword.toLowerCase())
+      e.equiposUtilizados?.toLowerCase().includes(keyword.toLowerCase()),
     );
     if (!eq) return undefined;
     return {
@@ -90,25 +87,23 @@ export const Equipos = ({ inspeccion }: Props) => {
   const otro = getEquipoData("otro");
 
   return (
-    <div className="w-full font-arial text-black">
+    <div className="w-full font-arial text-black mt-[-1px]">
       <table className="w-full table-fixed border-collapse border border-black text-[7.5pt] leading-none">
         <colgroup>
-          {/* Lado Izquierdo */}
-          <col style={{ width: "14%" }} /> {/* Etiqueta */}
-          <col style={{ width: "8%" }} /> {/* N/S */}
-          <col style={{ width: "14%" }} /> {/* Marca */}
-          <col style={{ width: "14%" }} /> {/* Modelo */}
-          {/* Lado Derecho */}
-          <col style={{ width: "14%" }} /> {/* Etiqueta */}
-          <col style={{ width: "8%" }} /> {/* N/S */}
-          <col style={{ width: "14%" }} /> {/* Marca */}
-          <col style={{ width: "14%" }} /> {/* Modelo */}
+          <col style={{ width: "13%" }} /> {/* Etiqueta */}
+          <col style={{ width: "10%" }} /> {/* N/S */}
+          <col style={{ width: "13.5%" }} /> {/* Marca */}
+          <col style={{ width: "13.5%" }} /> {/* Modelo */}
+          <col style={{ width: "13%" }} /> {/* Etiqueta */}
+          <col style={{ width: "10%" }} /> {/* N/S */}
+          <col style={{ width: "13.5%" }} /> {/* Marca */}
+          <col style={{ width: "13.5%" }} /> {/* Modelo */}
         </colgroup>
 
         <thead>
           <tr>
             <th
-              className="bg-gray-200 font-bold text-center border border-black py-1"
+              className="bg-gray-200 font-bold text-center border border-black py-1 text-[7pt]"
               colSpan={8}
             >
               9. REGISTRO DE EQUIPOS UTILIZADOS EN LA INSPECCIÓN

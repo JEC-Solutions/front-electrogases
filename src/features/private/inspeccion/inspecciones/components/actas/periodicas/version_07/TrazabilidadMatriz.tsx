@@ -6,70 +6,90 @@ interface Props {
 
 function Box({ checked = false }: { checked?: boolean }) {
   return (
-    <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white">
+    <span className="inline-flex items-center justify-center w-[11px] h-[11px] border border-black bg-white ml-1">
       {checked ? (
-        <span className="-mt-[2px] text-[10px] leading-none font-bold">x</span>
+        <span className="-mt-[2px] text-[9px] leading-none font-bold">x</span>
       ) : null}
     </span>
   );
 }
 
 export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
-  const lineaMatriz = !!inspeccion?.lineaMatriz;
+  const matriz = inspeccion?.lineaMatriz;
+  const existe = matriz?.existe;
+  const visible = matriz?.visible;
+
+  const borderClass = "border-black";
+  const textClass = "text-[7.5pt] font-arial leading-tight text-black";
 
   return (
-    <div className="w-full border-l border-r border-b border-black text-[8pt] font-arial text-black box-border">
-      <div className="flex w-full h-[40px]">
-        <div className="w-[22%] border-r border-black flex items-center justify-center p-2 bg-gray-200 text-center font-bold">
-          3.3. TRAZABILIDAD DE LA LÍNEA MATRIZ
+    <div
+      className={`w-full border-l border-r border-b ${borderClass} ${textClass} box-border`}
+    >
+      <div className="flex w-full h-[38px]">
+        <div
+          className={`w-[26%] bg-[#e5e7eb] border-r ${borderClass} flex items-center justify-center p-1 text-center font-bold uppercase`}
+        >
+          3.3. TRAZABILIDAD DE LA LINEA MATRIZ
         </div>
-        <div className="w-[12%] border-r border-black flex flex-col">
-          <div className="h-[20px] border-b border-black flex items-center justify-center text-center font-semibold bg-gray-50">
+
+        <div className={`w-[12%] border-r ${borderClass} flex flex-col`}>
+          <div
+            className={`h-[50%] border-b ${borderClass} flex items-center justify-center text-center px-1`}
+          >
             Existe Linea Matríz
           </div>
-          <div className="flex-1 flex items-center justify-around px-1">
-            <div className="flex items-center gap-1">
-              <span>SI</span> <Box checked={lineaMatriz} />
+          <div className="h-[50%] flex items-center justify-center gap-2 bg-gray-50">
+            <div className="flex items-center">
+              SI <Box checked={existe} />
             </div>
-            <div className="flex items-center gap-1">
-              <span>NO</span> <Box checked={!lineaMatriz} />
+            <div className="flex items-center">
+              NO <Box checked={existe === false} />
             </div>
           </div>
-        </div>
-        <div className="w-[10%] border-r border-black flex flex-col">
-          <div className="flex-1 border-b border-black flex items-center justify-between px-2">
-            <span>A la vista</span> <Box />
-          </div>
-          <div className="flex-1 flex items-center justify-between px-2">
-            <span>Oculta</span> <Box />
-          </div>
-        </div>
-        <div className="w-[18%] border-r border-black flex flex-col">
-          <div className="h-[20px] border-b border-black flex items-center justify-center text-center font-semibold bg-gray-50">
-            Organismo que certificó:
-          </div>
-          <div className="flex-1 flex items-center justify-center"></div>
-        </div>
-        <div className="w-[12%] border-r border-black flex flex-col">
-          <div className="h-[20px] border-b border-black flex items-center justify-center text-center font-semibold bg-gray-50 leading-tight">
-            N° de predios conectados
-          </div>
-          <div className="flex-1 flex items-center justify-center bg-gray-100"></div>
         </div>
 
-        <div className="w-[14%] border-r border-black flex flex-col">
-          <div className="h-[20px] border-b border-black flex items-center justify-center text-center font-semibold bg-gray-50 leading-tight">
-            N° de informe de inspección :
+        <div
+          className={`w-[11%] border-r ${borderClass} flex flex-col justify-center px-2 gap-1`}
+        >
+          <div className="flex items-center justify-between">
+            <span>A la vista</span> <Box checked={visible} />
           </div>
-          <div className="flex-1 flex items-center justify-center"></div>
+          <div className="flex items-center justify-between">
+            <span>Oculta</span> <Box checked={visible === false} />
+          </div>
         </div>
 
-        <div className="flex-1 flex flex-col">
-          <div className="h-[20px] border-b border-black flex items-center justify-center text-center font-semibold bg-gray-50">
-            Fecha de inspección :
+        <div
+          className={`w-[14%] border-r ${borderClass} p-1 flex flex-col relative`}
+        >
+          <span>Organismo que certifico:</span>
+          <div className="flex-1 flex items-end justify-center font-bold text-[7pt]">
+            {matriz?.organismo_certificador}
           </div>
-          <div className="flex-1 flex items-center justify-center font-bold">
-            - &nbsp; -
+        </div>
+
+        <div
+          className={`w-[12%] border-r ${borderClass} p-1 flex flex-col relative`}
+        >
+          <span className="leading-none mb-1">N° de predios conectados</span>
+
+          <div className="absolute bottom-1 right-1 w-[35px] h-[14px] bg-gray-200 border border-gray-300 flex items-center justify-center font-bold">
+            {matriz?.numero_predios}
+          </div>
+        </div>
+
+        <div className={`w-[13%] border-r ${borderClass} p-1 flex flex-col`}>
+          <span className="leading-none">N° de informe de inspeccion :</span>
+          <div className="flex-1 flex items-end justify-center font-bold">
+            {matriz?.numero_informe}
+          </div>
+        </div>
+
+        <div className="flex-1 p-1 flex flex-col">
+          <span className="leading-none">Fecha de inspección :</span>
+          <div className="flex-1 flex items-end justify-center font-bold tracking-widest">
+            {matriz?.fecha_inspeccion ? matriz.fecha_inspeccion : "-   -"}
           </div>
         </div>
       </div>
