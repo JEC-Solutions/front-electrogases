@@ -1,4 +1,6 @@
+export * from './ModalImagenesInspeccion';
 export * from './TableInspecciones';
+export * from './actas/nuevas/version_07/Nuevas';
 export * from './actas/periodicas/version_07/DatosUsuario';
 export * from './actas/periodicas/version_07/Declaracion';
 export * from './actas/periodicas/version_07/Defectologias';
@@ -7,6 +9,7 @@ export * from './actas/periodicas/version_07/EvalRecintosTablaSimple';
 export * from './actas/periodicas/version_07/Header';
 export * from './actas/periodicas/version_07/InformacionGeneral';
 export * from './actas/periodicas/version_07/ParametrosEvaluacion';
+export * from './actas/periodicas/version_07/Periodicas';
 export * from './actas/periodicas/version_07/Registro';
 export * from './actas/periodicas/version_07/SeccionIsometricos';
 export * from './actas/periodicas/version_07/TablaVentilacion';

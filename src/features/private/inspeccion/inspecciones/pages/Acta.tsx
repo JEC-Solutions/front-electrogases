@@ -1,18 +1,7 @@
 import { useActa } from "@/features/private/inspeccion/inspecciones/hooks";
 import {
-  Header,
-  DatosUsuario,
-  InformacionGeneral,
-  TrazabilidadMatriz,
-  TrazaVacioInterno,
-  EvalRecintosTablaSimple,
-  SeccionIsometricos,
-  TablaVentilacion,
-  ParametrosEvaluacion,
-  Defectologias,
-  Equipos,
-  Registro,
-  Declaracion,
+  Periodicas,
+  Nuevas,
 } from "@/features/private/inspeccion/inspecciones/components";
 
 import { useNavigate } from "react-router-dom";
@@ -27,6 +16,8 @@ export const Acta = () => {
     firmaInspectorBase64,
     selloInspectorBase64,
   } = useActa();
+
+  const isPeriodica = inspeccion?.tipoInspeccion.id_tipo_inspeccion === 1;
 
   return (
     <>
@@ -56,52 +47,25 @@ export const Acta = () => {
         box-border
       "
       >
-        {/* HEADER: ancho total 1246px con 5 secciones */}
-        <Header inspeccion={inspeccion} />
-
-        {/*  === 1. DATOS DEL USUARIO + 2 IDENTIFICACION DEL ORGANISMO DE INSPECCION */}
-        <DatosUsuario inspeccion={inspeccion} />
-
-        {/* === 3. INFORMACIÓN GENERAL + 3.1 CLASE DE USO === */}
-        <InformacionGeneral inspeccion={inspeccion} />
-
-        {/* 3.3 TRAZABILIDAD DE LA LÍNEA MATRIZ */}
-        <TrazabilidadMatriz inspeccion={inspeccion} />
-
-        {/* 3.4 TRAZABILIDAD DE VACÍO INTERNO */}
-        <TrazaVacioInterno inspeccion={inspeccion} />
-
-        {/* 4. EVALUACION DE RECINTOS */}
-        <EvalRecintosTablaSimple inspeccion={inspeccion} />
-
-        {/* 5. 6. 6.1 ISOMETRICOS */}
-        <SeccionIsometricos
-          inspeccion={inspeccion}
-          isometricoBase64={isometricoBase64}
-          esquemaPlantaBase64={esquemaPlantaBase64}
-        />
-
-        {/* 7. VENTILACION */}
-        <TablaVentilacion inspeccion={inspeccion} />
-
-        {/* 8. PARAMETROS DE EVALUACION */}
-        <ParametrosEvaluacion inspeccion={inspeccion} />
-
-        <Defectologias inspeccion={inspeccion} />
-
-        {/* 9 EQUIPOS*/}
-        <Equipos inspeccion={inspeccion} />
-
-        {/* 10 DECLARACION*/}
-        <Declaracion inspeccion={inspeccion} />
-
-        {/* 11 - 12  REGISTRO */}
-        <Registro
-          inspeccion={inspeccion}
-          firmaClienteBase64={firmaBase64}
-          firmaInspectorBase64={firmaInspectorBase64}
-          selloInspectorBase64={selloInspectorBase64}
-        />
+        {isPeriodica ? (
+          <Periodicas
+            inspeccion={inspeccion}
+            isometricoBase64={isometricoBase64}
+            esquemaPlantaBase64={esquemaPlantaBase64}
+            firmaBase64={firmaBase64}
+            firmaInspectorBase64={firmaInspectorBase64}
+            selloInspectorBase64={selloInspectorBase64}
+          />
+        ) : (
+          <Nuevas
+            inspeccion={inspeccion}
+            isometricoBase64={isometricoBase64}
+            esquemaPlantaBase64={esquemaPlantaBase64}
+            firmaBase64={firmaBase64}
+            firmaInspectorBase64={firmaInspectorBase64}
+            selloInspectorBase64={selloInspectorBase64}
+          />
+        )}
       </div>
     </>
   );
