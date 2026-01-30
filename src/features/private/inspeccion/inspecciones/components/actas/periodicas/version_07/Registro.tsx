@@ -42,21 +42,6 @@ export const Registro = ({
             seguir en caso de encontrar defectos en la instalación.
           </div>
 
-          <div className={`border-b ${borderClass} ${cellPadding}`}>
-            Con la Firma de este documento el usuario autoriza el cobro de la
-            revisión a{" "}
-            <span className="inline-block border-b border-black w-16 mx-1"></span>{" "}
-            cuotas
-          </div>
-
-          <div
-            className={`border-b ${borderClass} ${cellPadding} flex items-end h-[20px]`}
-          >
-            <span className="whitespace-nowrap mr-1">
-              Nombre quien atiende la visita:
-            </span>
-          </div>
-
           <div className="flex flex-1 min-h-[70px]">
             <div
               className={`w-[60%] border-r ${borderClass} relative flex flex-col`}
