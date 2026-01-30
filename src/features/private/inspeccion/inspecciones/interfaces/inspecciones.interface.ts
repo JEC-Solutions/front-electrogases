@@ -291,3 +291,8 @@ export interface DeclaracionConformidad {
   firmaCliente: string;
   cuotas: number;
 }
+
+export interface ITipoImagen {
+  id: number;
+  descripcion: string;
+}
