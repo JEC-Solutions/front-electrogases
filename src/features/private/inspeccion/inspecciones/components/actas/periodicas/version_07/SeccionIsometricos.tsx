@@ -73,7 +73,7 @@ export const SeccionIsometricos = ({
             <img
               src={isometricoBase64}
               alt="Isométrico"
-              className="absolute inset-0 w-full h-full object-contain p-2"
+              className="absolute inset-0 w-full h-full object-fill"
             />
           )}
         </div>
@@ -86,7 +86,7 @@ export const SeccionIsometricos = ({
             <img
               src={esquemaPlantaBase64}
               alt="Esquema"
-              className="absolute inset-0 w-full h-full object-contain p-2"
+              className="absolute inset-0 w-full h-full object-fill"
             />
           )}
         </div>
