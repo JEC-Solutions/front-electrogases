@@ -86,6 +86,14 @@ export const TableRutas = ({
       },
     },
     {
+      title: "Asesor",
+      key: "asesor",
+      render: (_: unknown, record) => {
+        const p = record.asesor;
+        return p ? `${p.primer_nombre} ${p.primer_apellido}` : "—";
+      },
+    },
+    {
       title: "Dirección",
       key: "direccion",
       dataIndex: ["casa", "direccion"],

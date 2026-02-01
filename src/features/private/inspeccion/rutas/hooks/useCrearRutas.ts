@@ -49,6 +49,22 @@ export const useCrearRutas = () => {
     refetchOnWindowFocus: false,
   });
 
+  // Get asesores
+  const { data: asesores = [] } = useQuery<IUsuarios[]>({
+    queryKey: ["asesores"],
+    queryFn: async () => {
+      try {
+        const { data } = await rutaServices.getAsesores();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
   // Crear ruta
   const rutaMutation = useMutation({
     mutationFn: (form: IRuta) => rutaServices.createRuta(form),
@@ -208,5 +224,6 @@ export const useCrearRutas = () => {
     dataTipoVisita,
     getUserDocument,
     inspectores,
+    asesores,
   };
 };

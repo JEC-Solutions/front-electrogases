@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const { Step } = Steps;
 
 export const CrearRuta = () => {
-  const { methods, onSubmit, dataTipoVisita, getUserDocument, inspectores } =
+  const { methods, onSubmit, dataTipoVisita, getUserDocument, inspectores, asesores } =
     useCrearRutas();
 
   const navigate = useNavigate();
@@ -55,7 +55,11 @@ export const CrearRuta = () => {
         return;
       }
     } else if (currentStep === 2) {
-      const isValid = await methods.trigger(["ruta.fecha", "ruta.hora"]);
+      const isValid = await methods.trigger([
+        "ruta.fecha",
+        "ruta.hora",
+        "ruta.id_asesor",
+      ]);
 
       if (!isValid) {
         Swal.fire({
@@ -106,6 +110,7 @@ export const CrearRuta = () => {
             methods={methods}
             inspectores={inspectores}
             tiposVisita={dataTipoVisita}
+            asesores={asesores}
           />
         )}
 

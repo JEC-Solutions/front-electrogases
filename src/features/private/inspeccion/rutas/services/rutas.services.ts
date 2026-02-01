@@ -33,6 +33,10 @@ export const getInspectores = async () => {
   return await electroApi.get("/usuarios/inspectores");
 };
 
+export const getAsesores = async () => {
+  return await electroApi.get("/usuarios/asesores");
+};
+
 export const getClienteByDocument = async (documento: string) => {
   return await electroApi.get(`/cliente/documento/${documento}`);
 };

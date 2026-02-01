@@ -33,6 +33,7 @@ export interface Ruta {
   fecha_solicitud: string;
   estado: boolean;
   id_persona: number;
+  id_asesor: number;
 }
 
 export interface IRutas {
@@ -45,6 +46,7 @@ export interface IRutas {
   inspeccion: any;
   persona: Persona;
   casa: Casa;
+  asesor: Persona;
 }
 
 export interface Persona {

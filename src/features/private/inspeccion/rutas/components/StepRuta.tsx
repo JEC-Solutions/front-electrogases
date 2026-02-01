@@ -15,10 +15,16 @@ import { ITipoVisita } from "@/features/private/inspeccion/rutas/interfaces";
 interface Props {
   inspectores: IUsuarios[];
   tiposVisita: ITipoVisita[];
+  asesores: IUsuarios[];
   methods: any;
 }
 
-export const StepRuta = ({ methods, inspectores, tiposVisita }: Props) => {
+export const StepRuta = ({
+  methods,
+  inspectores,
+  tiposVisita,
+  asesores,
+}: Props) => {
   const {
     control,
     formState: { errors },
@@ -29,6 +35,14 @@ export const StepRuta = ({ methods, inspectores, tiposVisita }: Props) => {
       value: inspector.id_usuario,
       label: `${inspector.persona?.primer_nombre ?? ""} ${
         inspector.persona?.primer_apellido ?? ""
+      }`,
+    })) ?? [];
+
+  const formatAsesores =
+    asesores?.map((asesor) => ({
+      value: asesor.id_usuario,
+      label: `${asesor.persona?.primer_nombre ?? ""} ${
+        asesor.persona?.primer_apellido ?? ""
       }`,
     })) ?? [];
 
@@ -116,6 +130,35 @@ export const StepRuta = ({ methods, inspectores, tiposVisita }: Props) => {
           {errors?.ruta?.id_inspector && (
             <span style={{ color: "red" }}>
               {errors.ruta.id_inspector.message as string}
+            </span>
+          )}
+        </div>
+      </Col>
+
+      <Col xs={24} md={8}>
+        <div className="mb-4">
+          <label>Asesor</label>
+          <Controller
+            name="ruta.id_asesor"
+            control={control}
+            rules={{ required: "Este campo es requerido" }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                allowClear
+                showSearch
+                placeholder="Seleccione asesor"
+                style={{ width: "100%" }}
+                optionFilterProp="label"
+                options={formatAsesores}
+                value={field.value ?? null}
+                onChange={(v) => field.onChange(v ?? null)}
+              />
+            )}
+          />
+          {errors?.ruta?.id_asesor && (
+            <span style={{ color: "red" }}>
+              {errors.ruta.id_asesor.message as string}
             </span>
           )}
         </div>
