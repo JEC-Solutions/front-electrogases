@@ -117,7 +117,7 @@ export const StepCasa = ({ methods }: Props) => {
         setIsLoading(false);
       }
     }, 400),
-    []
+    [],
   );
 
   const handleSelectCasa = (_value: string, option: any) => {
@@ -139,23 +139,6 @@ export const StepCasa = ({ methods }: Props) => {
       setTimeout(() => {
         setValue("casa.id_ciudad", casa.ciudad?.codigo);
       }, 100);
-    }
-
-    // Set client fields if present
-    if (casa.cliente) {
-      setValue("cliente.id_cliente", casa.cliente.id_cliente);
-      setValue("cliente.primer_nombre", casa.cliente.primer_nombre || "");
-      setValue("cliente.segundo_nombre", casa.cliente.segundo_nombre || "");
-      setValue("cliente.primer_apellido", casa.cliente.primer_apellido || "");
-      setValue("cliente.segundo_apellido", casa.cliente.segundo_apellido || "");
-      setValue("cliente.numero_documento", casa.cliente.numero_documento || "");
-      setValue("cliente.telefono", casa.cliente.telefono || "");
-      if (casa.cliente.tipo_documento) {
-        setValue(
-          "cliente.id_tipo_documento",
-          casa.cliente.tipo_documento.id_tipo_documento
-        );
-      }
     }
 
     message.success("Casa seleccionada. Los campos han sido pre-llenados.");
