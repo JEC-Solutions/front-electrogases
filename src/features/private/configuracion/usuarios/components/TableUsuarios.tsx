@@ -11,11 +11,6 @@ interface Props {
 export const TableUsuarios = ({ usuarios, onOpenCurrent, onStatus }: Props) => {
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id_usuario",
-      key: "id_usuario",
-    },
-    {
       title: "Nombre completo",
       key: "nombre_completo",
       render: (_: any, record: IUsuarios) => {

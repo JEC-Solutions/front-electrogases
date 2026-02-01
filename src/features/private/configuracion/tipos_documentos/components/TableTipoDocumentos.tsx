@@ -17,11 +17,6 @@ export const TableTipoDocumentos = ({
 }: Props) => {
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id_tipo_documento",
-      key: "id_tipo_documento",
-    },
-    {
       title: "Nombre",
       dataIndex: "nombre",
       key: "nombre",
