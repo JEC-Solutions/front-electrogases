@@ -146,7 +146,8 @@ export const TableRutas = ({
   ];
 
   const handleExportPdf = () => {
-    const { start, end, inspectorId, clienteId, clienteDocumento } = pdfFilters;
+    const { start, end, inspectorId, asesorId, clienteId, clienteDocumento } =
+      pdfFilters;
 
     if (!start || !end) {
       Swal.fire({
@@ -173,6 +174,7 @@ export const TableRutas = ({
       end: end.format("YYYY-MM-DD"),
       inspectorId: inspectorId ?? 0,
       clienteId: clienteId ?? 0,
+      asesorId: asesorId ?? 0,
       clienteDocumento: (clienteDocumento || "").trim(),
     });
   };
@@ -235,7 +237,7 @@ export const TableRutas = ({
                 normalize(option?.label as string).includes(normalize(input))
               }
               value={pdfFilters.asesorId}
-              onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
+              onChange={(v) => setPdfFilters((s) => ({ ...s, asesorId: v }))}
             />
 
             <Select

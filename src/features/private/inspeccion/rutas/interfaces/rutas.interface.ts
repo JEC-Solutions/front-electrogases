@@ -151,6 +151,7 @@ export interface IPdfRuta {
   start: string
   end: string
   inspectorId: number
+  asesorId: number
   clienteId: number
   clienteDocumento: string
 }
