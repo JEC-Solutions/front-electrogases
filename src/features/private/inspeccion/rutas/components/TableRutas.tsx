@@ -20,6 +20,7 @@ type PdfFilters = {
   start: Dayjs | null;
   end: Dayjs | null;
   inspectorId?: number;
+  asesorId?: number;
   clienteId?: number;
   clienteDocumento?: string;
 };
@@ -33,6 +34,7 @@ interface Props {
   onSubmit: (payload: IAsignar) => void;
   methods: any;
   inspectores: IUsuarios[];
+  asesores: IUsuarios[];
   onDownload: (payload: IPdfRuta) => void;
 }
 
@@ -45,6 +47,7 @@ export const TableRutas = ({
   methods,
   onSubmit,
   inspectores,
+  asesores,
   onDownload,
 }: Props) => {
   const {
@@ -213,6 +216,25 @@ export const TableRutas = ({
                 normalize(option?.label as string).includes(normalize(input))
               }
               value={pdfFilters.inspectorId}
+              onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
+            />
+
+            <Select
+              allowClear
+              showSearch
+              placeholder="Asesor"
+              style={{ width: 220 }}
+              options={asesores.map((i) => ({
+                value: i.persona?.id_persona,
+                label: `${i.persona?.primer_nombre ?? ""} ${
+                  i.persona?.primer_apellido ?? ""
+                }`.trim(),
+              }))}
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                normalize(option?.label as string).includes(normalize(input))
+              }
+              value={pdfFilters.asesorId}
               onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
             />
 

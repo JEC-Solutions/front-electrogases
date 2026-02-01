@@ -19,9 +19,10 @@ export const Rutas = () => {
     methods,
     onSubmit,
     inspectores,
+    asesores,
 
     // pdf
-    generarPDF
+    generarPDF,
   } = useRutas();
   const navigate = useNavigate();
 
@@ -65,6 +66,7 @@ export const Rutas = () => {
             methods={methods}
             onSubmit={onSubmit}
             inspectores={inspectores}
+            asesores={asesores}
             onDownload={generarPDF}
           />
         )}

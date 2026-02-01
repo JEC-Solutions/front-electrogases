@@ -65,6 +65,22 @@ export const useRutas = () => {
     refetchOnWindowFocus: false,
   });
 
+  // Get asesores
+  const { data: asesores = [] } = useQuery<IUsuarios[]>({
+    queryKey: ["asesores"],
+    queryFn: async () => {
+      try {
+        const { data } = await rutaServices.getAsesores();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
   const asignarMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: IAsignar }) =>
       rutaServices.asignarRuta(id, data),
@@ -138,7 +154,7 @@ export const useRutas = () => {
       downloadBase64(
         base64,
         filename || "rutero.pdf",
-        mimeType || "application/pdf"
+        mimeType || "application/pdf",
       );
     },
     onError: (error: any) => {
@@ -166,6 +182,7 @@ export const useRutas = () => {
     methods,
     onSubmit,
     inspectores,
+    asesores,
 
     // pdf
     generarPDF,
