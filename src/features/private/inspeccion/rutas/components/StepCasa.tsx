@@ -254,7 +254,7 @@ export const StepCasa = ({ methods }: Props) => {
       <Row gutter={16}>
         <Col xs={24} md={8}>
           <div className="mb-4">
-            <label htmlFor="no_cuenta">Número de cuenta</label>
+            <label htmlFor="no_cuenta">Número cuenta contrato</label>
             <Controller
               name="casa.no_cuenta"
               control={control}
