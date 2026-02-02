@@ -190,15 +190,30 @@ export const Defectologias = ({ inspeccion }: Props) => {
 
         <tbody>
           {filas.map((fila, idx) => {
-            const estados = fila.codes
-              .filter((code): code is string => code !== null)
-              .map((code) => getEstadoCodigo(code));
+            // Find category result (same as backend logic: id = idx + 1)
+            const catResult = inspeccion?.resultadoCategoriaDefectologias?.find(
+              (r: any) =>
+                r.categoriaDefectologia?.id_categoria_defectologia === idx + 1,
+            );
 
-            const cumpleFila: Estado = estados.includes("NO")
-              ? "NO"
-              : estados.every((e) => e === "NA")
-                ? "NA"
-                : "SI";
+            const reparacion = catResult?.reparacion; // boolean | null
+            const cumple = catResult?.cumple; // boolean | null
+
+            // Logic for Reparacion Inmediata
+            let repSI = false;
+            let repNO = false;
+
+            if (reparacion === true) repSI = true;
+            else if (reparacion === false) repNO = true;
+
+            // Logic for Cumple
+            let cumpleSI = false;
+            let cumpleNO = false;
+            let cumpleNA = false;
+
+            if (cumple === true) cumpleSI = true;
+            else if (cumple === false) cumpleNO = true;
+            else cumpleNA = true;
 
             return (
               <tr key={idx} className="h-[16px]">
@@ -220,20 +235,20 @@ export const Defectologias = ({ inspeccion }: Props) => {
                 ))}
 
                 <td className="border border-black text-center align-middle">
-                  <Box />
+                  <Box checked={repSI} />
                 </td>
                 <td className="border border-black text-center align-middle">
-                  <Box />
+                  <Box checked={repNO} />
                 </td>
 
                 <td className="border border-black text-center align-middle border-l-[2px] border-l-black">
-                  <Box checked={cumpleFila === "SI"} />
+                  <Box checked={cumpleSI} />
                 </td>
                 <td className="border border-black text-center align-middle">
-                  <Box checked={cumpleFila === "NO"} />
+                  <Box checked={cumpleNO} />
                 </td>
                 <td className="border border-black text-center align-middle">
-                  <Box checked={cumpleFila === "NA"} />
+                  <Box checked={cumpleNA} />
                 </td>
               </tr>
             );

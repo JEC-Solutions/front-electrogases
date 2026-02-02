@@ -85,8 +85,25 @@ export interface IActa {
   ruta: Ruta;
   volumenRecintos: VolumenRecinto[];
   resultadoDefectologias: ResultadoDefectologia[];
+  resultadoCategoriaDefectologias: ResultadoCategoriaDefectologia[];
   parametrosEvaluacion: ParametrosEvaluacion[];
   declaracionConformidad: DeclaracionConformidad[];
+}
+
+export interface ResultadoCategoriaDefectologia {
+  id_resultado_categoria_defectologia: number;
+  reparacion: boolean | null;
+  cumple: boolean | null;
+  created_at: string;
+  updated_at: string;
+  categoriaDefectologia: CategoriaDefectologia;
+}
+
+export interface CategoriaDefectologia {
+  id_categoria_defectologia: number;
+  descripcion: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface InstalacionExistente {
