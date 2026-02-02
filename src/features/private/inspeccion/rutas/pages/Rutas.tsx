@@ -1,5 +1,5 @@
 import { useRutas } from "@/features/private/inspeccion/rutas/hooks";
-import { Button, Card, Spin } from "antd";
+import { Button, Card } from "antd";
 import { TableRutas } from "@/features/private/inspeccion/rutas/components";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,12 @@ export const Rutas = () => {
 
     // pdf
     generarPDF,
+
+    // pagination & filters
+    pagination,
+    setPage,
+    setLimit,
+    setFilters,
   } = useRutas();
   const navigate = useNavigate();
 
@@ -37,18 +43,7 @@ export const Rutas = () => {
       </Button>
 
       <Card>
-        {isLoading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "200px",
-            }}
-          >
-            <Spin />
-          </div>
-        ) : isError ? (
+        {isError ? (
           <div style={{ color: "red", textAlign: "center" }}>
             Ocurrió un error al cargar las rutas.
             <br />
@@ -68,6 +63,11 @@ export const Rutas = () => {
             inspectores={inspectores}
             asesores={asesores}
             onDownload={generarPDF}
+            pagination={pagination}
+            setPage={setPage}
+            setLimit={setLimit}
+            setFilters={setFilters}
+            isLoading={isLoading}
           />
         )}
       </Card>

@@ -402,7 +402,6 @@ export const TableInspecciones = ({
         }}
       />
 
-      {/* --- MODAL DE IMÁGENES --- */}
       <ModalImagenesInspeccion
         isModalOpen={isModalOpen}
         onClose={closeImageModal}

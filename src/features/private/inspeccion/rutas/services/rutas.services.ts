@@ -5,8 +5,39 @@ import {
   IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
 
-export const getRutas = async () => {
-  return await electroApi.get("/ruta");
+export interface RutasFilters {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  inspectorId?: number;
+  asesorId?: number;
+  clienteId?: number;
+  clienteDocumento?: string;
+}
+
+export const getRutas = async (filters?: RutasFilters) => {
+  const params = new URLSearchParams();
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, value.toString());
+      }
+    });
+  }
+  return await electroApi.get(`/ruta?${params.toString()}`);
+};
+
+export const getMyRutas = async (filters?: RutasFilters) => {
+  const params = new URLSearchParams();
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, value.toString());
+      }
+    });
+  }
+  return await electroApi.get(`/ruta/my-rutas?${params.toString()}`);
 };
 
 export const createRuta = async (data: IRuta) => {

@@ -18,6 +18,11 @@ export const useRutas = () => {
   const [currentRuta, setCurrentRuta] = useState({} as IRutas);
   const methods = useForm<IAsignar>();
 
+  // Pagination & Filters
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [filters, setFilters] = useState<rutaServices.RutasFilters>({});
+
   const handleOpen = (payload: IRutas) => {
     setCurrentRuta(payload);
     setOpen(true);
@@ -30,15 +35,19 @@ export const useRutas = () => {
   };
 
   const {
-    data: rutas = [],
+    data: response,
     isLoading,
     isError,
     error,
-  } = useQuery<IRutas[]>({
-    queryKey: ["rutas"],
+  } = useQuery({
+    queryKey: ["rutas", page, limit, filters],
     queryFn: async () => {
       try {
-        const { data } = await rutaServices.getRutas();
+        const { data } = await rutaServices.getRutas({
+          page,
+          limit,
+          ...filters,
+        });
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -48,6 +57,14 @@ export const useRutas = () => {
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
+
+  const rutas = response?.data || [];
+  const pagination = response?.pagination || {
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  };
 
   // Get inspectores
   const { data: inspectores = [] } = useQuery<IUsuarios[]>({
@@ -186,5 +203,12 @@ export const useRutas = () => {
 
     // pdf
     generarPDF,
+
+    // pagination & filters
+    pagination,
+    setPage,
+    setLimit,
+    filters,
+    setFilters,
   };
 };

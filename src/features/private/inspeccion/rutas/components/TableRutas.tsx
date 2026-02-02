@@ -6,7 +6,7 @@ import {
 import { Button, DatePicker, Input, Select, Space, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { FiClock, FiFileText, FiNavigation } from "react-icons/fi";
+import { FiClock, FiFileText, FiNavigation, FiSearch } from "react-icons/fi";
 import { getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
@@ -15,8 +15,9 @@ import { ModalHistorico } from "@/features/private/inspeccion/rutas/components";
 import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
 import { Dayjs } from "dayjs";
 import Swal from "sweetalert2";
+import { RutasFilters } from "../services/rutas.services";
 
-type PdfFilters = {
+type LocalFilters = {
   start: Dayjs | null;
   end: Dayjs | null;
   inspectorId?: number;
@@ -36,6 +37,18 @@ interface Props {
   inspectores: IUsuarios[];
   asesores: IUsuarios[];
   onDownload: (payload: IPdfRuta) => void;
+
+  // Pagination & Filters
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
+  setFilters: (filters: RutasFilters) => void;
+  isLoading?: boolean;
 }
 
 export const TableRutas = ({
@@ -49,6 +62,11 @@ export const TableRutas = ({
   inspectores,
   asesores,
   onDownload,
+  pagination,
+  setPage,
+  setLimit,
+  setFilters,
+  isLoading,
 }: Props) => {
   const {
     handleViewHistorial,
@@ -60,14 +78,18 @@ export const TableRutas = ({
     loadingHistorial,
     refetchHistorial,
   } = useHistorialRuta();
-  const [pdfFilters, setPdfFilters] = useState<PdfFilters>({
+
+  const [localFilters, setLocalFilters] = useState<LocalFilters>({
     start: null,
     end: null,
     inspectorId: undefined,
     clienteId: undefined,
+    asesorId: undefined,
     clienteDocumento: "",
   });
+
   const { clientes } = useClientes();
+
   const columns: ColumnsType<IRutas> = [
     {
       title: "Fecha",
@@ -100,6 +122,7 @@ export const TableRutas = ({
       title: "Dirección",
       key: "direccion",
       dataIndex: ["casa", "direccion"],
+      width: 200,
     },
     {
       title: "Barrio",
@@ -113,6 +136,7 @@ export const TableRutas = ({
         const c = record.casa?.cliente;
         return c ? `${c.primer_nombre} ${c.primer_apellido}` : "—";
       },
+      width: 150,
     },
     {
       title: "Acciones",
@@ -145,9 +169,25 @@ export const TableRutas = ({
     },
   ];
 
+  const handleSearch = () => {
+    const { start, end, inspectorId, asesorId, clienteId, clienteDocumento } =
+      localFilters;
+
+    const filters: RutasFilters = {
+      startDate: start ? start.format("YYYY-MM-DD") : undefined,
+      endDate: end ? end.format("YYYY-MM-DD") : undefined,
+      inspectorId,
+      asesorId,
+      clienteId,
+      clienteDocumento: clienteDocumento?.trim() || undefined,
+    };
+    setFilters(filters);
+    setPage(1);
+  };
+
   const handleExportPdf = () => {
     const { start, end, inspectorId, asesorId, clienteId, clienteDocumento } =
-      pdfFilters;
+      localFilters;
 
     if (!start || !end) {
       Swal.fire({
@@ -192,9 +232,9 @@ export const TableRutas = ({
           <Space wrap>
             <DatePicker.RangePicker
               format="YYYY-MM-DD"
-              value={[pdfFilters.start, pdfFilters.end]}
+              value={[localFilters.start, localFilters.end]}
               onChange={(vals) =>
-                setPdfFilters((s) => ({
+                setLocalFilters((s) => ({
                   ...s,
                   start: vals?.[0] ?? null,
                   end: vals?.[1] ?? null,
@@ -217,8 +257,10 @@ export const TableRutas = ({
               filterOption={(input, option) =>
                 normalize(option?.label as string).includes(normalize(input))
               }
-              value={pdfFilters.inspectorId}
-              onChange={(v) => setPdfFilters((s) => ({ ...s, inspectorId: v }))}
+              value={localFilters.inspectorId}
+              onChange={(v) =>
+                setLocalFilters((s) => ({ ...s, inspectorId: v }))
+              }
             />
 
             <Select
@@ -236,8 +278,8 @@ export const TableRutas = ({
               filterOption={(input, option) =>
                 normalize(option?.label as string).includes(normalize(input))
               }
-              value={pdfFilters.asesorId}
-              onChange={(v) => setPdfFilters((s) => ({ ...s, asesorId: v }))}
+              value={localFilters.asesorId}
+              onChange={(v) => setLocalFilters((s) => ({ ...s, asesorId: v }))}
             />
 
             <Select
@@ -255,28 +297,37 @@ export const TableRutas = ({
               filterOption={(input, option) =>
                 normalize(option?.label as string).includes(normalize(input))
               }
-              value={pdfFilters.clienteId}
-              onChange={(v) => setPdfFilters((s) => ({ ...s, clienteId: v }))}
+              value={localFilters.clienteId}
+              onChange={(v) => setLocalFilters((s) => ({ ...s, clienteId: v }))}
             />
 
             <Input
               placeholder="Documento cliente"
               allowClear
               style={{ width: 200 }}
-              value={pdfFilters.clienteDocumento}
+              value={localFilters.clienteDocumento}
               onChange={(e) =>
-                setPdfFilters((s) => ({
+                setLocalFilters((s) => ({
                   ...s,
                   clienteDocumento: e.target.value,
                 }))
               }
+              onPressEnter={handleSearch}
             />
+
+            <Button
+              type="primary"
+              icon={<FiSearch size={18} />}
+              onClick={handleSearch}
+            >
+              Buscar
+            </Button>
 
             <Button
               icon={<FiFileText size={18} />}
               {...getRedOutlineButtonProps()}
               onClick={handleExportPdf}
-              disabled={!pdfFilters.start || !pdfFilters.end}
+              disabled={!localFilters.start || !localFilters.end}
             >
               Exportar PDF
             </Button>
@@ -291,6 +342,19 @@ export const TableRutas = ({
               index % 2 === 0 ? "even-row" : "odd-row"
             }
             scroll={{ x: 600 }}
+            loading={isLoading}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: pagination.total,
+              showSizeChanger: false,
+              showTotal: (total, range) =>
+                `${range[0]}-${range[1]} de ${total} rutas`,
+              onChange: (p, l) => {
+                setPage(p);
+                setLimit(l);
+              },
+            }}
           />
         </Space>
       </div>
