@@ -5,9 +5,11 @@ interface Props {
 }
 
 const Box = ({ checked = false }: { checked?: boolean }) => (
-  <span className="inline-flex items-center justify-center w-[12px] h-[12px] border border-black bg-white ml-[2px]">
+  <span className="inline-flex items-center justify-center w-[14px] h-[9px] border border-black bg-[#eee] ml-[3px] mb-[1px]">
     {checked ? (
-      <span className="-mt-[2px] text-[10px] leading-none font-bold">✓</span>
+      <span className="text-[8px] leading-none font-bold text-black -mt-[1px]">
+        ✓
+      </span>
     ) : null}
   </span>
 );
@@ -20,47 +22,40 @@ export const Declaracion = ({ inspeccion }: Props) => {
   const isCriticos = conformidad.defectos === true;
 
   const borderClass = "border-black";
-  const textClass = "text-[7.5pt] font-arial leading-tight text-black";
+  const textClass = "text-[6pt] font-arial leading-[1.1] text-black";
   const sectionHeader =
-    "bg-gray-200 font-bold text-center py-[2px] border-b border-black text-[7pt]";
+    "bg-[#f3f4f6] font-bold text-center py-[2px] border-b border-black text-[7pt] uppercase";
 
   return (
     <div
-      className={`w-full border-l border-r border-b ${borderClass} ${textClass} box-border`}
+      className={`w-full border border-black flex flex-col ${textClass} box-border mt-[-1px]`}
     >
-      <div className={`${sectionHeader} `}>10. DECLARACIÓN DE CONFORMIDAD</div>
+      <div className={sectionHeader}>10. DECLARACIÓN DE CONFORMIDAD</div>
 
       <div
         className={`px-1 py-[2px] border-b ${borderClass} flex items-end justify-between`}
       >
         <div className="text-justify flex-1 mr-2 leading-tight">
           Se informo adquirir un mecanismo de advertencia, preferiblemente
-          audiovisual, a un nivel de concentracion de CO en el ambiente igual o
+          audiovisual, a un nivel de concentración de CO en el ambiente igual o
           superior a 50 ppm:
         </div>
-        <div className="flex items-center whitespace-nowrap">
-          <span className="font-semibold mr-[2px]">SI</span>{" "}
+        <div className="flex items-center font-bold whitespace-nowrap">
+          <span className="mr-[1px]">SI</span>{" "}
           <Box checked={conformidad.declaracion1 === true} />
-          <span className="font-semibold ml-2 mr-[2px]">NO</span>{" "}
+          <span className="ml-2 mr-[1px]">NO</span>{" "}
           <Box checked={conformidad.declaracion1 === false} />
-          <span className="font-semibold ml-2 mr-[2px]">NA</span>{" "}
-          <Box
-            checked={
-              conformidad.declaracion1 === null ||
-              conformidad.declaracion1 === undefined
-            }
-          />
         </div>
       </div>
 
       <div
         className={`px-1 py-[2px] border-b ${borderClass} text-justify leading-tight`}
       >
-        <span className="font-bold">Importante:</span> Si la Instalacion
-        presenta Defectos No Criticos según Resoluciones 90902 Y 41385 se cuenta
+        <span className="font-bold">Importante:</span> Si la Instalación
+        presenta Defectos No Críticos según Resoluciones 90902 Y 41385 se cuenta
         con dos meses para corregir dichos defectos, en todo caso este plazo no
-        podra extenderse mas alla del plazo maximo de la revisión periodica con
-        el fin de evitar la suspension del servicio por parte del Distribuidor.
+        podrá extenderse más allá del plazo máximo de la revisión periódica con
+        el fin de evitar la suspensión del servicio por parte del Distribuidor.
       </div>
 
       <div
@@ -68,99 +63,92 @@ export const Declaracion = ({ inspeccion }: Props) => {
       >
         <span className="font-bold">
           CONFIDENCIALIDAD: ELECTROGASES SAS. DECLARA:
-        </span>
+        </span>{" "}
         Que la información contenida en este documento es de carácter
         confidencial, salvo los datos que sean requeridos para la solución de
         quejas y apelaciones ó con fines legales (requerimiento judicial,
         cumplimiento de reglamentación, legislación o normativa vigente, etc.);
         igualmente en su condición de responsable del tratamiento de los datos
-        personales actuara conforme a la ley 1581 de 2012.
+        personales actuará conforme a la ley 1581 de 2012.
       </div>
 
-      <div
-        className={`px-1 py-[2px] border-b ${borderClass} flex items-end justify-between`}
-      >
-        <span className="flex-1 mr-2">
-          Se le informa al usuario que el resultado de la inspección sera
+      <div className={`px-1 py-[2px] border-b ${borderClass} flex items-end`}>
+        <div className="w-full text-justify leading-tight">
+          Se le informa al usuario que el resultado de la inspección será
           reportado a la distribuidora en los tiempos establecidos según
-          resolucion 90902 de 2013
-        </span>
-        <div className="flex items-center whitespace-nowrap">
-          <span className="font-semibold mr-[2px]">SI</span>{" "}
-          <Box checked={conformidad.declaracion2 === true} />
-          <span className="font-semibold ml-2 mr-[2px]">NO</span>{" "}
-          <Box checked={conformidad.declaracion2 === false} />
-          <span className="font-semibold ml-2 mr-[2px]">NA</span>{" "}
-          <Box
-            checked={
-              conformidad.declaracion2 === null ||
-              conformidad.declaracion2 === undefined
-            }
-          />
+          resolución 90902 de 2013{" "}
+          <span className="font-bold whitespace-nowrap ml-2">
+            N° DE REPORTE POR DEFECTO CRITICO _____________________________
+          </span>
         </div>
       </div>
 
       <div
         className={`px-1 py-[2px] border-b ${borderClass} flex items-center justify-between`}
       >
-        <span>
+        <div>
           Si la instalación es conforme se adhiere en sitio visible la etiqueta
           que soporta esta inspección.
-        </span>
-        <div className="flex items-center">
-          <span className="mr-[2px]">SI</span>{" "}
+        </div>
+        <div className="flex items-center font-bold whitespace-nowrap">
+          <span className="mr-[1px]">SI</span>{" "}
           <Box checked={conformidad.declaracion3 === true} />
-          <span className="ml-2 mr-[2px]">NO</span>{" "}
+          <span className="ml-2 mr-[1px]">NO</span>{" "}
           <Box checked={conformidad.declaracion3 === false} />
         </div>
       </div>
 
-      <div className="flex w-full border-b border-black h-[28px]">
+      <div className="flex w-full border-b border-black items-stretch min-h-[25px]">
         <div className={`w-[40%] border-r ${borderClass} flex flex-col`}>
-          <div className="text-center font-bold text-[7pt] leading-none pt-[1px]">
+          <div className="text-center font-bold border-b border-black bg-white pt-[1px] leading-none">
             Resultados de la visita de inspección
           </div>
-          <div className="flex-1 flex items-center justify-around px-1 text-[7pt]">
-            <div className="flex items-center">
+          <div className="flex-1 flex flex-row items-center justify-between px-1 py-[1px]">
+            <div className="flex items-center whitespace-nowrap mr-1">
               Sin defectos: <Box checked={isSinDefectos} />
             </div>
-            <div className="flex items-center">
-              Defectos no criticos: <Box checked={isNoCriticos} />
+            <div className="flex items-center whitespace-nowrap mr-1">
+              Defectos no críticos: <Box checked={isNoCriticos} />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center whitespace-nowrap">
               Defectos Criticos: <Box checked={isCriticos} />
             </div>
           </div>
         </div>
 
         <div
-          className={`w-[30%] border-r ${borderClass} flex items-center justify-center font-bold text-[8pt]`}
+          className={`w-[30%] border-r ${borderClass} flex items-center justify-center px-1`}
         >
-          <span className="mr-2">INSTALACIÓN CONFORME:</span>
-          <span className="mr-[2px]">SI</span>{" "}
-          <Box checked={conformidad.instalacionConforme} />
-          <span className="ml-2 mr-[2px]">NO</span>{" "}
-          <Box checked={!conformidad.instalacionConforme} />
+          <span className="font-bold text-[7pt] mr-1 uppercase">
+            INSTALACIÓN CONFORME:
+          </span>
+          <div className="flex items-center font-bold">
+            <span className="mr-[1px]">SI</span>{" "}
+            <Box checked={conformidad.instalacionConforme} />
+            <span className="ml-2 mr-[1px]">NO</span>{" "}
+            <Box checked={!conformidad.instalacionConforme} />
+          </div>
         </div>
 
-        <div
-          className={`w-[30%] flex items-center justify-center font-bold text-[7.5pt]`}
-        >
-          <span className="mr-2">Predio Continua En Servicio :</span>
-          <span className="mr-[2px]">Si</span>{" "}
-          <Box checked={conformidad.continuaServicio} />
-          <span className="ml-2 mr-[2px]">No</span>{" "}
-          <Box checked={!conformidad.continuaServicio} />
+        {/* Columna 3 */}
+        <div className={`w-[30%] flex items-center justify-center px-1`}>
+          <span className="font-bold mr-1">Predio Continua En Servicio :</span>
+          <div className="flex items-center font-bold">
+            <span className="mr-[1px]">Si</span>{" "}
+            <Box checked={conformidad.continuaServicio} />
+            <span className="ml-2 mr-[1px]">No</span>{" "}
+            <Box checked={!conformidad.continuaServicio} />
+          </div>
         </div>
       </div>
 
-      <div className="w-full flex flex-col h-[50px]">
-        <div className="w-full px-1 py-[1px] leading-tight">
-          <span className="font-bold">12. OBSERVACIONES:</span> (En este espacio
+      <div className="w-full flex flex-col min-h-[40px] px-1 py-[2px]">
+        <div className="leading-tight mb-1">
+          <span className="font-bold">11. OBSERVACIONES:</span> (En este espacio
           solo deben quedar registradas observaciones producto de evaluación de
           la conformidad resoluciones 90902 de 2013 y 41385 de 2017)
         </div>
-        <div className="flex-1 px-1 font-arial text-[7pt]">
+        <div className="flex-1 font-arial text-[6.5pt] whitespace-pre-wrap leading-tight">
           {conformidad.observaciones}
         </div>
       </div>
