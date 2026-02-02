@@ -197,30 +197,33 @@ export const TableInspecciones = ({
           <Tooltip
             title={
               yaAutorizado
-                ? "Edición ya autorizada"
+                ? "Desautorizar edición del informe"
                 : "Autorizar edición del informe"
             }
           >
-            {yaAutorizado ? (
-              <CheckCircleOutlined style={{ fontSize: 18, color: "#52c41a" }} />
-            ) : (
-              <Popconfirm
-                title="¿Autorizar edición de este informe?"
-                onConfirm={() => autorizarEdicion(record.id_inspeccion)}
-                okText="Sí, autorizar"
-                cancelText="Cancelar"
-              >
-                <Button
-                  type="text"
-                  loading={isAutorizando}
-                  icon={
-                    <CheckCircleOutlined
-                      style={{ fontSize: 18, color: "#faad14" }}
-                    />
-                  }
-                />
-              </Popconfirm>
-            )}
+            <Popconfirm
+              title={
+                yaAutorizado
+                  ? "¿Desautorizar edición de este informe?"
+                  : "¿Autorizar edición de este informe?"
+              }
+              onConfirm={() => autorizarEdicion(record.id_inspeccion)}
+              okText={yaAutorizado ? "Sí, desautorizar" : "Sí, autorizar"}
+              cancelText="Cancelar"
+            >
+              <Button
+                type="text"
+                loading={isAutorizando}
+                icon={
+                  <CheckCircleOutlined
+                    style={{
+                      fontSize: 18,
+                      color: yaAutorizado ? "#52c41a" : "#faad14",
+                    }}
+                  />
+                }
+              />
+            </Popconfirm>
           </Tooltip>
         );
       },
