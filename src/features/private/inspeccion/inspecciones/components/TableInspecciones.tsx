@@ -15,6 +15,7 @@ import {
   Col,
   Card,
   Popconfirm,
+  Dropdown,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
@@ -24,6 +25,7 @@ import {
   FilePdfOutlined,
   SearchOutlined,
   CheckCircleOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import type { Dayjs } from "dayjs";
@@ -37,7 +39,11 @@ type PrintType = "all" | "first_page" | "first_two_pages";
 interface Props {
   inspecciones: IInspecciones[];
   downloadPdf: (id: number) => void;
-  downloadMassivePdf: (ids: number[], printType?: PrintType) => void;
+  downloadMassivePdf: (
+    ids?: number[],
+    printType?: string,
+    filters?: InspeccionesFilters,
+  ) => void;
   getImagenPorTipo: (
     inspeccionId: number,
     tipoImagenId: number,
@@ -53,6 +59,7 @@ interface Props {
     total: number;
     totalPages: number;
   };
+  filters: InspeccionesFilters;
   handleFilterChange: (filters: Partial<InspeccionesFilters>) => void;
   handlePageChange: (page: number) => void;
   isLoading?: boolean;
@@ -68,6 +75,7 @@ export const TableInspecciones = ({
   autorizarEdicion,
   isAutorizando,
   pagination,
+  filters,
   handleFilterChange,
   handlePageChange,
   isLoading,
@@ -129,11 +137,10 @@ export const TableInspecciones = ({
     setCurrentInspeccionId(null);
   };
 
-  // Opciones de tipos de inspección (hardcoded o se podría traer del backend)
   const tiposDeInspeccionOptions = [
-    { label: "Periódica", value: "Periódica" },
-    { label: "Primera vez", value: "Primera vez" },
-    { label: "Matriz", value: "Matriz" },
+    { label: "Periódica", value: "1" },
+    { label: "Nueva", value: "2" },
+    { label: "Matriz", value: "3" },
   ];
 
   const columns: ColumnsType<IInspecciones> = [
@@ -285,16 +292,32 @@ export const TableInspecciones = ({
                 { label: "Primeras 2 páginas", value: "first_two_pages" },
               ]}
             />
-            <Button
-              type="primary"
-              icon={<DownloadOutlined />}
-              disabled={selectedRowKeys.length === 0}
-              onClick={() =>
-                downloadMassivePdf(selectedRowKeys as number[], printType)
-              }
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: "seleccionados",
+                    label: `Descargar Seleccionados (${selectedRowKeys.length})`,
+                    disabled: selectedRowKeys.length === 0,
+                    onClick: () =>
+                      downloadMassivePdf(
+                        selectedRowKeys as number[],
+                        printType,
+                      ),
+                  },
+                  {
+                    key: "filtrados",
+                    label: "Descargar Filtrados (Todos)",
+                    onClick: () =>
+                      downloadMassivePdf(undefined, printType, filters),
+                  },
+                ],
+              }}
             >
-              Descargar PDFs ({selectedRowKeys.length})
-            </Button>
+              <Button type="primary" icon={<DownloadOutlined />}>
+                Descargar <DownOutlined />
+              </Button>
+            </Dropdown>
           </Space>
         }
       >

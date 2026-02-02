@@ -10,6 +10,7 @@ export const Inspecciones = () => {
     isLoading,
     // paginación
     pagination,
+    filters,
     handleFilterChange,
     handlePageChange,
     // pdf
@@ -44,6 +45,7 @@ export const Inspecciones = () => {
             autorizarEdicion={autorizarEdicion}
             isAutorizando={isAutorizando}
             pagination={pagination}
+            filters={filters}
             handleFilterChange={handleFilterChange}
             handlePageChange={handlePageChange}
             isLoading={isLoading}

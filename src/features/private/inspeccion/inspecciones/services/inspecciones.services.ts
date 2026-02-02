@@ -61,10 +61,15 @@ export const getImagenesByTipo = async (
   );
 };
 
-export const downloadMassivePdf = async (ids: number[], printType?: string) => {
+export const downloadMassivePdf = async (params: {
+  ids?: number[];
+  printType?: string;
+  filters?: InspeccionesFilters;
+}) => {
+  const { ids, printType, filters } = params;
   return await electroApi.post(
     `/inspeccion/generate-pdf-massive`,
-    { ids, printType },
+    { ids, printType, ...filters },
     {
       responseType: "blob",
     },

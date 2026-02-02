@@ -125,25 +125,20 @@ export const useInspecciones = () => {
   });
 
   const downloadMassiveMutation = useMutation({
-    mutationFn: async ({
-      ids,
-      printType,
-    }: {
-      ids: number[];
+    mutationFn: async (params: {
+      ids?: number[];
       printType?: string;
+      filters?: InspeccionesFilters;
     }) => {
       Swal.fire({
         title: "Generando PDFs...",
-        text: `Preparando ${ids.length} documento(s), por favor espere...`,
+        text: `Esto puede tardar unos momentos, por favor espere...`,
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
         },
       });
-      const { data } = await inspeccionServices.downloadMassivePdf(
-        ids,
-        printType,
-      );
+      const { data } = await inspeccionServices.downloadMassivePdf(params);
       return data;
     },
     onSuccess: (data) => {
@@ -223,8 +218,28 @@ export const useInspecciones = () => {
     }
   };
 
-  const handleDownloadMassivePdf = (ids: number[], printType?: string) => {
-    downloadMassiveMutation.mutate({ ids, printType });
+  const handleDownloadMassivePdf = (
+    ids?: number[],
+    printType?: string,
+    filters?: InspeccionesFilters,
+  ) => {
+    if ((!ids || ids.length === 0) && !filters) {
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Debe seleccionar inspecciones o aplicar filtros para descargar.",
+      });
+      return;
+    }
+
+    // Si hay filtros, eliminamos page y limit para que no afecten la descarga
+    const cleanFilters = filters ? { ...filters } : undefined;
+    if (cleanFilters) {
+      delete cleanFilters.page;
+      delete cleanFilters.limit;
+    }
+
+    downloadMassiveMutation.mutate({ ids, printType, filters: cleanFilters });
   };
 
   // Autorizar edición de informe
