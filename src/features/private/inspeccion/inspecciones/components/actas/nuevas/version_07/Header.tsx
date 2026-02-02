@@ -73,7 +73,7 @@ export const Header = ({ inspeccion }: Props) => {
           <div className="flex-1 flex items-center px-2 relative">
             {/* 'NR' grande alineado a la izquierda */}
             <span className="text-[26pt] font-bold text-gray-800 absolute left-2 leading-none">
-              NR
+              NRD
             </span>
 
             {/* El número de acta centrado/derecha */}

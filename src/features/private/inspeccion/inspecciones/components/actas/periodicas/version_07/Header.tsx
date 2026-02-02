@@ -66,7 +66,7 @@ export const Header = ({ inspeccion }: Props) => {
           </div>
 
           <div className="flex-1 flex items-center px-3 relative">
-            <span className="text-[16pt] font-normal absolute left-3">P</span>
+            <span className="text-[16pt] font-normal absolute left-3">PD</span>
 
             <div className="w-full text-center pl-4">
               <span className="text-[12pt] font-bold text-red-600">
