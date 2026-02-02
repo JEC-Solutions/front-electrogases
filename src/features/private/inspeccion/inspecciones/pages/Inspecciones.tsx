@@ -1,5 +1,5 @@
 import { useInspecciones } from "@/features/private/inspeccion/inspecciones/hooks";
-import { Card, Spin } from "antd";
+import { Card } from "antd";
 import { TableInspecciones } from "@/features/private/inspeccion/inspecciones/components";
 
 export const Inspecciones = () => {
@@ -8,6 +8,11 @@ export const Inspecciones = () => {
     inspecciones,
     isError,
     isLoading,
+    // paginación
+    pagination,
+    handleFilterChange,
+    handlePageChange,
+    // pdf
     downloadPdf,
     downloadMassivePdf,
     getImagenPorTipo,
@@ -20,18 +25,7 @@ export const Inspecciones = () => {
   return (
     <div className="mt-8">
       <Card>
-        {isLoading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "200px",
-            }}
-          >
-            <Spin />
-          </div>
-        ) : isError ? (
+        {isError ? (
           <div style={{ color: "red", textAlign: "center" }}>
             Ocurrió un error al cargar las inspecciones.
             <br />
@@ -49,6 +43,10 @@ export const Inspecciones = () => {
             isLoadingTipos={isLoadingTipos}
             autorizarEdicion={autorizarEdicion}
             isAutorizando={isAutorizando}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            handlePageChange={handlePageChange}
+            isLoading={isLoading}
           />
         )}
       </Card>

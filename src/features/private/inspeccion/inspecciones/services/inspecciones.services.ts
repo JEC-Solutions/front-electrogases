@@ -1,7 +1,31 @@
 import { electroApi } from "@/api";
 
-export const getInspecciones = async () => {
-  return await electroApi.get("/inspeccion");
+export interface InspeccionesFilters {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  tipoInspeccion?: string;
+  inspector?: string;
+  numeroActa?: string;
+}
+
+export const getInspecciones = async (filters?: InspeccionesFilters) => {
+  const params = new URLSearchParams();
+
+  if (filters?.page) params.append("page", filters.page.toString());
+  if (filters?.limit) params.append("limit", filters.limit.toString());
+  if (filters?.startDate) params.append("startDate", filters.startDate);
+  if (filters?.endDate) params.append("endDate", filters.endDate);
+  if (filters?.tipoInspeccion)
+    params.append("tipoInspeccion", filters.tipoInspeccion);
+  if (filters?.inspector) params.append("inspector", filters.inspector);
+  if (filters?.numeroActa) params.append("numeroActa", filters.numeroActa);
+
+  const queryString = params.toString();
+  return await electroApi.get(
+    `/inspeccion${queryString ? `?${queryString}` : ""}`,
+  );
 };
 
 export const getInspeccion = async (id: number) => {

@@ -1,4 +1,5 @@
 import * as inspeccionServices from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
+import { InspeccionesFilters } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
 import {
   IInspecciones,
   ITipoImagen,
@@ -7,20 +8,36 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { downloadBase64 } from "@/utils/downloadBase64";
 import Swal from "sweetalert2";
+import { useState } from "react";
+
+interface PaginatedResponse {
+  data: IInspecciones[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
 
 export const useInspecciones = () => {
   const queryClient = useQueryClient();
 
+  const [filters, setFilters] = useState<InspeccionesFilters>({
+    page: 1,
+    limit: 10,
+  });
+
   const {
-    data: inspecciones = [],
+    data: paginatedData,
     isLoading,
     isError,
     error,
-  } = useQuery<IInspecciones[]>({
-    queryKey: ["inspecciones"],
+  } = useQuery<PaginatedResponse>({
+    queryKey: ["inspecciones", filters],
     queryFn: async () => {
       try {
-        const { data } = await inspeccionServices.getInspecciones();
+        const { data } = await inspeccionServices.getInspecciones(filters);
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -30,6 +47,26 @@ export const useInspecciones = () => {
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
+
+  const inspecciones = paginatedData?.data ?? [];
+  const pagination = paginatedData?.pagination ?? {
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  };
+
+  const handleFilterChange = (newFilters: Partial<InspeccionesFilters>) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+      page: newFilters.page ?? 1,
+    }));
+  };
+
+  const handlePageChange = (page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
+  };
 
   const downloadMutation = useMutation({
     mutationFn: async (id: number) => {
@@ -223,6 +260,12 @@ export const useInspecciones = () => {
     isLoading,
     isError,
     error,
+    // paginación
+    pagination,
+    filters,
+    handleFilterChange,
+    handlePageChange,
+    // pdf
     downloadPdf: downloadMutation.mutate,
     downloadMassivePdf: handleDownloadMassivePdf,
     isDownloading: downloadMutation.isPending,
