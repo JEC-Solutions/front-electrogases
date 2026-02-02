@@ -1,7 +1,7 @@
 import { Menu, Spin } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useSidebar } from "@/features/private/dashboard/hooks";
-import { IoIosSettings } from "react-icons/io";
+import { IoIosSearch, IoIosSettings } from "react-icons/io";
 import { SiGoogleforms } from "react-icons/si";
 import { JSX } from "react";
 import { AiFillHome } from "react-icons/ai";
@@ -9,6 +9,7 @@ import { AiFillHome } from "react-icons/ai";
 const iconMap: Record<string, JSX.Element> = {
   IoIosSettings: <IoIosSettings />,
   SiGoogleforms: <SiGoogleforms />,
+  IoIosSearch: <IoIosSearch />,
 };
 
 export const Sidebar = () => {
