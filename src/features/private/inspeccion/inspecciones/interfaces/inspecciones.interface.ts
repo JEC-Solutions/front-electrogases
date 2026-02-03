@@ -56,6 +56,7 @@ export interface IActa {
   fecha_puesta_en_servicio: string;
   tipo_gas_glp: boolean;
   hora_inicio: string;
+  fecha_solicitud: string;
   hora_fin: string;
   solicitud_usuario: boolean;
   numero_certificado: any;

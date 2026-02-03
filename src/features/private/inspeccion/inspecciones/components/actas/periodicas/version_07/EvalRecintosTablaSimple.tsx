@@ -7,7 +7,7 @@ interface Props {
 export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
   const rawRecintos = inspeccion?.evaluacionRecintos ?? [];
 
-  // Filtrar duplicados si es necesario (según tu lógica original)
+  // Filtrar duplicados (lógica original conservada)
   const recintos = rawRecintos.filter(
     (recinto, index, self) =>
       index ===
@@ -22,6 +22,20 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
   const borderClass = "border border-black";
   const headerClass = "bg-gray-100 font-bold px-1";
   const textClass = "text-[7.5pt] font-arial text-black leading-none";
+
+  // Función auxiliar para determinar si mostrar la potencia total
+  const shouldShowPotencia = (currentIndex: number) => {
+    const current = recintos[currentIndex];
+    if (!current) return false;
+
+    const next = recintos[currentIndex + 1];
+    
+    // Si no hay siguiente, es el último -> Mostrar
+    if (!next) return true;
+
+    // Si el siguiente tiene diferente ID, el actual es el último de su grupo -> Mostrar
+    return current.idRecinto !== next.idRecinto;
+  };
 
   return (
     <div className={`w-full ${textClass}`}>
@@ -111,11 +125,18 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
 
         <tbody>
           {filas.map((_, i) => {
-            const itemLeft = recintos[i * 2];
-            const itemRight = recintos[i * 2 + 1];
+            const leftIndex = i;
+            const rightIndex = i + maxFilas;
+
+            const itemLeft = recintos[leftIndex];
+            const itemRight = recintos[rightIndex];
+
+            const showPotLeft = shouldShowPotencia(leftIndex);
+            const showPotRight = shouldShowPotencia(rightIndex);
 
             return (
               <tr key={i} className="h-[20px]">
+                {/* --- LADO IZQUIERDO --- */}
                 <td className={`${borderClass} text-left px-1 truncate`}>
                   {itemLeft?.tipoRecinto || ""}
                 </td>
@@ -125,18 +146,20 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                   {itemLeft?.potenciaInstalada || ""}
                 </td>
                 <td className={borderClass}>
-                  {itemLeft?.potenciaConjunta || ""}
+                  {/* Solo mostramos si showPotLeft es true */}
+                  {showPotLeft ? itemLeft?.potenciaConjunta : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemLeft?.tipoArtefacto === "A" ? "X" : ""}
+                  {itemLeft?.tipoArtefacto === "A" ? "✓" : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemLeft?.tipoArtefacto === "B" ? "X" : ""}
+                  {itemLeft?.tipoArtefacto === "B" ? "✓" : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemLeft?.tipoArtefacto === "C" ? "X" : ""}
+                  {itemLeft?.tipoArtefacto === "C" ? "✓" : ""}
                 </td>
 
+                {/* --- LADO DERECHO --- */}
                 <td
                   className={`${borderClass} border-l-2 text-left px-1 truncate`}
                 >
@@ -148,16 +171,17 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                   {itemRight?.potenciaInstalada || ""}
                 </td>
                 <td className={borderClass}>
-                  {itemRight?.potenciaConjunta || ""}
+                   {/* Solo mostramos si showPotRight es true */}
+                  {showPotRight ? itemRight?.potenciaConjunta : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemRight?.tipoArtefacto === "A" ? "X" : ""}
+                  {itemRight?.tipoArtefacto === "A" ? "✓" : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemRight?.tipoArtefacto === "B" ? "X" : ""}
+                  {itemRight?.tipoArtefacto === "B" ? "✓" : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
-                  {itemRight?.tipoArtefacto === "C" ? "X" : ""}
+                  {itemRight?.tipoArtefacto === "C" ? "✓" : ""}
                 </td>
               </tr>
             );

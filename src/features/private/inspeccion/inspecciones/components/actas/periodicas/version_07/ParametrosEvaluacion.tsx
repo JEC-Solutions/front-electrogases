@@ -48,7 +48,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[1px]">
             <span>Inicio</span>
             <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialAire}
+              {params?.lecturaInicialMedidor}
             </span>
           </div>
         </div>
@@ -63,7 +63,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[1px]">
             <span>Final</span>
             <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalAire}
+              {params?.lecturaFinalMedidor}
             </span>
           </div>
         </div>
@@ -78,7 +78,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[1px]">
             <span>Inicio</span>
             <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialMedidor}
+              {params?.lecturaInicialAire}
             </span>
           </div>
         </div>
@@ -93,7 +93,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[1px]">
             <span>Final</span>
             <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalMedidor}
+              {params?.lecturaFinalAire}
             </span>
           </div>
         </div>

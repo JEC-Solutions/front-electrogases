@@ -83,7 +83,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
             >
               <span>Fecha de solicitud:</span>
               <span className="font-semibold">
-                {formatDateYMD(inspeccion?.created_at) || "-"}
+                {formatDateYMD(inspeccion?.fecha_solicitud) || "-"}
               </span>
             </div>
 
