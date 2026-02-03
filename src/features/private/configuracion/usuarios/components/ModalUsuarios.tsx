@@ -40,7 +40,10 @@ export const ModalUsuarios = ({
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = methods;
+
+  const selectedRol = watch("id_rol");
 
   return (
     <Modal
@@ -48,6 +51,7 @@ export const ModalUsuarios = ({
       open={open}
       onCancel={onClose}
       footer={null}
+      width={800}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row gutter={16}>
@@ -315,120 +319,179 @@ export const ModalUsuarios = ({
               />
             </div>
           </Col>
-          <Col span={24} md={12}>
-            <div className="mb-4">
-              <label>Firma (Imagen PNG - Máx 5MB)</label>
-              <Controller
-                name="firma_base64"
-                control={control}
-                defaultValue=""
-                render={({ field: { onChange, value } }) => (
-                  <Upload
-                    maxCount={1}
-                    accept=".png,.jpg,.jpeg"
-                    beforeUpload={async (file) => {
-                      const isPngOrJpg =
-                        file.type === "image/jpeg" || file.type === "image/png";
-                      if (!isPngOrJpg) {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error",
-                          text: "Solo puedes subir archivos JPG o PNG!",
-                        });
-                        return Upload.LIST_IGNORE;
-                      }
+          {selectedRol === 3 && (
+            <>
+              <Col span={24} md={12}>
+                <div className="mb-4">
+                  <label htmlFor="certificado_no">No. Certificado</label>
+                  <Controller
+                    name="certificado_no"
+                    control={control}
+                    defaultValue=""
+                    // rules={{ required: "Este campo es requerido" }} // Descomentar si es obligatorio
+                    render={({ field }) => (
+                      <>
+                        <Input
+                          {...field}
+                          id="certificado_no"
+                          placeholder="Número de Certificado"
+                          type="text"
+                        />
+                        {errors.certificado_no?.message && (
+                          <span style={{ color: "red" }}>
+                            {String(errors.certificado_no.message)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </div>
+              </Col>
 
-                      const isLt5M = file.size / 1024 / 1024 < 5;
-                      if (!isLt5M) {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error",
-                          text: "La imagen debe pesar menos de 5MB!",
-                        });
-                        return Upload.LIST_IGNORE;
-                      }
+              <Col span={24} md={12}>
+                <div className="mb-4">
+                  <label htmlFor="competencia">Competencia</label>
+                  <Controller
+                    name="competencia"
+                    control={control}
+                    defaultValue=""
+                    // rules={{ required: "Este campo es requerido" }} // Descomentar si es obligatorio
+                    render={({ field }) => (
+                      <>
+                        <Input
+                          {...field}
+                          id="competencia"
+                          placeholder="Competencia"
+                          type="text"
+                        />
+                        {errors.competencia?.message && (
+                          <span style={{ color: "red" }}>
+                            {String(errors.competencia.message)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </div>
+              </Col>
 
-                      const base64 = await getBase64(file);
-                      onChange(base64);
-                      return false;
-                    }}
-                    onRemove={() => onChange("")}
-                    fileList={
-                      value
-                        ? [
-                            {
-                              uid: "-1",
-                              name: "firma_seleccionada.png",
-                              status: "done",
-                            },
-                          ]
-                        : []
-                    }
-                  >
-                    <Button icon={<UploadOutlined />}>Cargar Firma</Button>
-                  </Upload>
-                )}
-              />
-            </div>
-          </Col>
+              <Col span={24} md={12}>
+                <div className="mb-4">
+                  <label>Firma (Imagen PNG - Máx 5MB)</label>
+                  <Controller
+                    name="firma_base64"
+                    control={control}
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      <Upload
+                        maxCount={1}
+                        accept=".png,.jpg,.jpeg"
+                        beforeUpload={async (file) => {
+                          const isPngOrJpg =
+                            file.type === "image/jpeg" ||
+                            file.type === "image/png";
+                          if (!isPngOrJpg) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "Error",
+                              text: "Solo puedes subir archivos JPG o PNG!",
+                            });
+                            return Upload.LIST_IGNORE;
+                          }
 
-          {/* COLUMNA SELLO */}
-          <Col span={24} md={12}>
-            <div className="mb-4">
-              <label>Sello (Imagen PNG - Máx 5MB)</label>
-              <Controller
-                name="sello_base64"
-                control={control}
-                defaultValue=""
-                render={({ field: { onChange, value } }) => (
-                  <Upload
-                    maxCount={1}
-                    accept=".png,.jpg,.jpeg"
-                    beforeUpload={async (file) => {
-                      const isPngOrJpg =
-                        file.type === "image/jpeg" || file.type === "image/png";
-                      if (!isPngOrJpg) {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error",
-                          text: "Solo puedes subir archivos JPG o PNG!",
-                        });
-                        return Upload.LIST_IGNORE;
-                      }
+                          const isLt5M = file.size / 1024 / 1024 < 5;
+                          if (!isLt5M) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "Error",
+                              text: "La imagen debe pesar menos de 5MB!",
+                            });
+                            return Upload.LIST_IGNORE;
+                          }
 
-                      const isLt5M = file.size / 1024 / 1024 < 5;
-                      if (!isLt5M) {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error",
-                          text: "La imagen debe pesar menos de 5MB!",
-                        });
-                        return Upload.LIST_IGNORE;
-                      }
+                          const base64 = await getBase64(file);
+                          onChange(base64);
+                          return false;
+                        }}
+                        onRemove={() => onChange("")}
+                        fileList={
+                          value
+                            ? [
+                                {
+                                  uid: "-1",
+                                  name: "firma_seleccionada.png",
+                                  status: "done",
+                                },
+                              ]
+                            : []
+                        }
+                      >
+                        <Button icon={<UploadOutlined />}>Cargar Firma</Button>
+                      </Upload>
+                    )}
+                  />
+                </div>
+              </Col>
 
-                      const base64 = await getBase64(file);
-                      onChange(base64);
-                      return false;
-                    }}
-                    onRemove={() => onChange("")}
-                    fileList={
-                      value
-                        ? [
-                            {
-                              uid: "-1",
-                              name: "sello_seleccionado.png",
-                              status: "done",
-                            },
-                          ]
-                        : []
-                    }
-                  >
-                    <Button icon={<UploadOutlined />}>Cargar Sello</Button>
-                  </Upload>
-                )}
-              />
-            </div>
-          </Col>
+              <Col span={24} md={12}>
+                <div className="mb-4">
+                  <label>Sello (Imagen PNG - Máx 5MB)</label>
+                  <Controller
+                    name="sello_base64"
+                    control={control}
+                    defaultValue=""
+                    render={({ field: { onChange, value } }) => (
+                      <Upload
+                        maxCount={1}
+                        accept=".png,.jpg,.jpeg"
+                        beforeUpload={async (file) => {
+                          const isPngOrJpg =
+                            file.type === "image/jpeg" ||
+                            file.type === "image/png";
+                          if (!isPngOrJpg) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "Error",
+                              text: "Solo puedes subir archivos JPG o PNG!",
+                            });
+                            return Upload.LIST_IGNORE;
+                          }
+
+                          const isLt5M = file.size / 1024 / 1024 < 5;
+                          if (!isLt5M) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "Error",
+                              text: "La imagen debe pesar menos de 5MB!",
+                            });
+                            return Upload.LIST_IGNORE;
+                          }
+
+                          const base64 = await getBase64(file);
+                          onChange(base64);
+                          return false;
+                        }}
+                        onRemove={() => onChange("")}
+                        fileList={
+                          value
+                            ? [
+                                {
+                                  uid: "-1",
+                                  name: "sello_seleccionado.png",
+                                  status: "done",
+                                },
+                              ]
+                            : []
+                        }
+                      >
+                        <Button icon={<UploadOutlined />}>Cargar Sello</Button>
+                      </Upload>
+                    )}
+                  />
+                </div>
+              </Col>
+            </>
+          )}
         </Row>
 
         <Space style={{ display: "flex", justifyContent: "flex-end" }}>
