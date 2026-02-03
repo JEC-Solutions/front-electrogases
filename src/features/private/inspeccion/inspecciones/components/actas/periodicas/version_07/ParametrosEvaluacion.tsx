@@ -4,6 +4,24 @@ interface Props {
   inspeccion: IActa | undefined;
 }
 
+// CORRECCIÓN: Función para convertir SEGUNDOS a mm:ss
+const formatSecondsToTime = (value: string | number | undefined) => {
+  if (value === undefined || value === null || value === "") return "";
+
+  // Si ya viene formateado con dos puntos, lo devolvemos tal cual
+  if (typeof value === "string" && value.includes(":")) return value;
+
+  const totalSeconds = Number(value);
+  if (isNaN(totalSeconds)) return value;
+
+  // Calculamos minutos y segundos
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+
+  // Formateamos con ceros a la izquierda
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
 export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
   const params = Array.isArray(inspeccion?.parametrosEvaluacion)
     ? inspeccion?.parametrosEvaluacion[0]
@@ -23,6 +41,8 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
       </div>
 
       <div className="flex w-full h-[35px]">
+        {/* ... (Las primeras columnas se mantienen igual) ... */}
+        
         <div
           className={`w-[9%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
         >
@@ -108,8 +128,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[2px]">
             <span>la prueba</span>
 
+            {/* AQUI USAMOS LA NUEVA FUNCIÓN */}
             <div className="bg-white border border-gray-400 w-[50%] h-[14px] text-center leading-none font-semibold truncate">
-              {params?.tiempoPruebaAire}
+              {formatSecondsToTime(params?.tiempoPruebaAire)}
             </div>
           </div>
         </div>

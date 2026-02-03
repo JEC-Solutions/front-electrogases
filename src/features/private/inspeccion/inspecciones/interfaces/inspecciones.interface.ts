@@ -36,19 +36,6 @@ export interface TipoInspeccion {
   updated_at: string;
 }
 
-export interface Persona {
-  id_persona: number;
-  primer_nombre: string;
-  segundo_nombre: string;
-  primer_apellido: string;
-  segundo_apellido: string;
-  telefono: string;
-  numero_documento: string;
-  email: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface IActa {
   id_inspeccion: number;
   fecha_expedicion: string;
@@ -208,6 +195,17 @@ export interface Persona {
   email: string;
   created_at: string;
   updated_at: string;
+  usuario?: Usuario;
+}
+
+export interface Usuario {
+  id_usuario: number;
+  usuario: string;
+  certificado_no: string;
+  competencia: string;
+  firma: string;
+  sello: string;
+  estado: boolean;
 }
 
 export interface Casa {

@@ -23,6 +23,9 @@ export const Registro = ({
     ]
       .filter(Boolean)
       .join(" ") || "";
+  const registroSic = persona?.numero_documento || "";
+  const certificadoInspector = persona?.usuario?.certificado_no || "";
+  const competenciaInspector = persona?.usuario?.competencia || "";
 
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
   const cliente = inspeccion?.ruta?.casa?.cliente;
@@ -133,19 +136,19 @@ export const Registro = ({
               className={`h-[25%] border-b ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
               <span>Certificado No.:</span>
-              <span className="font-bold">{""}</span>
+              <span className="font-bold">{certificadoInspector}</span>
             </div>
             <div
               className={`h-[25%] border-b ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
               <span>Registro SIC No.:</span>
-              <span className="font-bold">{""}</span>
+              <span className="font-bold">{registroSic}</span>
             </div>
             <div
               className={`h-[25%] ${cellPadding} flex flex-col justify-center`}
             >
               <span>Competencia:</span>
-              <span className="font-bold">{""}</span>
+              <span className="font-bold">{competenciaInspector}</span>
             </div>
           </div>
 
