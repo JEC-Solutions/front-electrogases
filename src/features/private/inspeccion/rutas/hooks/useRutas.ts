@@ -145,6 +145,47 @@ export const useRutas = () => {
     }
   };
 
+  // Mutation for update date
+  const updateDateMutation = useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: { fecha: any; motivo?: string };
+    }) => rutaServices.updateRutaDate(id, data as any),
+    onMutate: () => {
+      Swal.fire({
+        title: "Actualizando fecha...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Actualizado",
+        text: "Fecha de ruta actualizada correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["rutas"] });
+    },
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
+  const onUpdateDate = (id: number, fecha: string, motivo?: string) => {
+    updateDateMutation.mutate({
+      id,
+      data: { fecha, motivo },
+    });
+  };
+
   const generarPdfMutation = useMutation({
     mutationFn: (payload: IPdfRuta) => rutaServices.generatePdf(payload),
     onMutate: () => {
@@ -210,5 +251,8 @@ export const useRutas = () => {
     setLimit,
     filters,
     setFilters,
+
+    // update date
+    onUpdateDate,
   };
 };

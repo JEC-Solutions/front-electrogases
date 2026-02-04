@@ -3,17 +3,32 @@ import {
   IRutas,
   IPdfRuta,
 } from "@/features/private/inspeccion/rutas/interfaces";
-import { Button, DatePicker, Input, Select, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  DatePicker,
+  Input,
+  Popover,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { FiClock, FiFileText, FiNavigation, FiSearch } from "react-icons/fi";
+import {
+  FiClock,
+  FiEdit2,
+  FiFileText,
+  FiNavigation,
+  FiSearch,
+} from "react-icons/fi";
 import { getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
 import { useHistorialRuta } from "@/features/private/inspeccion/rutas/hooks";
 import { ModalHistorico } from "@/features/private/inspeccion/rutas/components";
 import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import Swal from "sweetalert2";
 import { RutasFilters } from "../services/rutas.services";
 
@@ -37,6 +52,7 @@ interface Props {
   inspectores: IUsuarios[];
   asesores: IUsuarios[];
   onDownload: (payload: IPdfRuta) => void;
+  onUpdateDate: (id: number, fecha: string, motivo?: string) => void;
 
   // Pagination & Filters
   pagination: {
@@ -62,6 +78,7 @@ export const TableRutas = ({
   inspectores,
   asesores,
   onDownload,
+  onUpdateDate,
   pagination,
   setPage,
   setLimit,
@@ -90,6 +107,33 @@ export const TableRutas = ({
 
   const { clientes } = useClientes();
 
+  // State for popover logic
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editDate, setEditDate] = useState<Dayjs | null>(null);
+  const [editMotivo, setEditMotivo] = useState("");
+
+  const handleEditClick = (record: IRutas) => {
+    setEditingId(record.id_ruta);
+    setEditDate(record.fecha ? dayjs(record.fecha) : null);
+    setEditMotivo("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditDate(null);
+    setEditMotivo("");
+  };
+
+  const handleSaveEdit = (id: number) => {
+    if (!editDate) {
+      Swal.fire("Error", "Debes seleccionar una fecha", "error");
+      return;
+    }
+    const fechaStr = editDate.format("YYYY-MM-DD");
+    onUpdateDate(id, fechaStr, editMotivo);
+    handleCancelEdit();
+  };
+
   const columns: ColumnsType<IRutas> = [
     {
       title: "N° Acta",
@@ -100,6 +144,56 @@ export const TableRutas = ({
       title: "Fecha",
       dataIndex: "fecha",
       key: "fecha",
+      render: (val, record) => {
+        const isOpen = editingId === record.id_ruta;
+        return (
+          <div className="flex items-center gap-2">
+            <span>{val}</span>
+            <Popover
+              content={
+                <div className="flex flex-col gap-2 p-2 w-[250px]">
+                  <span className="font-bold">Nueva fecha:</span>
+                  <DatePicker
+                    value={editDate}
+                    onChange={(d) => setEditDate(d)}
+                    format="YYYY-MM-DD"
+                  />
+                  <Input
+                    placeholder="Motivo (opcional)"
+                    value={editMotivo}
+                    onChange={(e) => setEditMotivo(e.target.value)}
+                  />
+                  <div className="flex justify-end gap-2 mt-2">
+                    <Button size="small" onClick={handleCancelEdit}>
+                      Cancelar
+                    </Button>
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => handleSaveEdit(record.id_ruta)}
+                    >
+                      Guardar
+                    </Button>
+                  </div>
+                </div>
+              }
+              title="Editar Fecha"
+              trigger="click"
+              open={isOpen}
+              onOpenChange={(visible) => {
+                if (!visible) handleCancelEdit();
+              }}
+            >
+              <Button
+                size="small"
+                type="text"
+                icon={<FiEdit2 />}
+                onClick={() => handleEditClick(record)}
+              />
+            </Popover>
+          </div>
+        );
+      },
     },
     {
       title: "Hora",

@@ -29,6 +29,9 @@ export const Rutas = () => {
     setPage,
     setLimit,
     setFilters,
+
+    // update
+    onUpdateDate,
   } = useRutas();
   const navigate = useNavigate();
 
@@ -68,6 +71,7 @@ export const Rutas = () => {
             setLimit={setLimit}
             setFilters={setFilters}
             isLoading={isLoading}
+            onUpdateDate={onUpdateDate}
           />
         )}
       </Card>

@@ -87,3 +87,7 @@ export const generatePdf = async (data: IPdfRuta) => {
 export const searchCasas = async (query: string) => {
   return await electroApi.get(`/casa/search?q=${encodeURIComponent(query)}`);
 };
+
+export const updateRutaDate = async (idRuta: number, data: IRuta) => {
+  return await electroApi.patch(`/ruta/${idRuta}/update-date`, data);
+};
