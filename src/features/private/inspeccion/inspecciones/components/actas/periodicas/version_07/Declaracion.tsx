@@ -20,6 +20,8 @@ export const Declaracion = ({ inspeccion }: Props) => {
   const isSinDefectos = conformidad.defectos === null;
   const isNoCriticos = conformidad.defectos === false;
   const isCriticos = conformidad.defectos === true;
+  const nroReporte = conformidad.numero_reporte || "";
+  const sitioVisible = conformidad.sitio_visible || false;
 
   const borderClass = "border-black";
   const textClass = "text-[6pt] font-arial leading-[1.1] text-black";
@@ -78,7 +80,10 @@ export const Declaracion = ({ inspeccion }: Props) => {
           reportado a la distribuidora en los tiempos establecidos según
           resolución 90902 de 2013{" "}
           <span className="font-bold whitespace-nowrap ml-2">
-            N° DE REPORTE POR DEFECTO CRITICO _____________________________
+            N° DE REPORTE POR DEFECTO CRITICO{" "}
+            <span className="inline-block border-b border-black min-w-[150px] text-center">
+              {nroReporte || "\u00A0"}
+            </span>
           </span>
         </div>
       </div>
@@ -91,10 +96,9 @@ export const Declaracion = ({ inspeccion }: Props) => {
           que soporta esta inspección.
         </div>
         <div className="flex items-center font-bold whitespace-nowrap">
-          <span className="mr-[1px]">SI</span>{" "}
-          <Box checked={conformidad.declaracion3 === true} />
+          <span className="mr-[1px]">SI</span> <Box checked={sitioVisible} />
           <span className="ml-2 mr-[1px]">NO</span>{" "}
-          <Box checked={conformidad.declaracion3 === false} />
+          <Box checked={!sitioVisible} />
         </div>
       </div>
 
