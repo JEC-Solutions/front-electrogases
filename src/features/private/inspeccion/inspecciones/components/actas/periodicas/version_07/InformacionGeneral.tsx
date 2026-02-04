@@ -40,6 +40,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
   const puestaServicio = inspeccion?.fecha_puesta_en_servicio;
   const isReforma = false;
   const isReemplazo = inspeccion?.reemplazo_informe;
+  const nroInforme = inspeccion?.numero_informe;
 
   const border = "border-black";
   const bgHeader = "bg-[#e5e7eb]";
@@ -226,6 +227,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
                   className={`w-[40px] border-l ${border} flex items-end justify-center pb-1`}
                 >
                   N°:
+                  <span className="font-semibold">{nroInforme || "-"}</span>
                 </div>
               </div>
             </div>

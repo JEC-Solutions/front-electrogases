@@ -8,7 +8,7 @@ interface Props {
 const Box = ({ checked = false }: { checked?: boolean }) => (
   <span className="inline-flex items-center justify-center w-[10px] h-[10px] border border-black bg-white ml-[2px]">
     {checked ? (
-      <span className="-mt-[2px] text-[8px] leading-none font-bold">x</span>
+      <span className="-mt-[2px] text-[8px] leading-none font-bold">✓</span>
     ) : null}
   </span>
 );

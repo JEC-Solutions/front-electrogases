@@ -8,7 +8,7 @@ function Box({ checked = false }: { checked?: boolean }) {
   return (
     <span className="inline-flex items-center justify-center w-[11px] h-[11px] border border-black bg-white ml-1">
       {checked ? (
-        <span className="-mt-[2px] text-[9px] leading-none font-bold">x</span>
+        <span className="-mt-[2px] text-[9px] leading-none font-bold">✓</span>
       ) : null}
     </span>
   );
@@ -16,7 +16,7 @@ function Box({ checked = false }: { checked?: boolean }) {
 
 export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
   const matriz = inspeccion?.lineaMatriz;
-  const existe = matriz?.existe;
+  const tieneLineaMatriz = !!inspeccion?.lineaMatriz;
   const visible = matriz?.visible;
 
   const borderClass = "border-black";
@@ -41,10 +41,10 @@ export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
           </div>
           <div className="h-[50%] flex items-center justify-center gap-2 bg-gray-50">
             <div className="flex items-center">
-              SI <Box checked={existe} />
+              SI <Box checked={tieneLineaMatriz} />
             </div>
             <div className="flex items-center">
-              NO <Box checked={existe === false} />
+              NO <Box checked={!tieneLineaMatriz} />
             </div>
           </div>
         </div>

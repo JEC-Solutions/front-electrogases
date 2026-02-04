@@ -92,6 +92,11 @@ export const TableRutas = ({
 
   const columns: ColumnsType<IRutas> = [
     {
+      title: "N° Acta",
+      dataIndex: "numero_acta",
+      key: "numero_acta",
+    },
+    {
       title: "Fecha",
       dataIndex: "fecha",
       key: "fecha",
