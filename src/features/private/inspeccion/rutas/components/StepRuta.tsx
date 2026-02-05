@@ -170,6 +170,7 @@ export const StepRuta = ({
           <Controller
             name="ruta.id_tipo_visita"
             control={control}
+            rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Select
                 {...field}
