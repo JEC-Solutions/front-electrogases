@@ -42,7 +42,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
 
       <div className="flex w-full h-[35px]">
         {/* ... (Las primeras columnas se mantienen igual) ... */}
-        
+
         <div
           className={`w-[9%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
         >
@@ -142,7 +142,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
           <div className="flex justify-between w-full items-end mb-[2px]">
             <span>Presión</span>
             <div className="bg-white border border-gray-400 w-[60%] h-[14px] text-center leading-none font-semibold truncate">
-              {params?.pruebaPresion}
+              {params?.pruebaPresion === null ? "N/A" : params?.pruebaPresion}
             </div>
           </div>
         </div>
