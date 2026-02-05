@@ -96,7 +96,7 @@ export const Registro = ({
                 <img
                   src={firmaClienteBase64}
                   alt="Firma Cliente"
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[200%] max-h-[200%] object-contain mix-blend-multiply"
+                  className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[150%] max-h-[150%] object-contain mix-blend-multiply"
                 />
               )}
             </div>
