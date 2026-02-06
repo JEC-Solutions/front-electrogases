@@ -255,6 +255,7 @@ export interface VolumenRecinto {
   volumenADY2: number;
   volumenADY3: any;
   volumenADY4: any;
+  volumenADY5: any;
   volumenTotal: number;
   createdAt: string;
   updatedAt: string;

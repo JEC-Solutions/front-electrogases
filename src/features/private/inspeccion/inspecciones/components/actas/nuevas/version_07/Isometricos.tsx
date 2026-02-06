@@ -41,9 +41,13 @@ export const Isometricos = ({
   const RF = getRecinto(5);
 
   const adys = volumenRecintos.flatMap((r) =>
-    [r.volumenADY1, r.volumenADY2, r.volumenADY3, r.volumenADY4].filter(
-      (v) => v !== null && v !== undefined,
-    ),
+    [
+      r.volumenADY1,
+      r.volumenADY2,
+      r.volumenADY3,
+      r.volumenADY4,
+      r.volumenADY5,
+    ].filter((v) => v !== null && v !== undefined),
   );
   const getAdy = (idx: number) => adys[idx] ?? "";
 
@@ -96,24 +100,30 @@ export const Isometricos = ({
             <LineInput label="RA:" value={RA?.volumenRecinto} />
             <LineInput label="ADY 1:" value={getAdy(0)} />
             <LineInput label="ADY 2:" value={getAdy(1)} />
-            <LineInput label="RB:" value={RB?.volumenRecinto} />
             <LineInput label="ADY 3:" value={getAdy(2)} />
+            <LineInput label="RB:" value={RB?.volumenRecinto} />
             <LineInput label="ADY 4:" value={getAdy(3)} />
-            <LineInput label="RC:" value={RC?.volumenRecinto} />
             <LineInput label="ADY 5:" value={getAdy(4)} />
             <LineInput label="ADY 6:" value={getAdy(5)} />
+            <LineInput label="RC:" value={RC?.volumenRecinto} />
+            <LineInput label="ADY 7:" value={getAdy(6)} />
+            <LineInput label="ADY 8:" value={getAdy(7)} />
+            <LineInput label="ADY 9:" value={getAdy(8)} />
           </div>
 
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             <LineInput label="RD:" value={RD?.volumenRecinto} />
-            <LineInput label="ADY 7:" value={getAdy(6)} />
-            <LineInput label="ADY 8:" value={getAdy(7)} />
-            <LineInput label="RE:" value={RE?.volumenRecinto} />
-            <LineInput label="ADY 9:" value={getAdy(8)} />
             <LineInput label="ADY 10:" value={getAdy(9)} />
-            <LineInput label="RF:" value={RF?.volumenRecinto} />
             <LineInput label="ADY 11:" value={getAdy(10)} />
             <LineInput label="ADY 12:" value={getAdy(11)} />
+            <LineInput label="RE:" value={RE?.volumenRecinto} />
+            <LineInput label="ADY 13:" value={getAdy(12)} />
+            <LineInput label="ADY 14:" value={getAdy(13)} />
+            <LineInput label="ADY 15:" value={getAdy(14)} />
+            <LineInput label="RF:" value={RF?.volumenRecinto} />
+            <LineInput label="ADY 16:" value={getAdy(15)} />
+            <LineInput label="ADY 17:" value={getAdy(16)} />
+            <LineInput label="ADY 18:" value={getAdy(17)} />
           </div>
 
           <div className="w-[26%] flex flex-col">
