@@ -95,7 +95,7 @@ export const Header = ({ inspeccion }: Props) => {
           <div
             className={`flex-1 border-b ${borderClass} flex items-center justify-center text-center px-1`}
           >
-            VERSIÓN: 07
+            VERSIÓN: 08
           </div>
           <div className="flex-1 flex items-center justify-center text-center px-1">
             FECHA: 2023-02-19
