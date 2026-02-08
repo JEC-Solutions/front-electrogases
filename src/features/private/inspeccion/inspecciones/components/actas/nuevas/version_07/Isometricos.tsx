@@ -32,24 +32,16 @@ export const Isometricos = ({
 }: Props) => {
   const volumenRecintos = inspeccion?.volumenRecintos ?? [];
 
-  const getRecinto = (index: number) => volumenRecintos[index];
-  const RA = getRecinto(0);
-  const RB = getRecinto(1);
-  const RC = getRecinto(2);
-  const RD = getRecinto(3);
-  const RE = getRecinto(4);
-  const RF = getRecinto(5);
+  // 1. Buscamos el recinto por su NOMBRE exacto ("RA", "RB", etc.)
+  const findRecinto = (nombre: string) =>
+    volumenRecintos.find((r) => r.recinto === nombre);
 
-  const adys = volumenRecintos.flatMap((r) =>
-    [
-      r.volumenADY1,
-      r.volumenADY2,
-      r.volumenADY3,
-      r.volumenADY4,
-      r.volumenADY5,
-    ].filter((v) => v !== null && v !== undefined),
-  );
-  const getAdy = (idx: number) => adys[idx] ?? "";
+  const RA = findRecinto("RA");
+  const RB = findRecinto("RB");
+  const RC = findRecinto("RC");
+  const RD = findRecinto("RD");
+  const RE = findRecinto("RE");
+  const RF = findRecinto("RF");
 
   // Patrón de cuadrícula CSS simple para el fondo
   const gridPatternStyle = {
@@ -69,6 +61,7 @@ export const Isometricos = ({
       </div>
 
       <div className="flex w-full h-[200px]">
+        {/* COLUMNA ISOMÉTRICO */}
         <div
           className="w-[38%] border-r border-black relative"
           style={!isometricoBase64 ? gridPatternStyle : {}}
@@ -82,6 +75,7 @@ export const Isometricos = ({
           )}
         </div>
 
+        {/* COLUMNA ESQUEMA */}
         <div
           className="w-[38%] border-r border-black relative"
           style={!esquemaPlantaBase64 ? gridPatternStyle : {}}
@@ -95,37 +89,51 @@ export const Isometricos = ({
           )}
         </div>
 
+        {/* COLUMNA DATOS (RA-RF) */}
         <div className="w-[24%] flex text-[7pt]">
+          {/* Sub-columna Izquierda: RA, RB, RC */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
+            {/* RA: Sus adyacentes son 1, 2, 3 */}
             <LineInput label="RA:" value={RA?.volumenRecinto} />
-            <LineInput label="ADY 1:" value={getAdy(0)} />
-            <LineInput label="ADY 2:" value={getAdy(1)} />
-            <LineInput label="ADY 3:" value={getAdy(2)} />
+            <LineInput label="ADY 1:" value={RA?.volumenADY1} />
+            <LineInput label="ADY 2:" value={RA?.volumenADY2} />
+            <LineInput label="ADY 3:" value={RA?.volumenADY3} />
+
+            {/* RB: Sus adyacentes visualmente son 4, 5, 6 (pero en DB son 1, 2, 3 de RB) */}
             <LineInput label="RB:" value={RB?.volumenRecinto} />
-            <LineInput label="ADY 4:" value={getAdy(3)} />
-            <LineInput label="ADY 5:" value={getAdy(4)} />
-            <LineInput label="ADY 6:" value={getAdy(5)} />
+            <LineInput label="ADY 4:" value={RB?.volumenADY1} />
+            <LineInput label="ADY 5:" value={RB?.volumenADY2} />
+            <LineInput label="ADY 6:" value={RB?.volumenADY3} />
+
+            {/* RC: Sus adyacentes visualmente son 7, 8, 9 */}
             <LineInput label="RC:" value={RC?.volumenRecinto} />
-            <LineInput label="ADY 7:" value={getAdy(6)} />
-            <LineInput label="ADY 8:" value={getAdy(7)} />
-            <LineInput label="ADY 9:" value={getAdy(8)} />
+            <LineInput label="ADY 7:" value={RC?.volumenADY1} />
+            <LineInput label="ADY 8:" value={RC?.volumenADY2} />
+            <LineInput label="ADY 9:" value={RC?.volumenADY3} />
           </div>
 
+          {/* Sub-columna Derecha: RD, RE, RF */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
+            {/* RD */}
             <LineInput label="RD:" value={RD?.volumenRecinto} />
-            <LineInput label="ADY 10:" value={getAdy(9)} />
-            <LineInput label="ADY 11:" value={getAdy(10)} />
-            <LineInput label="ADY 12:" value={getAdy(11)} />
+            <LineInput label="ADY 10:" value={RD?.volumenADY1} />
+            <LineInput label="ADY 11:" value={RD?.volumenADY2} />
+            <LineInput label="ADY 12:" value={RD?.volumenADY3} />
+
+            {/* RE */}
             <LineInput label="RE:" value={RE?.volumenRecinto} />
-            <LineInput label="ADY 13:" value={getAdy(12)} />
-            <LineInput label="ADY 14:" value={getAdy(13)} />
-            <LineInput label="ADY 15:" value={getAdy(14)} />
+            <LineInput label="ADY 13:" value={RE?.volumenADY1} />
+            <LineInput label="ADY 14:" value={RE?.volumenADY2} />
+            <LineInput label="ADY 15:" value={RE?.volumenADY3} />
+
+            {/* RF */}
             <LineInput label="RF:" value={RF?.volumenRecinto} />
-            <LineInput label="ADY 16:" value={getAdy(15)} />
-            <LineInput label="ADY 17:" value={getAdy(16)} />
-            <LineInput label="ADY 18:" value={getAdy(17)} />
+            <LineInput label="ADY 16:" value={RF?.volumenADY1} />
+            <LineInput label="ADY 17:" value={RF?.volumenADY2} />
+            <LineInput label="ADY 18:" value={RF?.volumenADY3} />
           </div>
 
+          {/* Sub-columna Totales */}
           <div className="w-[26%] flex flex-col">
             <div className="font-bold text-center border-b border-black text-[6.5pt] py-1 leading-none">
               TOTALES Vd

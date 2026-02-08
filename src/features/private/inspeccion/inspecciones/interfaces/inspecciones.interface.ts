@@ -250,6 +250,7 @@ export interface Departamento {
 
 export interface VolumenRecinto {
   id_volumen_recintos: number;
+  recinto: string;
   volumenRecinto: number;
   volumenADY1: number;
   volumenADY2: number;
