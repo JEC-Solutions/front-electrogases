@@ -116,17 +116,17 @@ export const Defectologias = ({ inspeccion }: Props) => {
           <col style={{ width: "18%" }} />
           {Array.from({ length: 6 }).map((_, i) => (
             <Fragment key={i}>
+              <col style={{ width: "3.6%" }} />
               <col style={{ width: "2.5%" }} />
-              <col style={{ width: "1.8%" }} />
-              <col style={{ width: "1.8%" }} />
-              <col style={{ width: "1.8%" }} />
+              <col style={{ width: "2.5%" }} />
+              <col style={{ width: "2.7%" }} />
             </Fragment>
           ))}
-          <col style={{ width: "3%" }} />
-          <col style={{ width: "3%" }} />
-          <col style={{ width: "2.5%" }} />
-          <col style={{ width: "2.5%" }} />
-          <col style={{ width: "2.5%" }} />
+          <col style={{ width: "2.8%" }} />
+          <col style={{ width: "2.8%" }} />
+          <col style={{ width: "2.8%" }} />
+          <col style={{ width: "2.8%" }} />
+          <col style={{ width: "2.8%" }} />
         </colgroup>
 
         <thead>

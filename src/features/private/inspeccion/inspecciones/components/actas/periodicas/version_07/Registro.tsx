@@ -37,7 +37,6 @@ export const Registro = ({
   const cedulaCliente =
     conformidad?.cedulaCliente || cliente?.numero_documento || "";
   const vinculoCliente = conformidad?.vinculoCliente || "TITULAR";
-  const numCuotas = (inspeccion as any)?.numero_cuotas || "";
 
   const borderClass = "border-black";
   const textClass = "text-[7pt] font-arial leading-tight text-black";
@@ -57,22 +56,6 @@ export const Registro = ({
         <div className={`border-b ${borderClass} ${cellPadding} text-justify`}>
           Declaro que conozco el resultado de la Inspecciones y las acciones a
           seguir en caso de encontrar defectos en la instalación.
-        </div>
-
-        {/* Cuotas */}
-        <div
-          className={`border-b ${borderClass} ${cellPadding} flex items-end`}
-        >
-          <span className="whitespace-nowrap">
-            Con la Firma de este documento el usuario autoriza el cobro de la
-            revisión a
-          </span>
-          <span
-            className={`border-b border-black w-[50px] text-center mx-1 font-bold`}
-          >
-            {numCuotas}
-          </span>
-          <span>cuotas</span>
         </div>
 
         <div
