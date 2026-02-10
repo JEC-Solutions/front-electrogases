@@ -119,7 +119,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         </div>
 
         <div
-          className={`w-[13%] border-r ${borderClass} bg-gray-100 flex flex-col justify-between ${cellPadding}`}
+          className={`w-[13%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
         >
           <div className="flex justify-between w-full">
             <span>Tiempo de</span>
@@ -136,7 +136,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         </div>
 
         <div
-          className={`w-[13%] border-r ${borderClass} bg-gray-100 flex flex-col justify-between ${cellPadding}`}
+          className={`w-[13%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
         >
           <div className="mt-[1px]">Prueba</div>
           <div className="flex justify-between w-full items-end mb-[2px]">
