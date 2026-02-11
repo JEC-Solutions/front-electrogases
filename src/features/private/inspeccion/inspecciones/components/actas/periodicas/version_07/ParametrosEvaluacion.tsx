@@ -4,21 +4,13 @@ interface Props {
   inspeccion: IActa | undefined;
 }
 
-// CORRECCIÓN: Función para convertir SEGUNDOS a mm:ss
 const formatSecondsToTime = (value: string | number | undefined) => {
   if (value === undefined || value === null || value === "") return "";
-
-  // Si ya viene formateado con dos puntos, lo devolvemos tal cual
   if (typeof value === "string" && value.includes(":")) return value;
-
   const totalSeconds = Number(value);
   if (isNaN(totalSeconds)) return value;
-
-  // Calculamos minutos y segundos
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = Math.floor(totalSeconds % 60);
-
-  // Formateamos con ceros a la izquierda
   return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
@@ -29,7 +21,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
 
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
-  const cellPadding = "px-[2px]";
+  const cellPadding = "p-[2px]";
 
   return (
     <div
@@ -40,11 +32,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         41385 DE 2017
       </div>
 
-      <div className="flex w-full h-[35px]">
-        {/* ... (Las primeras columnas se mantienen igual) ... */}
-
+      <div className="flex w-full h-[45px]">
         <div
-          className={`w-[9%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
+          className={`w-[9%] border-r ${borderClass} flex items-center justify-center text-center`}
         >
           Prueba de
           <br />
@@ -52,114 +42,85 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         </div>
 
         <div
-          className={`w-[11%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
+          className={`w-[11%] border-r ${borderClass} flex items-center justify-center text-center`}
         >
           Con caudalimetro
           <br />o medidor
         </div>
 
+        {/* Lectura Inicial m3 */}
         <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[10%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">m3</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Inicio</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialMedidor}
+          <span className="font-bold">Lectura Inicio</span>
+          <div className="mt-auto font-semibold flex items-baseline gap-0.5">
+            {params?.lecturaInicialMedidor}{" "}
+            <span>
+              m<sup>3</sup>
             </span>
           </div>
         </div>
 
+        {/* Lectura Final m3 */}
         <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[10%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">m3</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Final</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalMedidor}
+          <span className="font-bold">Lectura Final</span>
+          <div className="mt-auto font-semibold flex items-baseline gap-0.5">
+            {params?.lecturaFinalMedidor}{" "}
+            <span>
+              m<sup>3</sup>
             </span>
           </div>
         </div>
 
+        {/* Lectura Inicial L */}
         <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[10%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">L</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Inicio</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialAire}
-            </span>
+          <span className="font-bold">Lectura Inicio</span>
+          <div className="mt-auto font-semibold flex items-baseline gap-0.5">
+            {params?.lecturaInicialAire} <span>L</span>
           </div>
         </div>
 
+        {/* Lectura Final L */}
         <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[10%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">L</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Final</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalAire}
-            </span>
+          <span className="font-bold">Lectura Final</span>
+          <div className="mt-auto font-semibold flex items-baseline gap-0.5">
+            {params?.lecturaFinalAire} <span>L</span>
           </div>
         </div>
 
+        {/* Tiempo de la prueba */}
         <div
-          className={`w-[13%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[13%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="flex justify-between w-full">
-            <span>Tiempo de</span>
-            <span className="font-bold">min</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[2px]">
-            <span>la prueba</span>
-
-            {/* AQUI USAMOS LA NUEVA FUNCIÓN */}
-            <div className="bg-white border border-gray-400 w-[50%] h-[14px] text-center leading-none font-semibold truncate">
-              {formatSecondsToTime(params?.tiempoPruebaAire)}
-            </div>
+          <span className="font-bold">Tiempo prueba</span>
+          <div className="mt-auto bg-white border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold gap-0.5">
+            {formatSecondsToTime(params?.tiempoPruebaAire)}{" "}
+            <span className="text-[6.5pt]">min</span>
           </div>
         </div>
 
+        {/* Prueba Presión */}
         <div
-          className={`w-[13%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
+          className={`w-[13%] border-r ${borderClass} flex flex-col items-center text-center ${cellPadding}`}
         >
-          <div className="mt-[1px]">Prueba</div>
-          <div className="flex justify-between w-full items-end mb-[2px]">
-            <span>Presión</span>
-            <div className="bg-white border border-gray-400 w-[60%] h-[14px] text-center leading-none font-semibold truncate">
-              {params?.pruebaPresion === null ? "N/A" : params?.pruebaPresion}
-            </div>
+          <span className="font-bold">Prueba Presión</span>
+          <div className="mt-auto bg-white border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold">
+            {params?.pruebaPresion === null ? "N/A" : params?.pruebaPresion}
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between px-1 py-[1px]">
-          <div className="flex justify-between items-start w-full">
-            <span className="text-right w-[65%] leading-none mr-1">
-              Con detector
-              <br />
-              de fugas
-            </span>
-
-            <div className="bg-gray-200 border border-gray-400 w-[35%] h-[14px] text-center leading-none font-semibold truncate mt-[2px]">
-              {params?.detectorFugas}
-            </div>
+        {/* Detector de Fugas */}
+        <div className="flex-1 flex flex-col items-center text-center p-[2px]">
+          <span className="font-bold leading-none">Detector fugas</span>
+          <div className="mt-auto bg-gray-200 border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold gap-0.5">
+            {params?.detectorFugas} <span className="text-[6.5pt]">%Vol</span>
           </div>
-          <div className="text-right font-bold leading-none">%Vol</div>
         </div>
       </div>
     </div>
