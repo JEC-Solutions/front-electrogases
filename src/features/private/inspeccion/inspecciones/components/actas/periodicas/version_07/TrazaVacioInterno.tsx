@@ -72,9 +72,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
             </div>
             <div className="flex items-center w-full justify-center gap-2">
               <span>Fecha</span>
-              <span>-</span>
-              <span>-</span>
-              <span>{vacio?.fecha}</span>
+              {vacio?.fecha ? <span>{vacio?.fecha}</span> : <span>-</span>}
             </div>
           </div>
         </div>
