@@ -17,7 +17,7 @@ function Box({ checked = false }: { checked?: boolean }) {
 export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
   const matriz = inspeccion?.lineaMatriz;
   const tieneLineaMatriz = !!inspeccion?.lineaMatriz;
-  const visible = matriz?.visible;
+  const visible = matriz?.oculta;
 
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
@@ -65,7 +65,7 @@ export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
         >
           <span>Organismo que certifico:</span>
           <div className="flex-1 flex items-end justify-center font-bold text-[7pt]">
-            {matriz?.organismo_certificador}
+            {matriz?.empresa_certifica}
           </div>
         </div>
 
@@ -75,14 +75,14 @@ export const TrazabilidadMatriz = ({ inspeccion }: Props) => {
           <span className="leading-none mb-1">N° de predios conectados</span>
 
           <div className="absolute bottom-1 right-1 w-[35px] h-[14px] bg-gray-200 border border-gray-300 flex items-center justify-center font-bold">
-            {matriz?.numero_predios}
+            {matriz?.cant_predios_conectados}
           </div>
         </div>
 
         <div className={`w-[13%] border-r ${borderClass} p-1 flex flex-col`}>
           <span className="leading-none">N° de informe de inspeccion :</span>
           <div className="flex-1 flex items-end justify-center font-bold">
-            {matriz?.numero_informe}
+            {matriz?.informe_inspeccion}
           </div>
         </div>
 
