@@ -85,3 +85,9 @@ export const getFirmaSelloInspector = async (id: number) => {
     `/inspeccion/imagenes/firma-sello-inspector/${id}`,
   );
 };
+
+export const downloadImagesInspeccion = async (id: number) => {
+  return await electroApi.get(`/inspeccion/imagenes/download-zip/${id}`, {
+    responseType: "blob",
+  });
+};

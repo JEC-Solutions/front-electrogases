@@ -21,6 +21,7 @@ export const Inspecciones = () => {
     tiposImagenes,
     autorizarEdicion,
     isAutorizando,
+    downloadImages,
   } = useInspecciones();
 
   return (
@@ -44,6 +45,7 @@ export const Inspecciones = () => {
             isLoadingTipos={isLoadingTipos}
             autorizarEdicion={autorizarEdicion}
             isAutorizando={isAutorizando}
+            downloadImages={downloadImages}
             pagination={pagination}
             filters={filters}
             handleFilterChange={handleFilterChange}

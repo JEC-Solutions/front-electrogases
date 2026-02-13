@@ -26,6 +26,7 @@ import {
   SearchOutlined,
   CheckCircleOutlined,
   DownOutlined,
+  FileImageOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import type { Dayjs } from "dayjs";
@@ -52,6 +53,7 @@ interface Props {
   isLoadingTipos: boolean;
   autorizarEdicion: (inspeccionId: number) => void;
   isAutorizando: boolean;
+  downloadImages: (id: number) => void;
   // Paginación
   pagination: {
     page: number;
@@ -74,6 +76,7 @@ export const TableInspecciones = ({
   isLoadingTipos,
   autorizarEdicion,
   isAutorizando,
+  downloadImages,
   pagination,
   filters,
   handleFilterChange,
@@ -254,6 +257,13 @@ export const TableInspecciones = ({
               }}
               icon={<CameraOutlined />}
               onClick={() => openImageModal(record.id_inspeccion)}
+            />
+          </Tooltip>
+          <Tooltip title="Descargar Imágenes (ZIP)">
+            <Button
+              size="small"
+              icon={<FileImageOutlined />}
+              onClick={() => downloadImages(record.id_inspeccion)}
             />
           </Tooltip>
           <Tooltip title="Generar PDF">

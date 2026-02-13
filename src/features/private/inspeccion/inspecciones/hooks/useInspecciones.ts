@@ -180,6 +180,58 @@ export const useInspecciones = () => {
     },
   });
 
+  const downloadImagesMutation = useMutation({
+    mutationFn: async (id: number) => {
+      Swal.fire({
+        title: "Descargando imágenes...",
+        text: "Por favor, espere...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const { data } = await inspeccionServices.downloadImagesInspeccion(id);
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      try {
+        const blob = new Blob([data], { type: "application/zip" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `inspeccion_${variables}_imagenes.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        Swal.fire({
+          icon: "success",
+          title: "¡Descarga completada!",
+          text: "El archivo ZIP se ha descargado correctamente.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error procesando la descarga de imágenes:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Error de procesamiento",
+          text: "El archivo se recibió pero no se pudo descargar.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema al descargar las imágenes.",
+        confirmButtonText: "Entendido",
+      });
+    },
+  });
+
   const { data: tiposImagenes = [], isLoading: isLoadingTipos } = useQuery<
     ITipoImagen[]
   >({
@@ -291,5 +343,7 @@ export const useInspecciones = () => {
     // autorizar edición
     autorizarEdicion: autorizarEdicionMutation.mutate,
     isAutorizando: autorizarEdicionMutation.isPending,
+    downloadImages: downloadImagesMutation.mutate,
+    isDownloadingImages: downloadImagesMutation.isPending,
   };
 };
