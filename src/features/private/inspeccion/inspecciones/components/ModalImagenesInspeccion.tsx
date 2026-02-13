@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Modal, Select, Spin, Empty, Image, Button } from "antd";
 import Swal from "sweetalert2";
 import { ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfaces";
+import { useQuery } from "@tanstack/react-query";
+import { getTiposImagenes } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
 
 interface Props {
   isModalOpen: boolean;
   onClose: () => void;
   currentInspeccionId: number | null;
-  tiposImagenes: ITipoImagen[];
-  isLoadingTipos: boolean;
+  currentTipoInspeccion: number | null;
   getImagenPorTipo: (
     inspeccionId: number,
-    tipoImagenId: number
+    tipoImagenId: number,
   ) => Promise<any>;
 }
 
@@ -19,13 +20,32 @@ export const ModalImagenesInspeccion = ({
   isModalOpen,
   onClose,
   currentInspeccionId,
-  tiposImagenes,
-  isLoadingTipos,
+  currentTipoInspeccion,
   getImagenPorTipo,
 }: Props) => {
   const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
   const [imageList, setImageList] = useState<any[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
+
+  // Fetch tipos de imagenes basado en el tipo de inspección
+  const { data: tiposImagenes = [], isLoading: isLoadingTipos } = useQuery<
+    ITipoImagen[]
+  >({
+    queryKey: ["tipos-imagenes-modal", currentTipoInspeccion],
+    queryFn: async () => {
+      // Si no hay tipo de inspección, no cargar nada
+      if (!currentTipoInspeccion) return [];
+      try {
+        const { data } = await getTiposImagenes(currentTipoInspeccion);
+        return data?.data?.tipos_imagen || [];
+      } catch (error) {
+        console.error("Error cargando tipos de imágenes", error);
+        return [];
+      }
+    },
+    enabled: !!currentTipoInspeccion && isModalOpen,
+    staleTime: 1000 * 60 * 5,
+  });
 
   const handleTypeChange = async (tipoId: number) => {
     if (!currentInspeccionId) return;
@@ -41,7 +61,7 @@ export const ModalImagenesInspeccion = ({
 
       const validImages = Array.isArray(responseData)
         ? responseData.filter(
-            (img: any) => typeof img === "string" && img.length > 0
+            (img: any) => typeof img === "string" && img.length > 0,
           )
         : [];
 

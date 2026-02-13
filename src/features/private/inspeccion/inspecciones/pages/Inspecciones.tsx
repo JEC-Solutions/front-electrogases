@@ -17,8 +17,6 @@ export const Inspecciones = () => {
     downloadPdf,
     downloadMassivePdf,
     getImagenPorTipo,
-    isLoadingTipos,
-    tiposImagenes,
     autorizarEdicion,
     isAutorizando,
     downloadImages,
@@ -41,8 +39,6 @@ export const Inspecciones = () => {
             downloadPdf={downloadPdf}
             downloadMassivePdf={downloadMassivePdf}
             getImagenPorTipo={getImagenPorTipo}
-            tiposImagenes={tiposImagenes}
-            isLoadingTipos={isLoadingTipos}
             autorizarEdicion={autorizarEdicion}
             isAutorizando={isAutorizando}
             downloadImages={downloadImages}

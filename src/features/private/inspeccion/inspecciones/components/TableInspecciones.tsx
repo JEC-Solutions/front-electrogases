@@ -1,7 +1,4 @@
-import {
-  IInspecciones,
-  ITipoImagen,
-} from "@/features/private/inspeccion/inspecciones/interfaces";
+import { IInspecciones } from "@/features/private/inspeccion/inspecciones/interfaces";
 import { ColumnsType } from "antd/es/table";
 import {
   Button,
@@ -49,8 +46,6 @@ interface Props {
     inspeccionId: number,
     tipoImagenId: number,
   ) => Promise<any>;
-  tiposImagenes: ITipoImagen[];
-  isLoadingTipos: boolean;
   autorizarEdicion: (inspeccionId: number) => void;
   isAutorizando: boolean;
   downloadImages: (id: number) => void;
@@ -72,8 +67,6 @@ export const TableInspecciones = ({
   downloadPdf,
   downloadMassivePdf,
   getImagenPorTipo,
-  tiposImagenes,
-  isLoadingTipos,
   autorizarEdicion,
   isAutorizando,
   downloadImages,
@@ -89,6 +82,9 @@ export const TableInspecciones = ({
   const [currentInspeccionId, setCurrentInspeccionId] = useState<number | null>(
     null,
   );
+  const [currentTipoInspeccion, setCurrentTipoInspeccion] = useState<
+    number | null
+  >(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [printType, setPrintType] = useState<PrintType>("all");
 
@@ -130,14 +126,16 @@ export const TableInspecciones = ({
     navigate(`/dashboard/inspecciones/${id}`);
   };
 
-  const openImageModal = (id: number) => {
+  const openImageModal = (id: number, tipoInspeccion: number) => {
     setCurrentInspeccionId(id);
+    setCurrentTipoInspeccion(tipoInspeccion);
     setIsModalOpen(true);
   };
 
   const closeImageModal = () => {
     setIsModalOpen(false);
     setCurrentInspeccionId(null);
+    setCurrentTipoInspeccion(null);
   };
 
   const tiposDeInspeccionOptions = [
@@ -256,7 +254,12 @@ export const TableInspecciones = ({
                 color: "#fff",
               }}
               icon={<CameraOutlined />}
-              onClick={() => openImageModal(record.id_inspeccion)}
+              onClick={() =>
+                openImageModal(
+                  record.id_inspeccion,
+                  record.tipoInspeccion?.id_tipo_inspeccion,
+                )
+              }
             />
           </Tooltip>
           <Tooltip title="Descargar Imágenes (ZIP)">
@@ -419,8 +422,7 @@ export const TableInspecciones = ({
         isModalOpen={isModalOpen}
         onClose={closeImageModal}
         currentInspeccionId={currentInspeccionId}
-        tiposImagenes={tiposImagenes}
-        isLoadingTipos={isLoadingTipos}
+        currentTipoInspeccion={currentTipoInspeccion}
         getImagenPorTipo={getImagenPorTipo}
       />
     </div>

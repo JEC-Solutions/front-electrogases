@@ -48,8 +48,9 @@ export const downloadPdf = async (id: number) => {
   return await electroApi.get(`/inspeccion/generate-pdf/${id}`);
 };
 
-export const getTiposImagenes = async () => {
-  return await electroApi.get(`/inspeccion/imagenes/tipos-imagen`);
+export const getTiposImagenes = async (tipoInspeccion?: number) => {
+  const params = tipoInspeccion ? `?tipoInspeccion=${tipoInspeccion}` : "";
+  return await electroApi.get(`/inspeccion/imagenes/tipos-imagen${params}`);
 };
 
 export const getImagenesByTipo = async (
