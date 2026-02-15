@@ -120,10 +120,15 @@ export const ModalUsuarios = ({
                       placeholder="Seleccione un rol"
                       style={{ width: "100%" }}
                       optionFilterProp="label"
-                      options={roles.map((r) => ({
-                        label: r.nombre_rol,
-                        value: r.id_rol,
-                      }))}
+                      options={roles
+                        .filter(
+                          (r) =>
+                            r.id_rol !== Number(import.meta.env.VITE_INSPECTOR),
+                        )
+                        .map((r) => ({
+                          label: r.nombre_rol,
+                          value: r.id_rol,
+                        }))}
                       onChange={(value) => field.onChange(value ?? "")}
                       value={field.value ?? undefined}
                       filterOption={(input, option) =>
