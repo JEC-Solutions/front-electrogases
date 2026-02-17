@@ -88,15 +88,13 @@ export const Footer = ({
               >
                 Certificado No.:
               </div>
-
+              <div className={`flex-1 ${cellPadding} min-h-[25px]`}>
+                Vigencia:
+              </div>
               <div
                 className={`flex-1 border-b ${borderClass} ${cellPadding} min-h-[25px]`}
               >
                 Registro SIC No.:
-              </div>
-
-              <div className={`flex-1 ${cellPadding} min-h-[25px]`}>
-                Competencia:
               </div>
             </div>
 
@@ -131,4 +129,3 @@ export const Footer = ({
     </div>
   );
 };
-
