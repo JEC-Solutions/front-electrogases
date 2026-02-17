@@ -27,10 +27,9 @@ const GroupCells = ({
   if (!code) {
     return (
       <>
-        <td className="border-r  border-b border-dotted border-gray-400"></td>
-
-        <td className="border-r  border-b border-dotted border-gray-400"></td>
-        <td className="border-r  border-b border-dotted border-gray-400"></td>
+        <td className="border-r border-b border-dotted border-gray-400"></td>
+        <td className="border-r border-b border-dotted border-gray-400"></td>
+        <td className="border-r border-b border-dotted border-gray-400"></td>
         <td
           className={`border-r ${isLastGroup ? "border-black" : "border-gray-400"} border-b border-dotted border-gray-400`}
         ></td>
@@ -43,7 +42,6 @@ const GroupCells = ({
       <td className="border border-black text-center align-middle font-semibold text-[6.5pt] bg-white h-[16px]">
         {code}
       </td>
-
       <td className="border border-black text-center align-middle bg-white">
         <Box checked={state === "SI"} />
       </td>
@@ -113,66 +111,75 @@ export const Defectologias = ({ inspeccion }: Props) => {
     <div className="w-full font-arial text-black mt-[-1px]">
       <table className="w-full table-fixed border-collapse border border-black text-[7pt] leading-none">
         <colgroup>
-          <col style={{ width: "20%" }} />
+          <col style={{ width: "15%" }} />
           {Array.from({ length: 6 }).map((_, i) => (
             <Fragment key={i}>
-              <col style={{ width: "3%" }} />
-              <col style={{ width: "2%" }} />
-              <col style={{ width: "2%" }} />
-              <col style={{ width: "2%" }} />
+              <col style={{ width: "2.8%" }} />
+              <col style={{ width: "2.9%" }} />
+              <col style={{ width: "2.9%" }} />
+              <col style={{ width: "2.9%" }} />
             </Fragment>
           ))}
-          <col style={{ width: "3%" }} />
-          <col style={{ width: "3%" }} />
-          <col style={{ width: "3%" }} />
+          <col style={{ width: "5%" }} />
+          <col style={{ width: "5%" }} />
+          <col style={{ width: "5%" }} />
         </colgroup>
 
         <thead>
-          <tr className="bg-gray-100 h-[14px]">
+          {/* Fila 1: Títulos principales y CUMPLE (fondo gris) */}
+          <tr className="bg-[#e5e7eb]">
             <th
-              className="border border-black px-1 text-center font-normal align-middle"
+              className="border border-black px-1 text-center font-bold align-middle p-[2px]"
               rowSpan={2}
             >
-              DEFECTOLOGIA ENCONTRADA
+              DEFECTOLOGÍA
             </th>
-
             {Array.from({ length: 6 }).map((_, i) => (
               <th
                 key={`h1-g${i}`}
-                className="border border-black text-center font-normal text-[6.5pt]"
+                className="border border-black text-center font-bold text-[6.5pt] py-1"
                 colSpan={4}
               >
-                Cumple
+                CUMPLE
               </th>
             ))}
-
+            {/* Los títulos de evaluación general (SI, NO, NA) bajan hasta la fila blanca */}
             <th
-              className="border border-black text-center font-normal text-[6.5pt]"
-              colSpan={3}
+              className="border border-black font-bold text-[6pt] align-middle bg-white"
+              rowSpan={2}
             >
-              CUMPLE
+              SI
+            </th>
+            <th
+              className="border border-black font-bold text-[6pt] align-middle bg-white"
+              rowSpan={2}
+            >
+              NO
+            </th>
+            <th
+              className="border border-black font-bold text-[6pt] align-middle bg-white"
+              rowSpan={2}
+            >
+              NA
             </th>
           </tr>
 
-          <tr className="bg-gray-100 h-[14px]">
+          {/* Fila 2: Las columnas de SI, NO, NA de cada grupo (blanca) pegadas a CUMPLE */}
+          <tr className="bg-white">
             {Array.from({ length: 6 }).map((_, i) => (
               <Fragment key={`h2-g${i}`}>
-                <th className="border border-black"></th>
-                <th className="border border-black font-normal text-[6pt]">
+                <th className="border-x border-b border-black w-[2.8%]"></th>
+                <th className="border border-black font-normal text-[6pt] py-[1px] w-[2.9%]">
                   SI
                 </th>
-                <th className="border border-black font-normal text-[6pt]">
+                <th className="border border-black font-normal text-[6pt] py-[1px] w-[2.9%]">
                   NO
                 </th>
-                <th className="border border-black font-normal text-[6pt]">
+                <th className="border border-black font-normal text-[6pt] py-[1px] w-[2.9%]">
                   NA
                 </th>
               </Fragment>
             ))}
-
-            <th className="border border-black font-normal text-[6pt]">SI</th>
-            <th className="border border-black font-normal text-[6pt]">NO</th>
-            <th className="border border-black font-normal text-[6pt]">NA</th>
           </tr>
         </thead>
 
@@ -194,7 +201,6 @@ export const Defectologias = ({ inspeccion }: Props) => {
                   <span className="relative z-10 bg-white pr-1">
                     {fila.label}
                   </span>
-
                   <div className="absolute inset-x-0 top-1/2 border-b border-dotted border-gray-400 z-0"></div>
                 </td>
 

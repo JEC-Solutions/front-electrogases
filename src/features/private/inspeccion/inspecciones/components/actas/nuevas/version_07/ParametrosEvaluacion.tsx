@@ -10,135 +10,142 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
     : inspeccion?.parametrosEvaluacion;
 
   const borderClass = "border-black";
-  const textClass = "text-[7.5pt] font-arial leading-tight text-black";
-  const cellPadding = "px-[2px]";
+  const textClass = "text-[6pt] font-arial leading-tight text-black";
+
+  const headerGray = "bg-[#f3f4f6]";
 
   return (
     <div
       className={`w-full border-l border-r border-b ${borderClass} ${textClass} box-border`}
     >
-      <div className="w-full border-b border-black bg-gray-200 font-bold text-center py-[2px]">
+      <div
+        className={`w-full border-b ${borderClass} ${headerGray} font-bold text-center py-[2px]`}
+      >
         9. PARAMETROS DE EVALUACIÓN / RESOLUCIÓN 90 902 DE 2013/ RESOLUCIÓN
         41385 DE 2017
       </div>
 
-      <div className="flex w-full h-[35px]">
+      <div className="flex w-full min-h-[40px] items-stretch">
         <div
-          className={`w-[9%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
+          className={`w-[12%] border-r ${borderClass} ${headerGray} flex items-center justify-center text-center p-[2px] font-bold leading-[1.1]`}
         >
           Prueba de
           <br />
           Hermeticidad
         </div>
 
-        <div
-          className={`w-[11%] border-r ${borderClass} bg-gray-100 flex items-center justify-center text-center p-[1px]`}
-        >
-          Con caudalimetro
-          <br />o medidor
-        </div>
-
-        <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">m3</span>
+        <div className={`w-[35%] flex flex-col border-r ${borderClass}`}>
+          <div className={`w-full text-center border-b ${borderClass} p-[1px]`}>
+            Con aire o gas inerte
           </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Inicio</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialAire}
-            </span>
-          </div>
-        </div>
-
-        <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">m3</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Final</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalAire}
-            </span>
-          </div>
-        </div>
-
-        <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">L</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Inicio</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaInicialMedidor}
-            </span>
-          </div>
-        </div>
-
-        <div
-          className={`w-[10%] border-r ${borderClass} flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="flex justify-between w-full">
-            <span>Lectura</span>
-            <span className="font-bold">L</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[1px]">
-            <span>Final</span>
-            <span className="font-semibold text-right flex-1 truncate ml-1">
-              {params?.lecturaFinalMedidor}
-            </span>
-          </div>
-        </div>
-
-        <div
-          className={`w-[13%] border-r ${borderClass} bg-gray-100 flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="flex justify-between w-full">
-            <span>Tiempo de</span>
-            <span className="font-bold">min</span>
-          </div>
-          <div className="flex justify-between w-full items-end mb-[2px]">
-            <span>la prueba</span>
-
-            <div className="bg-white border border-gray-400 w-[50%] h-[14px] text-center leading-none font-semibold truncate">
-              {params?.tiempoPruebaAire}
+          <div className="flex flex-1">
+            <div
+              className={`flex-1 border-r ${borderClass} p-[2px] flex flex-col justify-center`}
+            >
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  lectura
+                  <br />
+                  Inicial
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.lecturaInicialAire} PSI
+              </div>
+            </div>
+            <div
+              className={`flex-1 border-r ${borderClass} p-[2px] flex flex-col justify-center`}
+            >
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  Lectura
+                  <br />
+                  Final
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.lecturaFinalAire} PSI
+              </div>
+            </div>
+            <div className={`flex-1 p-[2px] flex flex-col justify-center`}>
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  Tiempo
+                  <br />
+                  Prueba
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.tiempoPruebaAire} Min
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          className={`w-[13%] border-r ${borderClass} bg-gray-100 flex flex-col justify-between ${cellPadding}`}
-        >
-          <div className="mt-[1px]">Prueba</div>
-          <div className="flex justify-between w-full items-end mb-[2px]">
-            <span>Presión</span>
-            <div className="bg-white border border-gray-400 w-[60%] h-[14px] text-center leading-none font-semibold truncate">
-              {params?.pruebaPresion}
+        <div className={`w-[38%] flex flex-col border-r ${borderClass}`}>
+          <div className={`w-full text-center border-b ${borderClass} p-[1px]`}>
+            Con caudalimetro ó medidor (solo para reformas)
+          </div>
+          <div className="flex flex-1">
+            <div
+              className={`flex-1 border-r ${borderClass} p-[2px] flex flex-col justify-center`}
+            >
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  lectura
+                  <br />
+                  Inicial
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.lecturaInicialMedidor} L
+              </div>
+            </div>
+            <div
+              className={`flex-1 border-r ${borderClass} p-[2px] flex flex-col justify-center`}
+            >
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  Lectura
+                  <br />
+                  Final
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.lecturaFinalMedidor} L
+              </div>
+            </div>
+            <div className={`flex-1 p-[2px] flex flex-col justify-center`}>
+              <div className="flex justify-between items-end">
+                <div className="leading-[1]">
+                  Tiempo
+                  <br />
+                  Prueba
+                </div>
+              </div>
+              <div className="text-center font-bold">
+                {params?.tiempoPruebaMedidor || params?.tiempoPruebaAire} Min
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between px-1 py-[1px]">
-          <div className="flex justify-between items-start w-full">
-            <span className="text-right w-[65%] leading-none mr-1">
-              Con detector
-              <br />
-              de fugas
-            </span>
-
-            <div className="bg-gray-200 border border-gray-400 w-[35%] h-[14px] text-center leading-none font-semibold truncate mt-[2px]">
-              {params?.detectorFugas}
+        <div className="w-[15%] flex flex-col">
+          <div className="flex-1 p-[2px] flex flex-col justify-center">
+            <div className="flex items-center mb-[1px]">
+              <span>Con Detector</span>
+              <div className="bg-[#eee] border border-black w-[20px] h-[12px] mx-[2px] flex items-center justify-center font-bold">
+                {params?.detectorFugas}
+              </div>
+              <span>% Vol</span>
             </div>
+            <div>de Fugas</div>
           </div>
-          <div className="text-right font-bold leading-none">%Vol</div>
+          <div
+            className={`border-t ${borderClass} text-center font-bold py-[2px] w-full`}
+          >
+            CUMPLE
+          </div>
         </div>
       </div>
     </div>
