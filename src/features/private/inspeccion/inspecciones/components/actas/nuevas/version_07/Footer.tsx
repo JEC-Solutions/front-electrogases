@@ -92,7 +92,7 @@ export const Footer = ({
                 Vigencia:
               </div>
               <div
-                className={`flex-1 border-b ${borderClass} ${cellPadding} min-h-[25px]`}
+                className={`flex-1 border-t ${borderClass} ${cellPadding} min-h-[25px]`}
               >
                 Registro SIC No.:
               </div>

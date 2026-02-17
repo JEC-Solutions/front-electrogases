@@ -128,7 +128,7 @@ export const Registro = ({
               <span className="font-bold">{competenciaInspector}</span>
             </div>
             <div
-              className={`h-[25%] border-b ${borderClass} ${cellPadding} flex flex-col justify-center`}
+              className={`h-[25%] border-t ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
               <span>Registro SIC No.:</span>
               <span className="font-bold">{registroSic}</span>
