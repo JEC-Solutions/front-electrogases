@@ -5,7 +5,7 @@ import {
 } from "@/features/private/configuracion/usuarios/interfaces";
 import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
 import { Controller } from "react-hook-form";
-import { useRoles } from "../../roles/hooks";
+import { useRoles } from "@/features/private/configuracion/roles/hooks";
 import Upload, { RcFile } from "antd/es/upload";
 import { UploadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-export const ModalUsuarios = ({
+export const ModalInspectoresUsuarios = ({
   open,
   onClose,
   methods,
@@ -47,7 +47,7 @@ export const ModalUsuarios = ({
 
   return (
     <Modal
-      title={currentUsuario ? "Editar Usuario" : "Agregar Usuario"}
+      title={currentUsuario ? "Editar Inspector" : "Agregar Inspector"}
       open={open}
       onCancel={onClose}
       footer={null}
@@ -120,10 +120,11 @@ export const ModalUsuarios = ({
                       placeholder="Seleccione un rol"
                       style={{ width: "100%" }}
                       optionFilterProp="label"
+                      disabled
                       options={roles
                         .filter(
                           (r) =>
-                            r.id_rol !== Number(import.meta.env.VITE_INSPECTOR),
+                            r.id_rol === Number(import.meta.env.VITE_INSPECTOR),
                         )
                         .map((r) => ({
                           label: r.nombre_rol,
