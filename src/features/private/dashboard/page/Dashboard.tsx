@@ -23,6 +23,7 @@ import {
 } from "@/features/private/inspeccion/inspecciones/pages";
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/page";
 import { InspectoresUsuarios } from "@/features/private/inspectores/usuarios/pages";
+import { EquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/pages";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -120,8 +121,14 @@ export const Dashboard = () => {
             {/* Inspectores */}
             <Route
               path="/inspectores/usuarios"
-              element={<InspectoresUsuarios/>}
-              />
+              element={<InspectoresUsuarios />}
+            />
+
+            {/* Equipos Utilizados */}
+            <Route
+              path="/inspectores/equipos"
+              element={<EquiposUtilizados />}
+            />
 
             {/* Ruta catch-all dentro dashboard */}
             <Route path="*" element={<NotFound />} />
