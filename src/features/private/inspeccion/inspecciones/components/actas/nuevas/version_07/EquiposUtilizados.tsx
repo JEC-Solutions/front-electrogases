@@ -65,7 +65,13 @@ const EquipmentRow = ({
 );
 
 export const EquiposUtilizados = ({ inspeccion }: Props) => {
-  const equipos = (inspeccion?.equiposUtilizados as EquipoApi[]) ?? [];
+  let equipos = (inspeccion?.equiposUtilizados as EquipoApi[]) ?? [];
+
+  if (equipos.length === 0 && inspeccion?.ruta?.persona?.equiposUsuarios) {
+    equipos = inspeccion.ruta.persona.equiposUsuarios
+      .map((eu) => eu.idEquiposUtilizados)
+      .filter((e) => e) as unknown as EquipoApi[];
+  }
 
   const getEquipoData = (keyword: string) => {
     const eq = equipos.find((e) =>

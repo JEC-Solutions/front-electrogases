@@ -196,6 +196,12 @@ export interface Persona {
   created_at: string;
   updated_at: string;
   usuario?: Usuario;
+  equiposUsuarios?: EquiposUsuario[];
+}
+
+export interface EquiposUsuario {
+  id_equipos_usuarios: number;
+  idEquiposUtilizados: EquiposUtilizado;
 }
 
 export interface Usuario {
