@@ -50,7 +50,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.lecturaInicialAire} PSI
+                {params?.lecturaInicialAire === null
+                  ? "N/A"
+                  : `${params?.lecturaInicialAire} PSI`}
               </div>
             </div>
             <div
@@ -64,7 +66,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.lecturaFinalAire} PSI
+                {params?.lecturaFinalAire === null
+                  ? "N/A"
+                  : `${params?.lecturaFinalAire} PSI`}
               </div>
             </div>
             <div className={`flex-1 p-[2px] flex flex-col justify-center`}>
@@ -76,7 +80,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.tiempoPruebaAire} Min
+                {params?.tiempoPruebaAire === null
+                  ? "N/A"
+                  : `${params?.tiempoPruebaAire} Min`}
               </div>
             </div>
           </div>
@@ -98,7 +104,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.lecturaInicialMedidor} L
+                {params?.lecturaInicialMedidor === null
+                  ? "N/A"
+                  : `${params?.lecturaInicialMedidor} L`}
               </div>
             </div>
             <div
@@ -112,7 +120,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.lecturaFinalMedidor} L
+                {params?.lecturaFinalMedidor === null
+                  ? "N/A"
+                  : `${params?.lecturaFinalMedidor} L`}
               </div>
             </div>
             <div className={`flex-1 p-[2px] flex flex-col justify-center`}>
@@ -124,7 +134,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
                 </div>
               </div>
               <div className="text-center font-bold">
-                {params?.tiempoPruebaMedidor || params?.tiempoPruebaAire} Min
+                {params?.tiempoPruebaMedidor === null
+                  ? "N/A"
+                  : `${params?.tiempoPruebaMedidor} Min`}
               </div>
             </div>
           </div>

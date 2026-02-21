@@ -54,10 +54,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Lectura Inicio</span>
           <div className="mt-auto font-semibold flex items-baseline gap-0.5">
-            {params?.lecturaInicialMedidor}{" "}
-            <span>
-              m<sup>3</sup>
-            </span>
+            {params?.lecturaInicialMedidor === null
+              ? "N/A"
+              : `${params?.lecturaInicialMedidor} m³`}
           </div>
         </div>
 
@@ -67,10 +66,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Lectura Final</span>
           <div className="mt-auto font-semibold flex items-baseline gap-0.5">
-            {params?.lecturaFinalMedidor}{" "}
-            <span>
-              m<sup>3</sup>
-            </span>
+            {params?.lecturaFinalMedidor === null
+              ? "N/A"
+              : `${params?.lecturaFinalMedidor} m³`}
           </div>
         </div>
 
@@ -80,7 +78,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Lectura Inicio</span>
           <div className="mt-auto font-semibold flex items-baseline gap-0.5">
-            {params?.lecturaInicialAire} <span>L</span>
+            {params?.lecturaInicialAire === null
+              ? "N/A"
+              : `${params?.lecturaInicialAire} L`}
           </div>
         </div>
 
@@ -90,7 +90,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Lectura Final</span>
           <div className="mt-auto font-semibold flex items-baseline gap-0.5">
-            {params?.lecturaFinalAire} <span>L</span>
+            {params?.lecturaFinalAire === null
+              ? "N/A"
+              : `${params?.lecturaFinalAire} L`}
           </div>
         </div>
 
@@ -100,8 +102,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Tiempo prueba</span>
           <div className="mt-auto bg-white border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold gap-0.5">
-            {formatSecondsToTime(params?.tiempoPruebaAire)}{" "}
-            <span className="text-[6.5pt]">min</span>
+            {params?.tiempoPruebaAire === null
+              ? "N/A"
+              : `${formatSecondsToTime(params?.tiempoPruebaAire)} min`}
           </div>
         </div>
 
@@ -119,7 +122,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         <div className="flex-1 flex flex-col items-center text-center p-[2px]">
           <span className="font-bold leading-none">Detector fugas</span>
           <div className="mt-auto bg-gray-200 border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold gap-0.5">
-            {params?.detectorFugas} <span className="text-[6.5pt]">%Vol</span>
+            {params?.detectorFugas === null
+              ? "N/A"
+              : `${params?.detectorFugas} %Vol`}
           </div>
         </div>
       </div>
