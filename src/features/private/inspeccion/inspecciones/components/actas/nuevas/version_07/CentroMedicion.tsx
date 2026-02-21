@@ -25,8 +25,8 @@ export const CentroMedicion = ({ inspeccion }: Props) => {
   const marcaRegulador = centro?.regulador_marca;
   const etapa = centro?.regulador_etapa;
 
-  const presionEstatica = centro?.presion_estatica;
-  const presionDinamica = centro?.presion_dinamica;
+  const presionEstatica = centro?.presion_estatica || "N/A";
+  const presionDinamica = centro?.presion_dinamica || "N/A";
 
   const border = "border-black";
   const bgHeader = "bg-[#f3f4f6]";

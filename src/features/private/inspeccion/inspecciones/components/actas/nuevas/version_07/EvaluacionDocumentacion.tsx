@@ -134,7 +134,7 @@ export const EvaluacionDocumentacion = ({ inspeccion }: Props) => {
             >
               <div className="flex justify-between items-center mb-[1px]">
                 <span>Multi capa</span>
-                <Box /> <span className="ml-1">Galvanizado</span>
+                <Box /> <span className="ml-1">Acero al Carbón</span>
                 <Box />
               </div>
               <div className="flex justify-between items-center">
