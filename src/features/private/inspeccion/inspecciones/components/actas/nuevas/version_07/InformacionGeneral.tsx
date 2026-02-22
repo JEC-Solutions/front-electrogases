@@ -20,12 +20,10 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
   const fechaSol = formatDateYMD(inspeccion?.created_at) || "-";
   const horaInicio = formatTimeWithAmPm(inspeccion?.hora_inicio || "");
   const horaFin = formatTimeWithAmPm(inspeccion?.hora_fin || "");
+  const instalacionNueva = inspeccion?.instalacionNueva;
+  const isNueva = !instalacionNueva?.reforma;
 
-  const isNueva = true;
-  const isReforma = false;
-
-  const edifNueva = true;
-  const edifExistente = false;
+  const edifExistente = !instalacionNueva?.tipoEdificacion;
 
   const hayInformeAnt = !!inspeccion?.instalacionExistente;
   const fechaAnt = formatDateYMD(inspeccion?.instalacionExistente?.createdAt);
@@ -75,7 +73,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
                   <span>Instalación Nueva</span> <Box checked={isNueva} />
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Reforma</span> <Box checked={isReforma} />
+                  <span>Reforma</span> <Box checked={!isNueva} />
                 </div>
               </div>
             </div>
@@ -86,10 +84,10 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
               <div className="text-center mb-[1px]">Tipo de edificación</div>
               <div className="flex justify-around">
                 <div className="flex items-center">
-                  Nueva <Box checked={edifNueva} />
+                  Nueva <Box checked={edifExistente} />
                 </div>
                 <div className="flex items-center">
-                  Existente <Box checked={edifExistente} />
+                  Existente <Box checked={!edifExistente} />
                 </div>
               </div>
             </div>
