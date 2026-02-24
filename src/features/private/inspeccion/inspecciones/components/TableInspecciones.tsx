@@ -184,7 +184,7 @@ export const TableInspecciones = ({
       },
     },
     {
-      title: "Número de acta",
+      title: "Número de informe",
       key: "co",
       render: (_, record) => record?.ruta?.numero_acta || "",
     },
