@@ -5,6 +5,14 @@ import { ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfac
 import { useQuery } from "@tanstack/react-query";
 import { getTiposImagenes } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
 
+interface IImagenItem {
+  id: number;
+  nombre_archivo: string;
+  tipo_mime: string;
+  base64: string;
+  created_at: string;
+}
+
 interface Props {
   isModalOpen: boolean;
   onClose: () => void;
@@ -24,16 +32,14 @@ export const ModalImagenesInspeccion = ({
   getImagenPorTipo,
 }: Props) => {
   const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
-  const [imageList, setImageList] = useState<any[]>([]);
+  const [imageList, setImageList] = useState<IImagenItem[]>([]);
   const [loadingImages, setLoadingImages] = useState(false);
 
-  // Fetch tipos de imagenes basado en el tipo de inspección
   const { data: tiposImagenes = [], isLoading: isLoadingTipos } = useQuery<
     ITipoImagen[]
   >({
     queryKey: ["tipos-imagenes-modal", currentTipoInspeccion],
     queryFn: async () => {
-      // Si no hay tipo de inspección, no cargar nada
       if (!currentTipoInspeccion) return [];
       try {
         const { data } = await getTiposImagenes(currentTipoInspeccion);
@@ -59,9 +65,13 @@ export const ModalImagenesInspeccion = ({
 
       const responseData = res?.data?.imagenes || [];
 
-      const validImages = Array.isArray(responseData)
+      const validImages: IImagenItem[] = Array.isArray(responseData)
         ? responseData.filter(
-            (img: any) => typeof img === "string" && img.length > 0,
+            (img: any) =>
+              img &&
+              typeof img === "object" &&
+              typeof img.base64 === "string" &&
+              img.base64.length > 0,
           )
         : [];
 
@@ -80,10 +90,17 @@ export const ModalImagenesInspeccion = ({
   };
 
   const handleClose = () => {
-    // Resetear estados al cerrar
     setSelectedTypeId(null);
     setImageList([]);
     onClose();
+  };
+
+  const formatFecha = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString("es-CO", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
   };
 
   return (
@@ -149,14 +166,26 @@ export const ModalImagenesInspeccion = ({
                 justifyContent: "center",
               }}
             >
-              {imageList.map((imgSrc, idx) => (
-                <Image
-                  key={idx}
-                  width={200}
-                  src={imgSrc}
-                  alt={`Evidencia ${idx + 1}`}
-                  style={{ objectFit: "contain", maxHeight: "300px" }}
-                />
+              {imageList.map((img) => (
+                <div
+                  key={img.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <Image
+                    width={200}
+                    src={img.base64}
+                    alt={img.nombre_archivo}
+                    style={{ objectFit: "contain", maxHeight: "300px" }}
+                  />
+                  <span style={{ fontSize: "11px", color: "#888" }}>
+                    {formatFecha(img.created_at)}
+                  </span>
+                </div>
               ))}
             </div>
           ) : (
