@@ -38,6 +38,7 @@ export interface Ruta {
 
 export interface IRutas {
   id_ruta: number;
+  numero_acta: string;
   fecha: string;
   hora: string;
   estado: boolean;
@@ -47,6 +48,7 @@ export interface IRutas {
   persona: Persona;
   casa: Casa;
   asesor: Persona;
+  tipo_visita?: ITipoVisita;
 }
 
 export interface Persona {
@@ -148,10 +150,10 @@ export interface IAsignar {
 }
 
 export interface IPdfRuta {
-  start: string
-  end: string
-  inspectorId: number
-  asesorId: number
-  clienteId: number
-  clienteDocumento: string
+  start: string;
+  end: string;
+  inspectorId: number;
+  asesorId: number;
+  clienteId: number;
+  clienteDocumento: string;
 }

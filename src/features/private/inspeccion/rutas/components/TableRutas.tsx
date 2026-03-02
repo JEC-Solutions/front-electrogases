@@ -137,8 +137,17 @@ export const TableRutas = ({
   const columns: ColumnsType<IRutas> = [
     {
       title: "N° Acta",
-      dataIndex: "numero_acta",
       key: "numero_acta",
+      render: (_, record) => {
+        const id = Number(record?.tipo_visita?.id_tipo_visita);
+        const numeroActa = record?.numero_acta || "";
+        let prefijo = record?.tipo_visita?.id_tipo_visita || "";
+
+        if (id === 1) prefijo = "PD";
+        if (id === 2) prefijo = "NRD";
+
+        return `${prefijo} ${numeroActa}`.trim();
+      },
     },
     {
       title: "Fecha",

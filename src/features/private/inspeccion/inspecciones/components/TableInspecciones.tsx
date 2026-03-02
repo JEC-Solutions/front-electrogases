@@ -160,9 +160,18 @@ export const TableInspecciones = ({
         value ? new Date(value).toLocaleDateString("es-CO") : "-",
     },
     {
-      title: "Tipo de inspección",
-      key: "co",
-      render: (_, record) => record?.tipoInspeccion.nombre || "",
+      title: "N° Informe",
+      key: "informe",
+      render: (_, record) => {
+        const id = Number(record?.tipoInspeccion?.id_tipo_inspeccion);
+        const numeroActa = record?.ruta?.numero_acta || "";
+        let prefijo = record?.tipoInspeccion?.nombre || "";
+
+        if (id === 1) prefijo = "PD";
+        if (id === 2) prefijo = "NRD";
+
+        return `${prefijo} ${numeroActa}`.trim();
+      },
     },
     {
       title: "Inspector",
@@ -182,11 +191,6 @@ export const TableInspecciones = ({
 
         return nombreCompleto;
       },
-    },
-    {
-      title: "Número de informe",
-      key: "co",
-      render: (_, record) => record?.ruta?.numero_acta || "",
     },
     {
       title: "Autorizar Edición",
