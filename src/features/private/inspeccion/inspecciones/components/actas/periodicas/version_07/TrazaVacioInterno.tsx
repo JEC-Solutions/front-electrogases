@@ -65,7 +65,7 @@ export const TrazaVacioInterno = ({ inspeccion }: Props) => {
           </div>
           <div className="flex flex-col justify-end flex-1 gap-[2px]">
             <div className="flex items-end w-full">
-              <span className="whitespace-nowrap mr-1">___ N°</span>
+              <span className="whitespace-nowrap mr-1">N°</span>
               <div className="border-b border-black flex-1 text-center h-[10px] text-[8pt] leading-none">
                 {vacio?.id_documento_legal}
               </div>

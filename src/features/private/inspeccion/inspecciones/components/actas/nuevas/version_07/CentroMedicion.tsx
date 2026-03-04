@@ -15,18 +15,18 @@ const ValueBox = ({ value }: { value?: string | number }) => (
 );
 
 export const CentroMedicion = ({ inspeccion }: Props) => {
-  const centro = inspeccion?.centroMedicion;
-  const medidor = inspeccion?.ruta?.medidor;
+  const instalacionNueva = inspeccion?.instalacionNueva;
+  const centro = instalacionNueva?.centrosMedicion?.[0];
 
-  const marcaMedidor = medidor?.marca;
-  const numMedidor = medidor?.numero;
-  const tipoMedidor = medidor?.tipo;
+  const marcaMedidor = centro?.marca || "N/A";
+  const numMedidor = centro?.medidor || "N/A";
+  const tipoMedidor = centro?.tipo || "N/A";
 
-  const marcaRegulador = centro?.regulador_marca;
-  const etapa = centro?.regulador_etapa;
+  const marcaRegulador = centro?.marcaRegulador || "N/A";
+  const etapa = centro?.etapa;
 
-  const presionEstatica = centro?.presion_estatica || "N/A";
-  const presionDinamica = centro?.presion_dinamica || "N/A";
+  const presionEstatica = centro?.presionEstatica || "N/A";
+  const presionDinamica = centro?.presionDinamica || "N/A";
 
   const border = "border-black";
   const bgHeader = "bg-[#f3f4f6]";
