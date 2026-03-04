@@ -35,7 +35,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
   const visita = inspeccion?.instalacionExistente?.numeroVisita || 0;
   const hayInspAnt =
     !!inspeccion?.instalacionExistente?.id_instalacion_existente;
-  const fechaAnt = formatDateYMD(inspeccion?.instalacionExistente?.createdAt);
+  const fechaAnt = formatDateYMD(inspeccion?.fecha_instalacion_anterior);
   const certAnt = inspeccion?.numero_certificado;
   const puestaServicio = inspeccion?.fecha_puesta_en_servicio;
   const isReforma = false;
@@ -150,7 +150,7 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
             <div
               className={`w-[140px] ${bgHeader} border-r ${border} flex items-center justify-center text-center font-bold text-[7pt] p-1`}
             >
-              3.2. TRAZABILIDAD DE INSPECCIÓN DE LA INSTALACIÓN INTERNA
+              3.2. TRAZABILIDAD DE LA INSTALACIÓN INTERNA
             </div>
 
             <div

@@ -55,6 +55,7 @@ export interface IActa {
   existe_linea: boolean;
   existe_vacio: boolean;
   empresa: string;
+  fecha_instalacion_anterior: string;
   version: any;
   editar_informe: boolean;
   created_at: string;
