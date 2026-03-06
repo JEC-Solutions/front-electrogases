@@ -156,9 +156,6 @@ export const ModalEquiposUtilizados = ({
                 name="personas"
                 control={control}
                 defaultValue={[]}
-                rules={{
-                  required: "Por favor seleccione al menos un inspector",
-                }}
                 render={({ field }) => (
                   <>
                     <Select

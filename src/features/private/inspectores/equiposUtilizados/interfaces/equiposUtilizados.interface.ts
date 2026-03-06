@@ -1,5 +1,5 @@
 export interface IEquiposUtilizadosRequest {
-  personas: number[];
+  personas?: number[];
   equiposUtilizados: string;
   ns: string;
   marca: string;
