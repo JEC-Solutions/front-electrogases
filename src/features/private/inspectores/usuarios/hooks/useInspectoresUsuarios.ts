@@ -17,7 +17,23 @@ export const useInspectoresUsuarios = () => {
   const [currentUsuarios, setCurrentUsuarios] = useState<IUsuarios | null>(
     null,
   );
-  const methodsUsuarios = useForm<IUsuario>();
+  const methodsUsuarios = useForm<IUsuario>({
+    defaultValues: {
+      username: "",
+      password: "",
+      id_rol: Number(import.meta.env.VITE_INSPECTOR),
+      persona: {
+        primer_nombre: "",
+        segundo_nombre: "",
+        primer_apellido: "",
+        segundo_apellido: "",
+        telefono: "",
+        id_tipo_documento: 0,
+        numero_documento: "",
+        email: "",
+      },
+    },
+  });
 
   const handleOpen = () => {
     setOpen(true);
@@ -26,7 +42,21 @@ export const useInspectoresUsuarios = () => {
   const handleClose = () => {
     setOpen(false);
     setCurrentUsuarios(null);
-    methodsUsuarios.reset();
+    methodsUsuarios.reset({
+      username: "",
+      password: "",
+      id_rol: Number(import.meta.env.VITE_INSPECTOR),
+      persona: {
+        primer_nombre: "",
+        segundo_nombre: "",
+        primer_apellido: "",
+        segundo_apellido: "",
+        telefono: "",
+        id_tipo_documento: null,
+        numero_documento: "",
+        email: "",
+      },
+    });
   };
 
   const openCurrentUsuario = (usuario: IUsuarios) => {
@@ -91,7 +121,7 @@ export const useInspectoresUsuarios = () => {
         text: "Usuarios creado con éxito",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
+        queryClient.invalidateQueries({ queryKey: ["inspectores"] });
         handleClose();
       });
     },
@@ -124,7 +154,7 @@ export const useInspectoresUsuarios = () => {
         text: "Usuario actualizado correctamente",
         confirmButtonText: "Aceptar",
       }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
+        queryClient.invalidateQueries({ queryKey: ["inspectores"] });
         handleClose();
       });
     },
@@ -167,7 +197,7 @@ export const useInspectoresUsuarios = () => {
         text: "El usuario fue activado/desactivado correctamente",
         confirmButtonText: "Aceptar",
       });
-      queryClient.invalidateQueries({ queryKey: ["usuarios"] });
+      queryClient.invalidateQueries({ queryKey: ["inspectores"] });
     },
 
     onError: (error: any) => {

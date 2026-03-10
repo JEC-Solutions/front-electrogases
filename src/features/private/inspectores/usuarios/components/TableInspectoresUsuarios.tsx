@@ -25,6 +25,11 @@ export const TableInspectoresUsuarios = ({
       },
     },
     {
+      title: "Numero Documento",
+      key: "numero_documento",
+      render: (_: any, record: IUsuarios) => record.persona?.numero_documento || "-",
+    },
+    {
       title: "Correo",
       key: "email",
       render: (_: any, record: IUsuarios) => record.persona?.email || "-",

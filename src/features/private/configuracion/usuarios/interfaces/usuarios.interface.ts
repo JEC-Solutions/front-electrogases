@@ -11,7 +11,7 @@ export interface Persona {
   primer_apellido: string;
   segundo_apellido: string;
   telefono: string;
-  id_tipo_documento: number;
+  id_tipo_documento: number | null;
   numero_documento: string;
   email: string;
 }
