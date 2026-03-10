@@ -22,6 +22,7 @@ const tiposEquipo = [
   { value: "DETECTOR DE MONOXIDO", label: "DETECTOR DE MONOXIDO" },
   { value: "FLEXOMETRO", label: "FLEXOMETRO" },
   { value: "CALIBRADOR PIE DE REY", label: "CALIBRADOR PIE DE REY" },
+  { value: "OTRO", label: "OTRO" },
 ];
 
 export const TableEquiposUtilizados = ({

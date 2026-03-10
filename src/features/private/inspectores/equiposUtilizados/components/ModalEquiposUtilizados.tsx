@@ -5,6 +5,7 @@ import {
   IEquiposUtilizadosRequest,
 } from "@/features/private/inspectores/equiposUtilizados/interfaces";
 import { Controller } from "react-hook-form";
+import { useState } from "react";
 
 interface Props {
   open: boolean;
@@ -15,10 +16,7 @@ interface Props {
 }
 
 const equipos = [
-  {
-    value: "MANOMETRO ANALOGO",
-    label: "MANOMETRO ANALOGO",
-  },
+  { value: "MANOMETRO ANALOGO", label: "MANOMETRO ANALOGO" },
   {
     value: "DETECTOR DE FUGAS DE PROPANO",
     label: "DETECTOR DE FUGAS DE PROPANO",
@@ -27,18 +25,10 @@ const equipos = [
     value: "DETECTOR DE FUGAS DE METANO",
     label: "DETECTOR DE FUGAS DE METANO",
   },
-  {
-    value: "DETECTOR DE MONOXIDO",
-    label: "DETECTOR DE MONOXIDO",
-  },
-  {
-    value: "FLEXOMETRO",
-    label: "FLEXOMETRO",
-  },
-  {
-    value: "CALIBRADOR PIE DE REY",
-    label: "CALIBRADOR PIE DE REY",
-  },
+  { value: "DETECTOR DE MONOXIDO", label: "DETECTOR DE MONOXIDO" },
+  { value: "FLEXOMETRO", label: "FLEXOMETRO" },
+  { value: "CALIBRADOR PIE DE REY", label: "CALIBRADOR PIE DE REY" },
+  { value: "OTRO", label: "OTRO" },
 ];
 
 export const ModalEquiposUtilizados = ({
@@ -53,7 +43,26 @@ export const ModalEquiposUtilizados = ({
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = methods;
+
+  const [otroEquipo, setOtroEquipo] = useState(
+    currentEquipo?.equiposUtilizados === "OTRO"
+      ? (currentEquipo?.otroEquipo ?? "")
+      : "",
+  );
+  const equipoSeleccionado = watch("equiposUtilizados");
+  const esOtro = equipoSeleccionado === "OTRO";
+
+  const handleSubmitConOtro = (values: IEquiposUtilizadosRequest) => {
+    if (esOtro) {
+      values.equiposUtilizados = "OTRO";
+      (values as any).otroEquipo = otroEquipo.trim() || null;
+    } else {
+      (values as any).otroEquipo = null;
+    }
+    onSubmit(values);
+  };
 
   return (
     <Modal
@@ -66,7 +75,7 @@ export const ModalEquiposUtilizados = ({
       footer={null}
       width={800}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleSubmitConOtro)}>
         <Row gutter={16}>
           <Col span={24} md={12}>
             <div className="mb-4">
@@ -84,7 +93,10 @@ export const ModalEquiposUtilizados = ({
                       placeholder="Seleccione un equipo"
                       style={{ width: "100%" }}
                       options={equipos}
-                      onChange={(value) => field.onChange(value)}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        if (value !== "OTRO") setOtroEquipo("");
+                      }}
                       allowClear
                       showSearch
                       filterOption={(input, option) =>
@@ -93,6 +105,14 @@ export const ModalEquiposUtilizados = ({
                           .includes(input.toLowerCase())
                       }
                     />
+                    {esOtro && (
+                      <Input
+                        style={{ marginTop: 8 }}
+                        placeholder="Escriba el nombre del equipo..."
+                        value={otroEquipo}
+                        onChange={(e) => setOtroEquipo(e.target.value)}
+                      />
+                    )}
                     {errors.equiposUtilizados?.message && (
                       <span style={{ color: "red" }}>
                         {String(errors.equiposUtilizados.message)}

@@ -4,6 +4,7 @@ export interface IEquiposUtilizadosRequest {
   ns: string;
   marca: string;
   modelo: string;
+  otroEquipo?: string | null;
 }
 
 export interface IEquiposUtilizados {
@@ -12,6 +13,7 @@ export interface IEquiposUtilizados {
   ns: string;
   marca: string;
   modelo: string;
+  otroEquipo?: string | null;
   equiposUsuarios: {
     id_equipos_usuarios: number;
     idPersona: {
