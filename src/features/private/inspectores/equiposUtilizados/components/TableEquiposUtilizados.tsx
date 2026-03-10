@@ -1,5 +1,6 @@
 import { IEquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/interfaces";
-import { Button, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Input, Select, Space, Table, Tag, Tooltip } from "antd";
+import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface Props {
@@ -8,11 +9,67 @@ interface Props {
   onDelete: (id: number) => void;
 }
 
+const tiposEquipo = [
+  { value: "MANOMETRO ANALOGO", label: "MANOMETRO ANALOGO" },
+  {
+    value: "DETECTOR DE FUGAS DE PROPANO",
+    label: "DETECTOR DE FUGAS DE PROPANO",
+  },
+  {
+    value: "DETECTOR DE FUGAS DE METANO",
+    label: "DETECTOR DE FUGAS DE METANO",
+  },
+  { value: "DETECTOR DE MONOXIDO", label: "DETECTOR DE MONOXIDO" },
+  { value: "FLEXOMETRO", label: "FLEXOMETRO" },
+  { value: "CALIBRADOR PIE DE REY", label: "CALIBRADOR PIE DE REY" },
+];
+
 export const TableEquiposUtilizados = ({
   equipos,
   onOpenCurrent,
   onDelete,
 }: Props) => {
+  const [filtroTipo, setFiltroTipo] = useState<string | undefined>(undefined);
+  const [filtroTexto, setFiltroTexto] = useState("");
+  const [filtroInspectores, setFiltroInspectores] = useState<number[]>([]);
+
+  // Inspectores únicos derivados del listado de equipos
+  const inspectoresUnicos = Array.from(
+    new Map(
+      equipos
+        .flatMap((e) => e.equiposUsuarios ?? [])
+        .map((eu) => [
+          eu.idPersona.id_persona,
+          {
+            value: eu.idPersona.id_persona,
+            label: `${eu.idPersona.primer_nombre} ${eu.idPersona.primer_apellido}`,
+          },
+        ]),
+    ).values(),
+  );
+
+  const datos = equipos.filter((e) => {
+    const matchTipo = filtroTipo ? e.equiposUtilizados === filtroTipo : true;
+    const texto = filtroTexto.toLowerCase();
+    const matchTexto =
+      !texto ||
+      e.ns?.toLowerCase().includes(texto) ||
+      e.marca?.toLowerCase().includes(texto) ||
+      e.modelo?.toLowerCase().includes(texto);
+    const matchInspector =
+      filtroInspectores.length === 0 ||
+      e.equiposUsuarios?.some((eu) =>
+        filtroInspectores.includes(eu.idPersona.id_persona),
+      );
+    return matchTipo && matchTexto && matchInspector;
+  });
+
+  const limpiarFiltros = () => {
+    setFiltroTipo(undefined);
+    setFiltroTexto("");
+    setFiltroInspectores([]);
+  };
+
   const columns = [
     {
       title: "Equipo",
@@ -73,9 +130,47 @@ export const TableEquiposUtilizados = ({
 
   return (
     <div className="overflow-x-auto">
+      {/* Filtros */}
+      <Space wrap style={{ marginBottom: 16 }}>
+        <Select
+          placeholder="Filtrar por tipo de equipo"
+          style={{ width: 240 }}
+          options={tiposEquipo}
+          value={filtroTipo}
+          onChange={(val) => setFiltroTipo(val)}
+          allowClear
+          showSearch
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+        />
+        <Input
+          placeholder="Buscar por NS, marca o modelo..."
+          style={{ width: 240 }}
+          value={filtroTexto}
+          onChange={(e) => setFiltroTexto(e.target.value)}
+          allowClear
+        />
+        <Select
+          mode="multiple"
+          placeholder="Filtrar por inspector"
+          style={{ minWidth: 240 }}
+          options={inspectoresUnicos}
+          value={filtroInspectores}
+          onChange={(val) => setFiltroInspectores(val)}
+          allowClear
+          showSearch
+          optionFilterProp="label"
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+        />
+        <Button onClick={limpiarFiltros}>Limpiar filtros</Button>
+      </Space>
+
       <Table
         columns={columns}
-        dataSource={equipos}
+        dataSource={datos}
         rowKey="id_equipos_utilizados"
         className="custom-table"
         rowClassName={(_record, index) =>

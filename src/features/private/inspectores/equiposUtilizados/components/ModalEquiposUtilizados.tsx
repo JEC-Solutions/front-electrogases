@@ -14,6 +14,33 @@ interface Props {
   currentEquipo: IEquiposUtilizados | null;
 }
 
+const equipos = [
+  {
+    value: "MANOMETRO ANALOGO",
+    label: "MANOMETRO ANALOGO",
+  },
+  {
+    value: "DETECTOR DE FUGAS DE PROPANO",
+    label: "DETECTOR DE FUGAS DE PROPANO",
+  },
+  {
+    value: "DETECTOR DE FUGAS DE METANO",
+    label: "DETECTOR DE FUGAS DE METANO",
+  },
+  {
+    value: "DETECTOR DE MONOXIDO",
+    label: "DETECTOR DE MONOXIDO",
+  },
+  {
+    value: "FLEXOMETRO",
+    label: "FLEXOMETRO",
+  },
+  {
+    value: "CALIBRADOR PIE DE REY",
+    label: "CALIBRADOR PIE DE REY",
+  },
+];
+
 export const ModalEquiposUtilizados = ({
   open,
   onClose,
@@ -48,14 +75,23 @@ export const ModalEquiposUtilizados = ({
                 name="equiposUtilizados"
                 control={control}
                 defaultValue=""
-                rules={{ required: "Por favor ingrese el nombre del equipo" }}
+                rules={{ required: "Por favor seleccione el equipo" }}
                 render={({ field }) => (
                   <>
-                    <Input
+                    <Select
                       {...field}
                       id="equiposUtilizados"
-                      placeholder="Nombre del equipo"
-                      type="text"
+                      placeholder="Seleccione un equipo"
+                      style={{ width: "100%" }}
+                      options={equipos}
+                      onChange={(value) => field.onChange(value)}
+                      allowClear
+                      showSearch
+                      filterOption={(input, option) =>
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
                     />
                     {errors.equiposUtilizados?.message && (
                       <span style={{ color: "red" }}>
