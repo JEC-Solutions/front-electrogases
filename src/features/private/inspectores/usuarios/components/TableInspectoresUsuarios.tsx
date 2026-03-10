@@ -27,7 +27,8 @@ export const TableInspectoresUsuarios = ({
     {
       title: "Numero Documento",
       key: "numero_documento",
-      render: (_: any, record: IUsuarios) => record.persona?.numero_documento || "-",
+      render: (_: any, record: IUsuarios) =>
+        record.persona?.numero_documento || "-",
     },
     {
       title: "Correo",
@@ -53,6 +54,26 @@ export const TableInspectoresUsuarios = ({
           <Tag color="green">Activo</Tag>
         ) : (
           <Tag color="red">Inactivo</Tag>
+        ),
+    },
+    {
+      title: "Firma",
+      key: "tieneFirma",
+      render: (_: any, record: IUsuarios) =>
+        (record as any).tieneFirma ? (
+          <Tag color="green">Cargada</Tag>
+        ) : (
+          <Tag color="red">Falta</Tag>
+        ),
+    },
+    {
+      title: "Sello",
+      key: "tieneSello",
+      render: (_: any, record: IUsuarios) =>
+        (record as any).tieneSello ? (
+          <Tag color="green">Cargado</Tag>
+        ) : (
+          <Tag color="red">Falta</Tag>
         ),
     },
     {
@@ -86,7 +107,7 @@ export const TableInspectoresUsuarios = ({
       <Table
         columns={columns}
         dataSource={inspectores}
-        rowKey="id"
+        rowKey="id_usuario"
         className="custom-table"
         rowClassName={(_record, index) =>
           index % 2 === 0 ? "even-row" : "odd-row"
