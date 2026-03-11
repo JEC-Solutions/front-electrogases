@@ -93,6 +93,24 @@ export const TableEquiposUtilizados = ({
       key: "modelo",
     },
     {
+      title: "Cód. Interno",
+      dataIndex: "codigo_interno",
+      key: "codigo_interno",
+      render: (val: string | null) => val ?? "-",
+    },
+    {
+      title: "Cert. Calibración",
+      dataIndex: "certificado_calibracion",
+      key: "certificado_calibracion",
+      render: (val: string | null) => val ?? "-",
+    },
+    {
+      title: "Rango Medición",
+      dataIndex: "rango_medicion",
+      key: "rango_medicion",
+      render: (val: string | null) => val ?? "-",
+    },
+    {
       title: "Inspectores",
       key: "inspectores",
       render: (_: any, record: IEquiposUtilizados) => (

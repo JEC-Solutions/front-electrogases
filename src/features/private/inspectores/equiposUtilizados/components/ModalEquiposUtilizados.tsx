@@ -205,6 +205,84 @@ export const ModalEquiposUtilizados = ({
             </div>
           </Col>
 
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label htmlFor="codigo_interno">Código Interno</label>
+              <Controller
+                name="codigo_interno"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <>
+                    <Input
+                      {...field}
+                      id="codigo_interno"
+                      placeholder="Código interno"
+                      type="text"
+                      value={field.value ?? ""}
+                    />
+                    {errors.codigo_interno?.message && (
+                      <span style={{ color: "red" }}>
+                        {String(errors.codigo_interno.message)}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </Col>
+
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label htmlFor="certificado_calibracion">
+                Certificado de Calibración
+              </label>
+              <Controller
+                name="certificado_calibracion"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <>
+                    <Input
+                      {...field}
+                      id="certificado_calibracion"
+                      placeholder="Certificado de calibración"
+                      type="text"
+                      value={field.value ?? ""}
+                    />
+                    {errors.certificado_calibracion?.message && (
+                      <span style={{ color: "red" }}>
+                        {String(errors.certificado_calibracion.message)}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </Col>
+
+          <Col span={24} md={12}>
+            <div className="mb-4">
+              <label htmlFor="rango_medicion">Rango de Medición</label>
+              <Controller
+                name="rango_medicion"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <>
+                    <Input
+                      {...field}
+                      id="rango_medicion"
+                      placeholder="Rango de medición"
+                      type="text"
+                      value={field.value ?? ""}
+                    />
+                  </>
+                )}
+              />
+            </div>
+          </Col>
+
           <Col span={24}>
             <div className="mb-4">
               <label htmlFor="personas">Inspectores Asignados</label>
