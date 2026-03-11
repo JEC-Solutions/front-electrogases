@@ -5,6 +5,7 @@ import {
   LoginForm,
   IChangePassword,
   IRecoverPassword,
+  IChangeExpiredPassword,
 } from "@/features/public/login/interface";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -17,6 +18,7 @@ const cookies = new Cookies();
 export const useLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+  const [isExpiredPassword, setIsExpiredPassword] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,6 +30,7 @@ export const useLogin = () => {
 
   const handleBackToLogin = () => {
     setChangePassword(false);
+    setIsExpiredPassword(false);
   };
 
   const showModal = () => {
@@ -87,8 +90,7 @@ export const useLogin = () => {
           text: "Por favor, cambie su contraseña antes de continuar.",
           confirmButtonText: "Cambiar contraseña",
         }).then(() => {
-          setChangePassword(true);
-          reset();
+          setIsExpiredPassword(true);
         });
 
         return;
@@ -143,6 +145,38 @@ export const useLogin = () => {
     },
   });
 
+  const changeExpiredPasswordMutation = useMutation({
+    mutationFn: (data: IChangeExpiredPassword) =>
+      loginServices.changeExpiredPassword(data),
+
+    onMutate: () => {
+      Swal.fire({
+        title: "Actualizando contraseña...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Contraseña actualizada",
+        text: "Ahora puedes iniciar sesión con tu nueva contraseña.",
+        confirmButtonText: "Aceptar",
+      }).then(() => {
+        setIsExpiredPassword(false);
+        reset();
+      });
+    },
+
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
   // --- Mutación para Recuperar Contraseña (Modal) ---
   const recoverPasswordMutation = useMutation({
     mutationFn: (data: IRecoverPassword) =>
@@ -174,10 +208,16 @@ export const useLogin = () => {
   });
 
   const onSubmit = (data: LoginForm) => {
-    if (data.numero_documento) {
+    if (changePassword && data.numero_documento) {
       changePasswordMutation.mutate({
         numero_documento: data.numero_documento,
         nuevaContrasena: data.nuevaContrasena || "",
+      });
+    } else if (isExpiredPassword) {
+      changeExpiredPasswordMutation.mutate({
+        username: data.username,
+        contrasena_actual: data.password,
+        nueva_contrasena: data.nuevaContrasena || "",
       });
     } else {
       loginMutation.mutate({
@@ -198,6 +238,7 @@ export const useLogin = () => {
     control,
     onSubmit,
     changePassword,
+    isExpiredPassword,
     handleBackToLogin,
     // Exports para el Modal
     isModalOpen,

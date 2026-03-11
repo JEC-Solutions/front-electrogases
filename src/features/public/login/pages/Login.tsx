@@ -18,13 +18,14 @@ const Login = () => {
     setShowPassword,
     showPassword,
     changePassword,
-    handleBackToLogin,
     // Nuevas propiedades del hook
     isModalOpen,
     showModal,
     handleCancelModal,
     recoverForm,
     onRecoverSubmit,
+    isExpiredPassword,
+    handleBackToLogin,
   } = useLogin();
 
   return (
@@ -55,7 +56,7 @@ const Login = () => {
                 style={{ height: "60px" }}
               />
             </div>
-            {!changePassword ? (
+            {!changePassword && !isExpiredPassword ? (
               <>
                 <h2 className="text-3xl font-bold text-center">Bienvenido</h2>
                 <p className="text-center mb-4">
@@ -140,7 +141,131 @@ const Login = () => {
                   </Button>
                 </form>
               </>
-            ) : (
+            ) : isExpiredPassword ? (
+              <>
+                <h2 className="text-3xl font-bold text-center">
+                  Contraseña Expirada
+                </h2>
+                <p className="text-center mb-4">
+                  Por razones de seguridad, debes actualizar tu contraseña.
+                </p>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div style={{ marginBottom: "16px" }}>
+                    <label>Usuario</label>
+                    <Controller
+                      name="username"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: "Por favor ingrese su usuario!" }}
+                      render={({ field, fieldState }) => (
+                        <>
+                          <Input
+                            {...field}
+                            prefix={<UserOutlined />}
+                            placeholder="Usuario"
+                            type="text"
+                            status={fieldState.invalid ? "error" : ""}
+                          />
+                          {fieldState.error && (
+                            <span style={{ color: "red" }}>
+                              {fieldState.error.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </div>
+                  <div style={{ marginBottom: "16px" }}>
+                    <label htmlFor="password">Contraseña actual</label>
+                    <Controller
+                      name="password"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: "Por favor ingrese su contraseña actual!" }}
+                      render={({ field, fieldState }) => (
+                        <>
+                          <Input.Password
+                            {...field}
+                            prefix={<LockOutlined />}
+                            placeholder="Contraseña actual"
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            iconRender={(visible) =>
+                              visible ? (
+                                <EyeTwoTone />
+                              ) : (
+                                <EyeInvisibleOutlined />
+                              )
+                            }
+                            status={fieldState.invalid ? "error" : ""}
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                          {fieldState.error && (
+                            <span style={{ color: "red" }}>
+                              {fieldState.error.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </div>
+                  <div style={{ marginBottom: "16px" }}>
+                    <label htmlFor="nuevaContrasena">Nueva Contraseña</label>
+                    <Controller
+                      name="nuevaContrasena"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: "Por favor ingrese su nueva contraseña!",
+                      }}
+                      render={({ field, fieldState }) => (
+                        <>
+                          <Input.Password
+                            {...field}
+                            id="nuevaContrasena"
+                            placeholder="Nueva Contraseña"
+                            prefix={<LockOutlined />}
+                            iconRender={(visible) =>
+                              visible ? (
+                                <EyeTwoTone />
+                              ) : (
+                                <EyeInvisibleOutlined />
+                              )
+                            }
+                            visibilityToggle={{
+                              visible: showPassword,
+                              onVisibleChange: setShowPassword,
+                            }}
+                            status={fieldState.invalid ? "error" : ""}
+                          />
+                          {fieldState.error && (
+                            <span style={{ color: "red" }}>
+                              {fieldState.error.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </div>
+                  <div className="flex justify-end mb-4">
+                    <button
+                      type="button"
+                      onClick={handleBackToLogin}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Volver al inicio de sesión
+                    </button>
+                  </div>
+                  <Button
+                    className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md transition duration-300 flex items-center"
+                    htmlType="submit"
+                    style={{ width: "100%" }}
+                  >
+                    Actualizar contraseña
+                  </Button>
+                </form>
+              </>
+            ) : changePassword ? (
               <>
                 <h2 className="text-3xl font-bold text-center">
                   Actualizar contraseña
@@ -233,7 +358,7 @@ const Login = () => {
                   </Button>
                 </form>
               </>
-            )}
+            ) : null}
           </Card>
         </motion.div>
       </div>

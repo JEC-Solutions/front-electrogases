@@ -13,3 +13,9 @@ export interface IChangePassword {
 export interface IRecoverPassword {
   numero_documento: string;
 }
+
+export interface IChangeExpiredPassword {
+  username: string;
+  contrasena_actual: string;
+  nueva_contrasena: string;
+}
