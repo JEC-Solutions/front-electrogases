@@ -10,7 +10,8 @@ interface Props {
 }
 
 const tiposEquipo = [
-  { value: "MANOMETRO ANALOGO", label: "MANOMETRO ANALOGO" },
+  { value: "MANOMETRO ANALOGO MEDIO", label: "MANOMETRO ANALOGO MEDIO" },
+  { value: "MANOMETRO ANALOGO BAJO", label: "MANOMETRO ANALOGO BAJO" },
   {
     value: "DETECTOR DE FUGAS DE PROPANO",
     label: "DETECTOR DE FUGAS DE PROPANO",
