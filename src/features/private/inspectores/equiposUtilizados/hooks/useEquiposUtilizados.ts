@@ -191,6 +191,9 @@ export const useEquiposUtilizados = () => {
       methodsEquipos.setValue("ns", currentEquipo.ns);
       methodsEquipos.setValue("marca", currentEquipo.marca);
       methodsEquipos.setValue("modelo", currentEquipo.modelo);
+      methodsEquipos.setValue("codigo_interno", currentEquipo.codigo_interno ?? null);
+      methodsEquipos.setValue("certificado_calibracion", currentEquipo.certificado_calibracion ?? null);
+      methodsEquipos.setValue("prestado", currentEquipo.prestado ?? false);
 
       methodsEquipos.setValue(
         "personas",

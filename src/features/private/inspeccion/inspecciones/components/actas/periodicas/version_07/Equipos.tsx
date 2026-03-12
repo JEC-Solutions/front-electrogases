@@ -65,32 +65,67 @@ const EquipmentRow = ({
 );
 
 export const Equipos = ({ inspeccion }: Props) => {
-  let equipos = (inspeccion?.equiposUtilizados as EquipoApi[]) ?? [];
+  const acta = inspeccion as any;
+  let equipos = (acta?.equiposUtilizados as EquipoApi[]) || [];
 
-  if (equipos.length === 0 && inspeccion?.ruta?.persona?.equiposUsuarios) {
-    equipos = inspeccion.ruta.persona.equiposUsuarios
-      .map((eu) => eu.idEquiposUtilizados)
-      .filter((e) => e) as unknown as EquipoApi[];
+  if (acta?.equiposInspeccion && acta.equiposInspeccion.length > 0) {
+    equipos = acta.equiposInspeccion as EquipoApi[];
+  } else if (
+    (!equipos || equipos.length === 0) &&
+    acta?.ruta?.persona?.equiposUsuarios
+  ) {
+    equipos = acta.ruta.persona.equiposUsuarios
+      .map((eu: any) => eu.idEquiposUtilizados)
+      .filter((e: any) => e) as unknown as EquipoApi[];
   }
 
-  const getEquipoData = (keyword: string) => {
-    const eq = equipos.find((e) =>
-      e.equiposUtilizados?.toLowerCase().includes(keyword.toLowerCase()),
-    );
-    if (!eq) return undefined;
-    return {
-      ns: eq.ns,
-      marca: eq.marca,
-      modelo: eq.modelo,
-    };
-  };
+  let detectorCO: any, manometroBaja: any, detectorFugas: any, flexometro: any, manometroMedia: any, otro: any;
 
-  const detectorCO = getEquipoData("co");
-  const detectorFugas = getEquipoData("fuga");
-  const manometroBaja = getEquipoData("manómetro de baja");
-  const flexometro = getEquipoData("flexómetro");
-  const manometroMedia = getEquipoData("manómetro de media");
-  const otro = getEquipoData("otro");
+  equipos.forEach((eq) => {
+    const nombre = eq.equiposUtilizados ? eq.equiposUtilizados.toLowerCase().trim() : "";
+    let prefix = "";
+
+    if (nombre.includes("detector co") || nombre.includes("co")) {
+      prefix = "detector_co";
+    } else if (
+      nombre.includes("manometro analogo bajo") ||
+      nombre.includes("manómetro analogo bajo") ||
+      nombre.includes("manómetro de baja") ||
+      nombre.includes("manometro de baja") ||
+      nombre.includes("baja")
+    ) {
+      prefix = "manometro_baja";
+    } else if (
+      nombre.includes("detector de fugas") ||
+      nombre.includes("fugas")
+    ) {
+      prefix = "detector_fugas";
+    } else if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
+      prefix = "flexometro";
+    } else if (
+      nombre.includes("manometro analogo medio") ||
+      nombre.includes("manómetro analogo medio") ||
+      nombre.includes("manómetro de media") ||
+      nombre.includes("manometro de media") ||
+      nombre.includes("media")
+    ) {
+      prefix = "manometro_media";
+    } else {
+      prefix = "otro";
+    }
+
+    const clearFields = prefix === "manometro_baja" || prefix === "manometro_media";
+    const equipoData = clearFields 
+      ? { ns: "", marca: "", modelo: "" } 
+      : { ns: eq.ns, marca: eq.marca, modelo: eq.modelo, nombre: (eq as any).otroEquipo || eq.equiposUtilizados || "" };
+
+    if (prefix === "detector_co") detectorCO = equipoData;
+    else if (prefix === "manometro_baja") manometroBaja = equipoData;
+    else if (prefix === "detector_fugas") detectorFugas = equipoData;
+    else if (prefix === "flexometro") flexometro = equipoData;
+    else if (prefix === "manometro_media") manometroMedia = equipoData;
+    else if (prefix === "otro") otro = equipoData;
+  });
 
   return (
     <div className="w-full font-arial text-black mt-[-1px]">
@@ -132,7 +167,7 @@ export const Equipos = ({ inspeccion }: Props) => {
           />
           <EquipmentRow
             leftLabel="Manometro de media"
-            rightLabel="Otro:"
+            rightLabel={otro?.nombre ? `Otro: ${otro.nombre}` : "Otro:"}
             leftData={manometroMedia}
             rightData={otro}
           />

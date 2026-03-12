@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
+import { Button, Input, Modal, Select, Space, Row, Col, Checkbox } from "antd";
 import { useInspectoresUsuarios } from "@/features/private/inspectores/usuarios/hooks";
 import {
   IEquiposUtilizados,
@@ -16,8 +16,8 @@ interface Props {
 }
 
 const equipos = [
-  { value: "MANOMETRO ANALOGO MEDIO", label: "MANOMETRO ANALOGO MEDIO" },
-  { value: "MANOMETRO ANALOGO BAJO", label: "MANOMETRO ANALOGO BAJO" },
+  { value: "MANOMETRO ANALOGO DE MEDIO", label: "MANOMETRO ANALOGO DE MEDIO" },
+  { value: "MANOMETRO ANALOGO DE BAJO", label: "MANOMETRO ANALOGO DE BAJO" },
   {
     value: "DETECTOR DE FUGAS DE PROPANO",
     label: "DETECTOR DE FUGAS DE PROPANO",
@@ -54,9 +54,6 @@ export const ModalEquiposUtilizados = ({
   );
   const equipoSeleccionado = watch("equiposUtilizados");
   const esOtro = equipoSeleccionado === "OTRO";
-  const esManometro =
-    equipoSeleccionado === "MANOMETRO ANALOGO MEDIO" ||
-    equipoSeleccionado === "MANOMETRO ANALOGO BAJO";
 
   const handleSubmitConOtro = (values: IEquiposUtilizadosRequest) => {
     if (esOtro) {
@@ -265,29 +262,25 @@ export const ModalEquiposUtilizados = ({
             </div>
           </Col>
 
-          {esManometro && (
-            <Col span={24} md={12}>
-              <div className="mb-4">
-                <label htmlFor="rango_medicion">Rango de Medición</label>
-                <Controller
-                  name="rango_medicion"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <>
-                      <Input
-                        {...field}
-                        id="rango_medicion"
-                        placeholder="Rango de medición"
-                        type="text"
-                        value={field.value ?? ""}
-                      />
-                    </>
-                  )}
-                />
-              </div>
-            </Col>
-          )}
+          <Col span={24} md={12}>
+            <div className="mb-4" style={{ display: "flex", alignItems: "center", height: "100%", marginTop: "28px" }}>
+              <Controller
+                name="prestado"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    id="prestado"
+                    checked={!!field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                  >
+                    Equipo prestado o arrendado
+                  </Checkbox>
+                )}
+              />
+            </div>
+          </Col>
 
           <Col span={24}>
             <div className="mb-4">

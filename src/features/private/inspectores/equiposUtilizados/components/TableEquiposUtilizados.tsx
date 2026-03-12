@@ -10,8 +10,8 @@ interface Props {
 }
 
 const tiposEquipo = [
-  { value: "MANOMETRO ANALOGO MEDIO", label: "MANOMETRO ANALOGO MEDIO" },
-  { value: "MANOMETRO ANALOGO BAJO", label: "MANOMETRO ANALOGO BAJO" },
+  { value: "MANOMETRO ANALOGO DE MEDIO", label: "MANOMETRO ANALOGO DE MEDIO" },
+  { value: "MANOMETRO ANALOGO DE BAJO", label: "MANOMETRO ANALOGO DE BAJO" },
   {
     value: "DETECTOR DE FUGAS DE PROPANO",
     label: "DETECTOR DE FUGAS DE PROPANO",
@@ -106,10 +106,10 @@ export const TableEquiposUtilizados = ({
       render: (val: string | null) => val ?? "-",
     },
     {
-      title: "Rango Medición",
-      dataIndex: "rango_medicion",
-      key: "rango_medicion",
-      render: (val: string | null) => val ?? "-",
+      title: "Prestado",
+      dataIndex: "prestado",
+      key: "prestado",
+      render: (val: boolean | null) => (val ? "Sí" : "No"),
     },
     {
       title: "Inspectores",

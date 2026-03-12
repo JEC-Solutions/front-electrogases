@@ -4,6 +4,9 @@ export interface IEquiposUtilizadosRequest {
   ns: string;
   marca: string;
   modelo: string;
+  codigo_interno?: string | null;
+  certificado_calibracion?: string | null;
+  prestado?: boolean | null;
   otroEquipo?: string | null;
 }
 
@@ -13,6 +16,9 @@ export interface IEquiposUtilizados {
   ns: string;
   marca: string;
   modelo: string;
+  codigo_interno?: string | null;
+  certificado_calibracion?: string | null;
+  prestado?: boolean | null;
   otroEquipo?: string | null;
   equiposUsuarios: {
     id_equipos_usuarios: number;
