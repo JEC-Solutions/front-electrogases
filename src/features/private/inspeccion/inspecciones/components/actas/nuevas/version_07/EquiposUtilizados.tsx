@@ -85,7 +85,12 @@ export const EquiposUtilizados = ({ inspeccion }: Props) => {
     const nombre = eq.equiposUtilizados ? eq.equiposUtilizados.toLowerCase().trim() : "";
     let prefix = "";
 
-    if (nombre.includes("detector co") || nombre.includes("co")) {
+    if (
+      nombre.includes("detector co") ||
+      nombre.includes("co") ||
+      nombre.includes("monoxido") ||
+      nombre.includes("monóxido")
+    ) {
       prefix = "detector_co";
     } else if (
       nombre.includes("manómetro de baja") ||
