@@ -289,12 +289,12 @@ export interface ParametrosEvaluacion {
   id_parametros_evaluacion: number;
   lecturaInicialAire: number;
   lecturaFinalAire: number;
-  tiempoPruebaAire: number;
+  tiempoPruebaAire: string;
   lecturaInicialMedidor: number;
   lecturaFinalMedidor: number;
   lecturaInicialMedidor2: number;
   lecturaFinalMedidor2: number;
-  tiempoPruebaMedidor: number;
+  tiempoPruebaMedidor: string;
   pruebaPresion: number;
   detectorFugas: number;
   createdAt: string;

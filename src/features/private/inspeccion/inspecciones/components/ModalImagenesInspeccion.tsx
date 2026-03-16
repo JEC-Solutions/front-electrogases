@@ -4,6 +4,11 @@ import Swal from "sweetalert2";
 import { ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { getTiposImagenes } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
 
 interface IImagenItem {
   id: number;
@@ -96,11 +101,7 @@ export const ModalImagenesInspeccion = ({
   };
 
   const formatFecha = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleString("es-CO", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
+    return dayjs.utc(dateStr).format("DD/MM/YYYY, HH:mm:ss");
   };
 
   return (

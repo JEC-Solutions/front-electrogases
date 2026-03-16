@@ -12,6 +12,11 @@ import {
   Divider,
 } from "antd";
 import type { IRutaHistorial } from "@/features/private/inspeccion/rutas/hooks";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
 
 type Props = {
   open: boolean;
@@ -26,7 +31,7 @@ type Props = {
 const { Text } = Typography;
 
 const formatDateTime = (iso?: string) =>
-  iso ? new Date(iso).toLocaleString() : "";
+  iso ? dayjs.utc(iso).format("DD/MM/YYYY, HH:mm:ss") : "";
 
 const AccionTag = ({
   accion,

@@ -82,7 +82,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
               <div className="text-center font-bold">
                 {params?.tiempoPruebaAire === null
                   ? "N/A"
-                  : `${params?.tiempoPruebaAire} Min`}
+                  : params?.tiempoPruebaAire}
               </div>
             </div>
           </div>
@@ -136,7 +136,7 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
               <div className="text-center font-bold">
                 {params?.tiempoPruebaMedidor === null
                   ? "N/A"
-                  : `${params?.tiempoPruebaMedidor} Min`}
+                  : params?.tiempoPruebaMedidor}
               </div>
             </div>
           </div>

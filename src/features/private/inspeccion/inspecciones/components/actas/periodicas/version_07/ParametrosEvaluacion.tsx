@@ -4,15 +4,6 @@ interface Props {
   inspeccion: IActa | undefined;
 }
 
-const formatSecondsToTime = (value: string | number | undefined) => {
-  if (value === undefined || value === null || value === "") return "";
-  if (typeof value === "string" && value.includes(":")) return value;
-  const totalSeconds = Number(value);
-  if (isNaN(totalSeconds)) return value;
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = Math.floor(totalSeconds % 60);
-  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-};
 
 export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
   const params = Array.isArray(inspeccion?.parametrosEvaluacion)
@@ -102,9 +93,9 @@ export const ParametrosEvaluacion = ({ inspeccion }: Props) => {
         >
           <span className="font-bold">Tiempo prueba</span>
           <div className="mt-auto bg-white border border-gray-400 w-full h-[14px] flex items-center justify-center font-semibold gap-0.5">
-            {params?.tiempoPruebaAire === null
+            {params?.tiempoPruebaMedidor === null
               ? "N/A"
-              : `${formatSecondsToTime(params?.tiempoPruebaAire)} min`}
+              : `${params?.tiempoPruebaMedidor} min`}
           </div>
         </div>
 
