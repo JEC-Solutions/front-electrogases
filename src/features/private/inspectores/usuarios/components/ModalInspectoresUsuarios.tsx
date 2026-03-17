@@ -334,7 +334,6 @@ export const ModalInspectoresUsuarios = ({
                     name="certificado_no"
                     control={control}
                     defaultValue=""
-                    // rules={{ required: "Este campo es requerido" }} // Descomentar si es obligatorio
                     render={({ field }) => (
                       <>
                         <Input
@@ -356,12 +355,11 @@ export const ModalInspectoresUsuarios = ({
 
               <Col span={24} md={12}>
                 <div className="mb-4">
-                  <label htmlFor="competencia">Competencia</label>
+                  <label htmlFor="competencia">Vigencia</label>
                   <Controller
                     name="competencia"
                     control={control}
                     defaultValue=""
-                    // rules={{ required: "Este campo es requerido" }} // Descomentar si es obligatorio
                     render={({ field }) => (
                       <>
                         <Input

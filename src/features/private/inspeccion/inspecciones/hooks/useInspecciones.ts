@@ -25,7 +25,7 @@ export const useInspecciones = () => {
 
   const [filters, setFilters] = useState<InspeccionesFilters>({
     page: 1,
-    limit: 10,
+    limit: 20,
   });
 
   const {
@@ -51,7 +51,7 @@ export const useInspecciones = () => {
   const inspecciones = paginatedData?.data ?? [];
   const pagination = paginatedData?.pagination ?? {
     page: 1,
-    limit: 10,
+    limit: 20,
     total: 0,
     totalPages: 0,
   };
