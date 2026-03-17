@@ -83,7 +83,7 @@ export const Footer = ({
               <div
                 className={`flex-1 border-b ${borderClass} ${cellPadding} flex flex-col justify-start min-h-[35px]`}
               >
-                <span>Nombre del Inspector:</span>
+                <span>Nombre:</span>
                 <span className="font-bold ml-1 mt-1">{nombreInspector}</span>
               </div>
 
@@ -112,7 +112,7 @@ export const Footer = ({
               <div
                 className={`flex-1 border-t ${borderClass} ${cellPadding} min-h-[25px]`}
               >
-                <span>Registro SIC No.:</span>
+                <span>Expedido por:</span>
                 <span className="font-bold ml-1 mt-1">{registroSic}</span>
               </div>
             </div>

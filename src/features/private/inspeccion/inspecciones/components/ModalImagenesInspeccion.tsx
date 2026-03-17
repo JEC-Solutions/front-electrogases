@@ -16,6 +16,7 @@ interface IImagenItem {
   tipo_mime: string;
   base64: string;
   created_at: string;
+  hora_registro: string | null;
 }
 
 interface Props {
@@ -71,13 +72,18 @@ export const ModalImagenesInspeccion = ({
       const responseData = res?.data?.imagenes || [];
 
       const validImages: IImagenItem[] = Array.isArray(responseData)
-        ? responseData.filter(
-            (img: any) =>
-              img &&
-              typeof img === "object" &&
-              typeof img.base64 === "string" &&
-              img.base64.length > 0,
-          )
+        ? responseData
+            .filter(
+              (img: any) =>
+                img &&
+                typeof img === "object" &&
+                typeof img.base64 === "string" &&
+                img.base64.length > 0,
+            )
+            .map((img: any) => ({
+              ...img,
+              hora_registro: img.hora_registro || null,
+            }))
         : [];
 
       setImageList(validImages);
@@ -186,6 +192,17 @@ export const ModalImagenesInspeccion = ({
                   <span style={{ fontSize: "11px", color: "#888" }}>
                     {formatFecha(img.created_at)}
                   </span>
+                  {img.hora_registro && (
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        color: "#1890ff",
+                      }}
+                    >
+                      Hora: {img.hora_registro}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
