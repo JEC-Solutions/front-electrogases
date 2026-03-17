@@ -3,7 +3,8 @@ import {
   IUsuarios,
   IUsuario,
 } from "@/features/private/configuracion/usuarios/interfaces";
-import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
+import { Button, DatePicker, Input, Modal, Select, Space, Row, Col } from "antd";
+import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 import { useRoles } from "@/features/private/configuracion/roles/hooks";
 import Upload, { RcFile } from "antd/es/upload";
@@ -355,22 +356,28 @@ export const ModalInspectoresUsuarios = ({
 
               <Col span={24} md={12}>
                 <div className="mb-4">
-                  <label htmlFor="competencia">Vigencia</label>
+                  <label htmlFor="vigencia">Vigencia</label>
                   <Controller
-                    name="competencia"
+                    name="vigencia"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <>
-                        <Input
+                        <DatePicker
                           {...field}
-                          id="competencia"
-                          placeholder="Competencia"
-                          type="text"
+                          id="vigencia"
+                          placeholder="Seleccione Vigencia"
+                          style={{ width: "100%" }}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(date) =>
+                            field.onChange(
+                              date ? date.format("YYYY-MM-DD") : "",
+                            )
+                          }
                         />
-                        {errors.competencia?.message && (
+                        {errors.vigencia?.message && (
                           <span style={{ color: "red" }}>
-                            {String(errors.competencia.message)}
+                            {String(errors.vigencia.message)}
                           </span>
                         )}
                       </>

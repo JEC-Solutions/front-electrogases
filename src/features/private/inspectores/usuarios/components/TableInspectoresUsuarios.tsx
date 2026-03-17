@@ -31,6 +31,36 @@ export const TableInspectoresUsuarios = ({
         record.persona?.numero_documento || "-",
     },
     {
+      title: "No. Certificado",
+      dataIndex: "certificado_no",
+      key: "certificado_no",
+      render: (text: string) =>
+        text ? (
+          <div>
+            {text.split("/").map((item, index) => (
+              <div key={index}>{item.trim()}</div>
+            ))}
+          </div>
+        ) : (
+          "-"
+        ),
+    },
+    {
+      title: "Vigencia",
+      dataIndex: "vigencia",
+      key: "vigencia",
+      render: (text: string) =>
+        text ? (
+          <div>
+            {text.split("/").map((item, index) => (
+              <div key={index}>{item.trim()}</div>
+            ))}
+          </div>
+        ) : (
+          "-"
+        ),
+    },
+    {
       title: "Correo",
       key: "email",
       render: (_: any, record: IUsuarios) => record.persona?.email || "-",

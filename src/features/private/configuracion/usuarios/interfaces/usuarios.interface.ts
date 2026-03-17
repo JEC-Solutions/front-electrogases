@@ -3,6 +3,10 @@ export interface IUsuario {
   password: string;
   id_rol: number;
   persona: Persona;
+  certificado_no?: string;
+  vigencia?: string;
+  firma_base64?: string;
+  sello_base64?: string;
 }
 
 export interface Persona {
@@ -22,6 +26,8 @@ export interface IUsuarios {
   change_password: boolean;
   firma: string;
   sello: string;
+  certificado_no?: string;
+  vigencia?: string;
   estado: boolean;
   created_at: string;
   updated_at: string;

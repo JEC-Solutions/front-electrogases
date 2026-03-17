@@ -13,6 +13,7 @@ export const Footer = ({
   firmaInspectorBase64,
   selloInspectorBase64,
 }: Props) => {
+  const persona = inspeccion?.ruta?.persona;
   const nombreInspector =
     [
       inspeccion?.ruta?.persona?.primer_nombre,
@@ -22,6 +23,9 @@ export const Footer = ({
     ]
       .filter(Boolean)
       .join(" ") || "";
+  const registroSic = persona?.numero_documento || "";
+  const certificadoInspector = persona?.usuario?.certificado_no || "";
+  const vigenciaInspector = persona?.usuario?.vigencia || "";
 
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
@@ -86,15 +90,30 @@ export const Footer = ({
               <div
                 className={`flex-1 border-b ${borderClass} ${cellPadding} min-h-[25px]`}
               >
-                Certificado No.:
+                <span>Certificado No.:</span>
+                <div className="font-bold ml-1 mt-1 flex flex-col">
+                  {String(certificadoInspector)
+                    .split("/")
+                    .map((item, index) => (
+                      <div key={index}>{item.trim()}</div>
+                    ))}
+                </div>
               </div>
               <div className={`flex-1 ${cellPadding} min-h-[25px]`}>
-                Vigencia:
+                <span>Vigencia:</span>
+                <div className="font-bold ml-1 mt-1 flex flex-col">
+                  {String(vigenciaInspector)
+                    .split("/")
+                    .map((item, index) => (
+                      <div key={index}>{item.trim()}</div>
+                    ))}
+                </div>
               </div>
               <div
                 className={`flex-1 border-t ${borderClass} ${cellPadding} min-h-[25px]`}
               >
-                Registro SIC No.:
+                <span>Registro SIC No.:</span>
+                <span className="font-bold ml-1 mt-1">{registroSic}</span>
               </div>
             </div>
 

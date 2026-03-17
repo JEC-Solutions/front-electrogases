@@ -32,6 +32,8 @@ export const useInspectoresUsuarios = () => {
         numero_documento: "",
         email: "",
       },
+      certificado_no: "",
+      vigencia: "",
     },
   });
 
@@ -56,6 +58,8 @@ export const useInspectoresUsuarios = () => {
         numero_documento: "",
         email: "",
       },
+      certificado_no: "",
+      vigencia: "",
     });
   };
 
@@ -254,6 +258,8 @@ export const useInspectoresUsuarios = () => {
         currentUsuarios.persona.telefono,
       );
       methodsUsuarios.setValue("persona.email", currentUsuarios.persona.email);
+      methodsUsuarios.setValue("certificado_no", currentUsuarios.certificado_no);
+      methodsUsuarios.setValue("vigencia", currentUsuarios.vigencia);
     } else {
       methodsUsuarios.reset();
       methodsUsuarios.setValue(

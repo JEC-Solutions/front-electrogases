@@ -210,7 +210,7 @@ export interface Usuario {
   id_usuario: number;
   usuario: string;
   certificado_no: string;
-  competencia: string;
+  vigencia: string;
   firma: string;
   sello: string;
   estado: boolean;

@@ -25,7 +25,7 @@ export const Registro = ({
       .join(" ") || "";
   const registroSic = persona?.numero_documento || "";
   const certificadoInspector = persona?.usuario?.certificado_no || "";
-  const competenciaInspector = persona?.usuario?.competencia || "";
+  const vigenciaInspector = persona?.usuario?.vigencia || "";
 
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
   const cliente = inspeccion?.ruta?.casa?.cliente;
@@ -119,13 +119,25 @@ export const Registro = ({
               className={`h-[25%] border-b ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
               <span>Certificado No.:</span>
-              <span className="font-bold">{certificadoInspector}</span>
+              <div className="font-bold flex flex-col">
+                {String(certificadoInspector)
+                  .split("/")
+                  .map((item, index) => (
+                    <div key={index}>{item.trim()}</div>
+                  ))}
+              </div>
             </div>
             <div
               className={`h-[25%] ${cellPadding} flex flex-col justify-center`}
             >
               <span>Vigencia:</span>
-              <span className="font-bold">{competenciaInspector}</span>
+              <div className="font-bold flex flex-col">
+                {String(vigenciaInspector)
+                  .split("/")
+                  .map((item, index) => (
+                    <div key={index}>{item.trim()}</div>
+                  ))}
+              </div>
             </div>
             <div
               className={`h-[25%] border-t ${borderClass} ${cellPadding} flex flex-col justify-center`}
