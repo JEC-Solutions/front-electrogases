@@ -1,12 +1,13 @@
 import { IClientes } from "@/features/private/inspeccion/clientes/interfaces";
 import { Button, Space, Table, Tag, Tooltip } from "antd";
-import { FaEdit, FaLock, FaTrashAlt, FaUnlock } from "react-icons/fa";
+import { FaEdit, FaLock, FaTrashAlt, FaUnlock, FaSignature } from "react-icons/fa";
 
 interface Props {
   clientes: IClientes[];
   onOpenCurrent: (cliente: IClientes) => void;
   onDelete: (id: number) => void;
   onStatus: (id: number) => void;
+  onFirma: (cliente: IClientes) => void;
 }
 
 export const TableClientes = ({
@@ -14,6 +15,7 @@ export const TableClientes = ({
   onOpenCurrent,
   onDelete,
   onStatus,
+  onFirma,
 }: Props) => {
   const columns = [
     {
@@ -70,7 +72,12 @@ export const TableClientes = ({
             </Button>
           </Tooltip>
 
-          {/* Botón de Eliminar con ícono y Tooltip */}
+          <Tooltip title="Actualizar Firma">
+            <Button type="link" onClick={() => onFirma(record)}>
+              <FaSignature style={{ color: "#722ed1" }} />
+            </Button>
+          </Tooltip>
+
           <Tooltip title="Eliminar Cliente">
             <Button
               type="link"
@@ -81,7 +88,6 @@ export const TableClientes = ({
             </Button>
           </Tooltip>
 
-          {/* Botón de Activar/Desactivar */}
           <Tooltip title={record.estado ? "Desactivar" : "Activar"}>
             <Button type="link" onClick={() => onStatus(record.id_cliente)}>
               {record.estado ? (

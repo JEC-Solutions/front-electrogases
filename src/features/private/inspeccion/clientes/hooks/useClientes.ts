@@ -1,6 +1,6 @@
 import * as clientesServices from "@/features/private/inspeccion/clientes/services/clientes.services";
 import * as tiposDocumentos from "@/features/private/configuracion/tipos_documentos/services/tipoDocumentos.services";
-import { ICliente, IClientes } from "@/features/private/inspeccion/clientes/interfaces";
+import { ICliente, IClientes, IInspeccionFirma } from "@/features/private/inspeccion/clientes/interfaces";
 import { ITipoDocumentos } from "@/features/private/configuracion/tipos_documentos/interfaces";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -14,6 +14,10 @@ export const useClientes = () => {
   const [currentCliente, setCurrentCliente] = useState<IClientes | null>(null);
   const methodsClientes = useForm<ICliente>();
 
+  // Estado para el modal de firma
+  const [openFirma, setOpenFirma] = useState(false);
+  const [clienteFirma, setClienteFirma] = useState<IClientes | null>(null);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -22,6 +26,17 @@ export const useClientes = () => {
     setOpen(false);
     setCurrentCliente(null);
     methodsClientes.reset();
+  };
+
+  // Handlers del modal de firma
+  const openFirmaCliente = (cliente: IClientes) => {
+    setClienteFirma(cliente);
+    setOpenFirma(true);
+  };
+
+  const handleCloseFirma = () => {
+    setOpenFirma(false);
+    setClienteFirma(null);
   };
 
   const openCurrentCliente = (cliente: IClientes) => {
@@ -48,6 +63,21 @@ export const useClientes = () => {
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
+
+  // Query de inspecciones con firma (habilitado solo cuando hay un cliente seleccionado)
+  const { data: inspeccionesConFirma = [], isLoading: loadingInspecciones } =
+    useQuery<IInspeccionFirma[]>({
+      queryKey: ["inspecciones-firma", clienteFirma?.id_cliente],
+      queryFn: async () => {
+        if (!clienteFirma) return [];
+        const { data } = await clientesServices.getInspeccionesConFirma(
+          clienteFirma.id_cliente,
+        );
+        return data.data;
+      },
+      enabled: !!clienteFirma,
+      staleTime: 0,
+    });
 
   const { data: documentos = [] } = useQuery<ITipoDocumentos[]>({
     queryKey: ["tiposDocumentos"],
@@ -216,6 +246,52 @@ export const useClientes = () => {
     },
   });
 
+  // Mutation para actualizar la firma del cliente en una inspección específica
+  const updateFirmaMutation = useMutation({
+    mutationFn: ({
+      idInspeccion,
+      file,
+    }: {
+      idInspeccion: number;
+      file: File;
+    }) =>
+      clientesServices.updateFirmaCliente(
+        clienteFirma!.id_cliente,
+        idInspeccion,
+        file,
+      ),
+
+    onMutate: () => {
+      Swal.fire({
+        title: "Actualizando firma...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Firma actualizada",
+        text: "La firma del cliente fue actualizada correctamente",
+        confirmButtonText: "Aceptar",
+      }).then(() => {
+        handleCloseFirma();
+      });
+    },
+
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
+  const handleUpdateFirma = (idInspeccion: number, file: File) => {
+    updateFirmaMutation.mutate({ idInspeccion, file });
+  };
+
   //   Actualizar estado del tipo de documento
   const toggleStatus = (id: number) => {
     Swal.fire({
@@ -257,5 +333,14 @@ export const useClientes = () => {
     onSubmit,
     handleDelete,
     toggleStatus,
+    // Firma
+    openFirma,
+    clienteFirma,
+    openFirmaCliente,
+    handleCloseFirma,
+    inspeccionesConFirma,
+    loadingInspecciones,
+    handleUpdateFirma,
+    isUpdatingFirma: updateFirmaMutation.isPending,
   };
 };

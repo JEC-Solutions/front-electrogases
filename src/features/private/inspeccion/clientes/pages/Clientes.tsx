@@ -2,6 +2,7 @@ import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
 import { Button, Card, Spin } from "antd";
 import {
   ModalClientes,
+  ModalFirmaCliente,
   TableClientes,
 } from "@/features/private/inspeccion/clientes/components";
 
@@ -21,6 +22,15 @@ export const Clientes = () => {
     open,
     openCurrentCliente,
     toggleStatus,
+    // Firma
+    openFirma,
+    clienteFirma,
+    openFirmaCliente,
+    handleCloseFirma,
+    inspeccionesConFirma,
+    loadingInspecciones,
+    handleUpdateFirma,
+    isUpdatingFirma,
   } = useClientes();
 
   return (
@@ -55,6 +65,7 @@ export const Clientes = () => {
             onOpenCurrent={openCurrentCliente}
             onDelete={handleDelete}
             onStatus={toggleStatus}
+            onFirma={openFirmaCliente}
           />
         )}
       </Card>
@@ -66,6 +77,16 @@ export const Clientes = () => {
         onSubmit={onSubmit}
         currentCliente={currentCliente}
         documentos={documentos}
+      />
+
+      <ModalFirmaCliente
+        open={openFirma}
+        onClose={handleCloseFirma}
+        cliente={clienteFirma}
+        inspecciones={inspeccionesConFirma}
+        loadingInspecciones={loadingInspecciones}
+        onUpdateFirma={handleUpdateFirma}
+        isUpdating={isUpdatingFirma}
       />
     </div>
   );
