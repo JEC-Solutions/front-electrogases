@@ -33,8 +33,6 @@ const DigitBox = ({
 
 export const InformacionGeneral = ({ inspeccion }: Props) => {
   const visita = inspeccion?.instalacionExistente?.numeroVisita || 0;
-  const hayInspAnt =
-    !!inspeccion?.instalacionExistente?.id_instalacion_existente;
   const fechaAnt = formatDateYMD(inspeccion?.fecha_instalacion_anterior);
   const certAnt = inspeccion?.numero_certificado;
   const puestaServicio = inspeccion?.fecha_puesta_en_servicio;
@@ -161,10 +159,20 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
               </div>
               <div className="flex flex-col gap-1 justify-center">
                 <div className="flex items-center gap-1 text-[6.5pt]">
-                  SI <Box checked={hayInspAnt} />
+                  SI{" "}
+                  <Box
+                    checked={
+                      inspeccion?.instalacionExistente?.inspeccionAnterior
+                    }
+                  />
                 </div>
                 <div className="flex items-center gap-1 text-[6.5pt]">
-                  NO <Box checked={!hayInspAnt} />
+                  NO{" "}
+                  <Box
+                    checked={
+                      !inspeccion?.instalacionExistente?.inspeccionAnterior
+                    }
+                  />
                 </div>
               </div>
             </div>

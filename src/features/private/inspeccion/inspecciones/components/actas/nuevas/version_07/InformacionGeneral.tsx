@@ -25,7 +25,6 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
 
   const edifExistente = !instalacionNueva?.tipoEdificacion;
 
-  const hayInformeAnt = !!inspeccion?.instalacionExistente;
   const fechaAnt = formatDateYMD(inspeccion?.instalacionExistente?.createdAt);
   const cert = inspeccion?.numero_certificado;
   const solUsuario = inspeccion?.solicitud_usuario;
@@ -139,10 +138,20 @@ export const InformacionGeneral = ({ inspeccion }: Props) => {
                   <span>Informe de Inspección anterior:</span>
                   <div className="flex gap-2">
                     <div className="flex items-center">
-                      SI <Box checked={hayInformeAnt} />
+                      SI{" "}
+                      <Box
+                        checked={
+                          inspeccion?.instalacionExistente?.inspeccionAnterior
+                        }
+                      />
                     </div>
                     <div className="flex items-center">
-                      NO <Box checked={!hayInformeAnt} />
+                      NO{" "}
+                      <Box
+                        checked={
+                          !inspeccion?.instalacionExistente?.inspeccionAnterior
+                        }
+                      />
                     </div>
                   </div>
                 </div>

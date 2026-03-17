@@ -99,6 +99,7 @@ export interface InstalacionExistente {
   id_instalacion_existente: number;
   solicitudUsuario: boolean;
   numeroVisita: number;
+  inspeccionAnterior: boolean;
   createdAt: string;
   updatedAt: string;
 }
