@@ -1,4 +1,4 @@
-import { Col, DatePicker, Row, Typography, Button } from "antd";
+import { Col, DatePicker, Row, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useInicio } from "@/features/private/inicio/hooks";
 import {
@@ -11,7 +11,6 @@ import {
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
-const { Title } = Typography;
 
 export const Inicio = () => {
   const {
@@ -35,13 +34,17 @@ export const Inicio = () => {
   } = useInicio();
 
   return (
-    <div className="mt-8 p-4">
+    <div className="mt-8 px-4 sm:px-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Inicio</h1>
+        <p className="text-gray-600">
+          Bienvenido al sistema de gestión de Electro G&S. Acá podrás visualizar un resumen operativo de las inspecciones, distribución de gas y estado de los equipos.
+        </p>
+      </div>
+
       <Row gutter={[16, 16]} align="middle" className="mb-6">
-        <Col xs={24} lg={8}>
-          <Title level={3} className="m-0">Dashboard Operativo</Title>
-        </Col>
-        <Col xs={24} lg={16}>
-          <div className="flex flex-wrap justify-end items-center gap-4">
+        <Col xs={24}>
+          <div className="flex flex-wrap justify-start lg:justify-end items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="font-semibold whitespace-nowrap">Filtrar por fecha:</span>
               <RangePicker

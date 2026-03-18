@@ -6,9 +6,21 @@ interface Props {
   usuarios: IUsuarios[];
   onOpenCurrent: (cliente: IUsuarios) => void;
   onStatus: (id: number) => void;
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+  onPaginationChange: (page: number, pageSize: number) => void;
 }
 
-export const TableUsuarios = ({ usuarios, onOpenCurrent, onStatus }: Props) => {
+export const TableUsuarios = ({
+  usuarios,
+  onOpenCurrent,
+  onStatus,
+  pagination,
+  onPaginationChange,
+}: Props) => {
   const columns = [
     {
       title: "Nombre completo",
@@ -77,12 +89,20 @@ export const TableUsuarios = ({ usuarios, onOpenCurrent, onStatus }: Props) => {
       <Table
         columns={columns}
         dataSource={usuarios}
-        rowKey="id"
+        rowKey="id_usuario"
         className="custom-table"
         rowClassName={(_record, index) =>
           index % 2 === 0 ? "even-row" : "odd-row"
         }
         scroll={{ x: 600 }}
+        pagination={{
+          current: pagination.page,
+          pageSize: pagination.limit,
+          total: pagination.total,
+          onChange: onPaginationChange,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "25", "50", "100"],
+        }}
       />
     </div>
   );

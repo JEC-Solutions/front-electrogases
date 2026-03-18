@@ -24,6 +24,13 @@ export const Inspecciones = () => {
 
   return (
     <div className="mt-8 px-4 sm:px-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Inspecciones</h1>
+        <p className="text-gray-600">
+          Acá podrás visualizar y gestionar todas las inspecciones realizadas, descargar actas en PDF y consultar evidencias fotográficas.
+        </p>
+      </div>
+
       <Card>
         {isError ? (
           <div style={{ color: "red", textAlign: "center" }}>

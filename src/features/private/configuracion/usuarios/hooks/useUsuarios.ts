@@ -34,16 +34,28 @@ export const useUsuarios = () => {
     handleOpen();
   };
 
+  const [pendingSearch, setPendingSearch] = useState("");
+  const [pendingIdRol, setPendingIdRol] = useState<number | undefined>(undefined);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [id_rol, setIdRol] = useState<number | undefined>(undefined);
+
   const {
-    data = [],
+    data: usuariosResponse = { data: [], pagination: { total: 0, totalPages: 0 } },
     isLoading,
     isError,
     error,
-  } = useQuery<IUsuarios[]>({
-    queryKey: ["usuarios"],
+  } = useQuery({
+    queryKey: ["usuarios", page, limit, search, id_rol],
     queryFn: async () => {
       try {
-        const { data } = await usuariosServices.getUsuarios();
+        const { data } = await usuariosServices.getUsuarios({
+          page,
+          limit,
+          search,
+          id_rol,
+        });
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -53,6 +65,22 @@ export const useUsuarios = () => {
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
+
+  const { data: usuarios = [], pagination = { total: 0, totalPages: 0 } } = usuariosResponse as any;
+
+  const handleSearch = () => {
+    setSearch(pendingSearch);
+    setIdRol(pendingIdRol);
+    setPage(1);
+  };
+
+  const handleClear = () => {
+    setPendingSearch("");
+    setPendingIdRol(undefined);
+    setSearch("");
+    setIdRol(undefined);
+    setPage(1);
+  };
 
   const { data: documentos = [] } = useQuery<ITipoDocumentos[]>({
     queryKey: ["tiposDocumentos"],
@@ -228,7 +256,8 @@ export const useUsuarios = () => {
   }, [currentUsuarios]);
 
   return {
-    usuarios: data,
+    usuarios,
+    pagination,
     isLoading,
     isError,
     error,
@@ -241,5 +270,15 @@ export const useUsuarios = () => {
     currentUsuarios,
     onSubmit,
     toggleStatus,
+    setPage,
+    setLimit,
+    setPendingSearch,
+    setPendingIdRol,
+    handleSearch,
+    handleClear,
+    pendingSearch,
+    pendingIdRol,
+    page,
+    limit,
   };
 };

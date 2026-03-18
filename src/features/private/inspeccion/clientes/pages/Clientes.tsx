@@ -32,10 +32,23 @@ export const Clientes = () => {
   } = useClientes();
 
   return (
-    <div className="mt-8">
-      <Button type="primary" className="mb-4" onClick={handleOpen}>
-        Agregar Cliente
-      </Button>
+    <div className="mt-8 px-4 sm:px-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Clientes</h1>
+        <p className="text-gray-600">
+          Acá podrás crear y gestionar toda la información de los clientes, incluyendo sus datos personales y firmas autorizadas de inspecciones.
+        </p>
+      </div>
+
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
+        <Button
+          type="primary"
+          className="w-full xl:w-auto"
+          onClick={handleOpen}
+        >
+          Agregar Cliente
+        </Button>
+      </div>
 
       <Card>
         {isLoading ? (
@@ -51,7 +64,7 @@ export const Clientes = () => {
           </div>
         ) : isError ? (
           <div style={{ color: "red", textAlign: "center" }}>
-            Ocurrió un error al cargar los roles.
+            Ocurrió un error al cargar los clientes.
             <br />
             {error instanceof Error
               ? error.message

@@ -1,24 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 import * as cuadroMaestroServices from "../services/cuadroMaestro.services";
 import { handleAxiosError } from "@/utils";
-import { IResponseCuadroMaestro } from "@/features/private/informes/cuadroMaestro/interfaces/cuadroMaestro.interfaces";
 import { useState } from "react";
 import { message } from "antd";
 
 export const useCuadroMaestro = () => {
   const [isExporting, setIsExporting] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [filters, setFilters] = useState<{
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+  }>({});
 
   const {
-    data: cuadroMaestro = [],
+    data: response = { data: [], pagination: { total: 0 } },
     isLoading,
     isError,
     error,
-  } = useQuery<IResponseCuadroMaestro[]>({
-    queryKey: ["cuadro-maestro"],
+  } = useQuery({
+    queryKey: ["cuadro-maestro", page, limit, filters],
     queryFn: async () => {
       try {
-        const { data } = await cuadroMaestroServices.getCuadroMaestro();
-        console.log(data);
+        const { data } = await cuadroMaestroServices.getCuadroMaestro({
+          page,
+          limit,
+          ...filters,
+        });
+        // The backend returns sendResponse(res, 200, "...", { data, pagination })
+        // So axios.data is { status, message, data: { data, pagination } }
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -57,11 +68,17 @@ export const useCuadroMaestro = () => {
   };
 
   return {
-    cuadroMaestro,
+    cuadroMaestro: response.data,
+    total: response.pagination.total,
     isLoading,
     isError,
     error,
     exportExcel,
     isExporting,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    setFilters,
   };
 };

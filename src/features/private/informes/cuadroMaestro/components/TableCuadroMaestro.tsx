@@ -1,25 +1,59 @@
 import { IResponseCuadroMaestro } from "@/features/private/informes/cuadroMaestro/interfaces/cuadroMaestro.interfaces";
 import { ColumnsType } from "antd/es/table";
-import { Table, Tag, Input, DatePicker, Row, Col, Card } from "antd";
+import { Table, Tag, Input, DatePicker, Row, Col, Card, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
 dayjs.extend(isBetween);
 
-const {} = DatePicker;
-
 interface Props {
   cuadroMaestro: IResponseCuadroMaestro[];
+  total: number;
+  page: number;
+  setPage: (page: number) => void;
+  limit: number;
+  setLimit: (limit: number) => void;
+  setFilters: (filters: {
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+  }) => void;
+  isLoading?: boolean;
 }
 
-export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
-  const [searchText, setSearchText] = useState("");
-  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([
-    null,
-    null,
-  ]);
+export const TableCuadroMaestro = ({
+  cuadroMaestro,
+  total,
+  page,
+  setPage,
+  limit,
+  setLimit,
+  setFilters,
+  isLoading,
+}: Props) => {
+  // Estados provisionales (mientras el usuario escribe/selecciona)
+  const [pendingSearchText, setPendingSearchText] = useState("");
+  const [pendingDateRange, setPendingDateRange] = useState<
+    [Dayjs | null, Dayjs | null]
+  >([null, null]);
+
+  const handleSearch = () => {
+    setFilters({
+      search: pendingSearchText,
+      startDate: pendingDateRange[0]?.format("YYYY-MM-DD"),
+      endDate: pendingDateRange[1]?.format("YYYY-MM-DD"),
+    });
+    setPage(1); // Reiniciar a la primera página cuando se busca
+  };
+
+  const handleClear = () => {
+    setPendingSearchText("");
+    setPendingDateRange([null, null]);
+    setFilters({});
+    setPage(1);
+  };
 
   const getFullName = (
     persona: {
@@ -49,44 +83,6 @@ export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
       .filter(Boolean)
       .join(", ");
   };
-
-  const filteredData = useMemo(() => {
-    return cuadroMaestro.filter((record) => {
-      if (dateRange[0] && dateRange[1]) {
-        const recordDate = dayjs(record.fecha_inspeccion);
-        if (!recordDate.isBetween(dateRange[0], dateRange[1], "day", "[]")) {
-          return false;
-        }
-      }
-
-      if (searchText) {
-        const searchLower = searchText.toLowerCase();
-        const nombreUsuario = getFullName(record.ruta?.persona).toLowerCase();
-        const nombreInspector = getFullName(
-          record.ruta?.created_by,
-        ).toLowerCase();
-        const direccion = record.ruta?.casa?.direccion?.toLowerCase() || "";
-        const barrio = record.ruta?.casa?.barrio?.toLowerCase() || "";
-        const noCuenta = record.ruta?.casa?.no_cuenta?.toLowerCase() || "";
-        const medidor = record.ruta?.casa?.medidor?.toLowerCase() || "";
-        const numeroInforme = record.numero_informe?.toLowerCase() || "";
-        const empresa = record.empresa?.toLowerCase() || "";
-
-        return (
-          nombreUsuario.includes(searchLower) ||
-          nombreInspector.includes(searchLower) ||
-          direccion.includes(searchLower) ||
-          barrio.includes(searchLower) ||
-          noCuenta.includes(searchLower) ||
-          medidor.includes(searchLower) ||
-          numeroInforme.includes(searchLower) ||
-          empresa.includes(searchLower)
-        );
-      }
-
-      return true;
-    });
-  }, [cuadroMaestro, searchText, dateRange]);
 
   const columns: ColumnsType<IResponseCuadroMaestro> = [
     {
@@ -204,52 +200,67 @@ export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
 
   return (
     <Card>
-      <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-        <Col xs={24} sm={12} md={6}>
+      <Row gutter={[16, 16]} style={{ marginBottom: 16 }} align="middle">
+        <Col xs={24} lg={8}>
           <Input
-            placeholder="Buscar..."
+            placeholder="Buscar por usuario, inspector, dirección, medidor..."
             prefix={<SearchOutlined />}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            value={pendingSearchText}
+            onChange={(e) => setPendingSearchText(e.target.value)}
             allowClear
+            onPressEnter={handleSearch}
           />
         </Col>
-        <Col xs={12} sm={6} md={5}>
+        <Col xs={24} sm={12} lg={4}>
           <DatePicker
-            placeholder="Inicio"
+            placeholder="Desde"
             style={{ width: "100%" }}
-            value={dateRange[0]}
-            onChange={(date) => setDateRange([date, dateRange[1]])}
+            value={pendingDateRange[0]}
+            onChange={(date) => setPendingDateRange([date, pendingDateRange[1]])}
           />
         </Col>
-        <Col xs={12} sm={6} md={5}>
+        <Col xs={24} sm={12} lg={4}>
           <DatePicker
-            placeholder="Fin"
+            placeholder="Hasta"
             style={{ width: "100%" }}
-            value={dateRange[1]}
-            onChange={(date) => setDateRange([dateRange[0], date])}
+            value={pendingDateRange[1]}
+            onChange={(date) => setPendingDateRange([pendingDateRange[0], date])}
           />
         </Col>
-        <Col xs={24} md={8}>
-          <span style={{ lineHeight: "32px" }}>
-            Total: <strong>{filteredData.length}</strong> registros
-          </span>
+        <Col xs={24} xl={24}>
+          <div className="flex flex-wrap gap-2 items-center">
+            <Button type="primary" onClick={handleSearch}>
+              Buscar
+            </Button>
+            <Button onClick={handleClear}>Limpiar</Button>
+            <span className="text-gray-500 ml-auto whitespace-nowrap">
+              Mostrando página <strong>{page}</strong> | Total:{" "}
+              <strong>{total}</strong> registros
+            </span>
+          </div>
         </Col>
       </Row>
 
       <div className="overflow-x-auto">
         <Table
           columns={columns}
-          dataSource={filteredData}
+          dataSource={cuadroMaestro}
           rowKey="id_inspeccion"
+          loading={isLoading}
           className="custom-table"
           rowClassName={(_record, index) =>
             index % 2 === 0 ? "even-row" : "odd-row"
           }
           scroll={{ x: 2200 }}
           pagination={{
+            current: page,
+            pageSize: limit,
+            total: total,
             showSizeChanger: true,
-            showQuickJumper: true,
+            onChange: (p, s) => {
+              setPage(p);
+              setLimit(s);
+            },
             pageSizeOptions: ["10", "25", "50", "100"],
             showTotal: (total, range) =>
               `${range[0]}-${range[1]} de ${total} registros`,

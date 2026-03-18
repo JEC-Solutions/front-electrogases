@@ -1,51 +1,45 @@
 import { useCuadroMaestro } from "@/features/private/informes/cuadroMaestro/hooks";
 import { TableCuadroMaestro } from "@/features/private/informes/cuadroMaestro/components";
-import { Button, Spin, Space, Typography } from "antd";
+import { Button } from "antd";
 import { FileExcelOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
-
 export const CuadroMaestro = () => {
-  const { cuadroMaestro, isLoading, isError, error, exportExcel, isExporting } =
-    useCuadroMaestro();
+  const {
+    cuadroMaestro,
+    total,
+    isLoading,
+    isError,
+    error,
+    exportExcel,
+    isExporting,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    setFilters,
+  } = useCuadroMaestro();
 
   return (
-    <div className="mt-8">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 16,
-        }}
-      >
-        <Title level={4} style={{ margin: 0 }}>
-          Cuadro Maestro
-        </Title>
-        <Space>
-          <Button
-            type="primary"
-            icon={<FileExcelOutlined />}
-            onClick={exportExcel}
-            loading={isExporting}
-          >
-            Exportar Excel
-          </Button>
-        </Space>
+    <div className="mt-8 px-4 sm:px-0">
+      <div className="mb-6 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Cuadro Maestro</h1>
+          <p className="text-gray-600">
+            Acá podrás visualizar el consolidado detallado de todas las inspecciones y exportar la información a formato Excel.
+          </p>
+        </div>
+        <Button
+          type="primary"
+          icon={<FileExcelOutlined />}
+          onClick={exportExcel}
+          loading={isExporting}
+          className="w-full xl:w-auto"
+        >
+          Exportar Excel
+        </Button>
       </div>
 
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200px",
-          }}
-        >
-          <Spin />
-        </div>
-      ) : isError ? (
+      {isError ? (
         <div style={{ color: "red", textAlign: "center" }}>
           Ocurrió un error al cargar el cuadro maestro.
           <br />
@@ -54,7 +48,16 @@ export const CuadroMaestro = () => {
             : "Inténtalo de nuevo más tarde."}
         </div>
       ) : (
-        <TableCuadroMaestro cuadroMaestro={cuadroMaestro} />
+        <TableCuadroMaestro
+          cuadroMaestro={cuadroMaestro}
+          total={total}
+          page={page}
+          setPage={setPage}
+          limit={limit}
+          setLimit={setLimit}
+          setFilters={setFilters}
+          isLoading={isLoading}
+        />
       )}
     </div>
   );

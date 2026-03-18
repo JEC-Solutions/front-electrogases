@@ -41,11 +41,18 @@ export const Rutas = () => {
 
   return (
     <div className="mt-8 px-4 sm:px-0">
-      <div className="flex justify-start mb-4">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Rutas</h1>
+        <p className="text-gray-600">
+          Acá podrás crear, asignar y gestionar las rutas de inspección, así como generar los reportes correspondientes para cada ruta.
+        </p>
+      </div>
+
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
         <Button
           type="primary"
           onClick={handleAgregarRuta}
-          className="w-auto sm:w-auto"
+          className="w-full xl:w-auto"
         >
           Agregar Rutas
         </Button>

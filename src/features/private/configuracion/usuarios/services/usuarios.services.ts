@@ -1,8 +1,13 @@
 import { electroApi } from "@/api";
 import { IUsuario } from "@/features/private/configuracion/usuarios/interfaces";
 
-export const getUsuarios = async () => {
-  return await electroApi.get("/usuarios");
+export const getUsuarios = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  id_rol?: number;
+}) => {
+  return await electroApi.get("/usuarios", { params });
 };
 
 export const createUsuario = async (data: IUsuario) => {

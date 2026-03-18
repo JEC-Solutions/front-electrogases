@@ -31,10 +31,23 @@ export const Roles = () => {
   } = useRoles();
 
   return (
-    <div className="mt-8">
-      <Button type="primary" className="mb-4" onClick={handleOpen}>
-        Agregar Rol
-      </Button>
+    <div className="mt-8 px-4 sm:px-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Roles</h1>
+        <p className="text-gray-600">
+          Acá podrás crear y gestionar los roles del sistema, así como asignar sus permisos correspondientes.
+        </p>
+      </div>
+
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
+        <Button
+          type="primary"
+          className="w-full xl:w-auto"
+          onClick={handleOpen}
+        >
+          Agregar Rol
+        </Button>
+      </div>
 
       <Card>
         {isLoading ? (
