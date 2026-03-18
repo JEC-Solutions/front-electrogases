@@ -28,12 +28,17 @@ export const EquiposUtilizadosChart = ({ data, total, isLoading }: Props) => {
           <Spin />
         </div>
       ) : data.length > 0 ? (
-        <div style={{ width: "100%", height: 300 }}>
+        <div className="w-full h-[300px] sm:h-[400px]">
           <ResponsiveContainer>
             <BarChart data={data} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" allowDecimals={false} />
-              <YAxis dataKey="equipo" type="category" width={120} />
+              <YAxis
+                dataKey="equipo"
+                type="category"
+                width={80}
+                tick={{ fontSize: 10 }}
+              />
               <Tooltip />
               <Legend />
               <Bar dataKey="cantidad" fill="#52c41a" name="Cantidad" />

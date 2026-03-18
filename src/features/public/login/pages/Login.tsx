@@ -31,7 +31,7 @@ const Login = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <motion.div
-        className="flex-1 hidden lg:block"
+        className="flex-1 hidden md:block"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -42,23 +42,24 @@ const Login = () => {
           className="object-cover w-full h-screen"
         />
       </motion.div>
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
         <motion.div
+          className="w-full flex justify-center"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Card style={{ width: "28rem", maxWidth: "28rem" }}>
-            <div className="flex justify-center mb-10">
+          <Card className="w-full max-w-[450px] shadow-lg">
+            <div className="flex justify-center mb-6 sm:mb-10">
               <img
                 src="/imagenes/logo.png"
                 alt="Logo de la App"
-                style={{ height: "60px" }}
+                className="h-[50px] sm:h-[60px] object-contain"
               />
             </div>
             {!changePassword && !isExpiredPassword ? (
               <>
-                <h2 className="text-3xl font-bold text-center">Bienvenido</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold text-center">Bienvenido</h2>
                 <p className="text-center mb-4">
                   Ingresa sus credenciales para continuar
                 </p>
@@ -143,7 +144,7 @@ const Login = () => {
               </>
             ) : isExpiredPassword ? (
               <>
-                <h2 className="text-3xl font-bold text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-center">
                   Contraseña Expirada
                 </h2>
                 <p className="text-center mb-4">
@@ -267,7 +268,7 @@ const Login = () => {
               </>
             ) : changePassword ? (
               <>
-                <h2 className="text-3xl font-bold text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-center">
                   Actualizar contraseña
                 </h2>
                 <p className="text-center mb-4">

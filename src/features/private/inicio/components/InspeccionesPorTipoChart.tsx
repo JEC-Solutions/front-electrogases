@@ -23,7 +23,7 @@ export const InspeccionesPorTipoChart = ({ data, isLoading }: Props) => {
           <Spin />
         </div>
       ) : data.length > 0 ? (
-        <div style={{ width: "100%", height: 300 }}>
+        <div className="w-full h-[250px] sm:h-[300px]">
           <ResponsiveContainer>
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />

@@ -50,9 +50,11 @@ export const Dashboard = () => {
           collapsible
           collapsed={collapsed}
           onCollapse={setCollapsed}
-          width={250}
+          width={280}
+          className="custom-sidebar shadow-2xl"
+          theme="dark"
         >
-          <Sidebar />
+          <Sidebar collapsed={collapsed} />
         </Sider>
       )}
 
@@ -68,14 +70,24 @@ export const Dashboard = () => {
         {/* Drawer para móvil */}
         {isMobile && (
           <Drawer
-            title="Menu"
             placement="left"
             closable
             onClose={() => setDrawerVisible(false)}
             open={drawerVisible}
-            styles={{ body: { padding: 0 } }}
+            styles={{ 
+              body: { padding: 0 },
+              header: { 
+                background: "#001529", 
+                borderBottom: "1px solid rgba(255,255,255,0.1)"
+              }
+            }}
+            headerStyle={{ 
+              background: "#001529" 
+            }}
+            className="sidebar-drawer"
+            width={280}
           >
-            <Sidebar />
+            <Sidebar collapsed={false} />
           </Drawer>
         )}
 

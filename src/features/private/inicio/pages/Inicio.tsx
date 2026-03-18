@@ -36,23 +36,27 @@ export const Inicio = () => {
 
   return (
     <div className="mt-8 p-4">
-      <Row justify="space-between" align="middle" className="mb-6">
-        <Col>
-          <Title level={3}>Dashboard Operativo</Title>
+      <Row gutter={[16, 16]} align="middle" className="mb-6">
+        <Col xs={24} lg={8}>
+          <Title level={3} className="m-0">Dashboard Operativo</Title>
         </Col>
-        <Col>
-          <div className="flex items-center gap-2">
-            <span className="font-semibold">Filtrar por fecha:</span>
-            <RangePicker
-              value={[dayjs(selectedDates.inicio), dayjs(selectedDates.fin)]}
-              onChange={handleDateChange}
-              format="YYYY-MM-DD"
-              allowClear={false}
-            />
+        <Col xs={24} lg={16}>
+          <div className="flex flex-wrap justify-end items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold whitespace-nowrap">Filtrar por fecha:</span>
+              <RangePicker
+                value={[dayjs(selectedDates.inicio), dayjs(selectedDates.fin)]}
+                onChange={handleDateChange}
+                format="YYYY-MM-DD"
+                allowClear={false}
+                className="w-full sm:w-auto"
+              />
+            </div>
             <Button
               type="primary"
               icon={<SearchOutlined />}
               onClick={handleFiltrar}
+              className="w-full sm:w-64 lg:w-auto"
             >
               Filtrar
             </Button>

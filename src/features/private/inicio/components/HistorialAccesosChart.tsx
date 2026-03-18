@@ -72,6 +72,7 @@ export const HistorialAccesosChart = ({ data, total, isLoading }: Props) => {
           rowKey="id_usuario"
           pagination={{ pageSize: 5 }}
           size="small"
+          scroll={{ x: true }}
         />
       ) : (
         <Empty description="No hay datos para esta fecha" />

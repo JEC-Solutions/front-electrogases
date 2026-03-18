@@ -58,11 +58,11 @@ export const DistribucionGasChart = ({ data, total, isLoading }: Props) => {
           </div>
           
           {/* Leyenda manual */}
-          <div className="flex gap-4 mt-2 flex-wrap justify-center">
+          <div className="flex gap-2 sm:gap-4 mt-2 flex-wrap justify-center">
             {data.map((item: any, index: number) => (
               <div key={index} className="flex items-center gap-1">
                 <div
-                  className="w-3 h-3 rounded-full"
+                  className="w-2 sm:w-3 h-2 sm:h-3 rounded-full"
                   style={{
                     backgroundColor: COLORS[index % COLORS.length],
                   }}
