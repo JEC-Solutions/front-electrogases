@@ -8,7 +8,7 @@ import isBetween from "dayjs/plugin/isBetween";
 
 dayjs.extend(isBetween);
 
-const { RangePicker } = DatePicker;
+const {} = DatePicker;
 
 interface Props {
   cuadroMaestro: IResponseCuadroMaestro[];
@@ -205,7 +205,7 @@ export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
   return (
     <Card>
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={6}>
           <Input
             placeholder="Buscar..."
             prefix={<SearchOutlined />}
@@ -214,14 +214,20 @@ export const TableCuadroMaestro = ({ cuadroMaestro }: Props) => {
             allowClear
           />
         </Col>
-        <Col xs={24} sm={12} md={8}>
-          <RangePicker
+        <Col xs={12} sm={6} md={5}>
+          <DatePicker
+            placeholder="Inicio"
             style={{ width: "100%" }}
-            placeholder={["Fecha inicio", "Fecha fin"]}
-            value={dateRange}
-            onChange={(dates) =>
-              setDateRange(dates as [Dayjs | null, Dayjs | null])
-            }
+            value={dateRange[0]}
+            onChange={(date) => setDateRange([date, dateRange[1]])}
+          />
+        </Col>
+        <Col xs={12} sm={6} md={5}>
+          <DatePicker
+            placeholder="Fin"
+            style={{ width: "100%" }}
+            value={dateRange[1]}
+            onChange={(date) => setDateRange([dateRange[0], date])}
           />
         </Col>
         <Col xs={24} md={8}>

@@ -21,8 +21,12 @@ export const EquiposUtilizados = () => {
     handleDelete,
   } = useEquiposUtilizados();
   return (
-    <div className="mt-8">
-      <Button type="primary" className="mb-4" onClick={handleOpen}>
+    <div className="mt-8 px-4 sm:px-0">
+      <Button
+        type="primary"
+        className="mb-4 w-auto sm:w-auto"
+        onClick={handleOpen}
+      >
         Agregar Equipo Utilizado
       </Button>
 

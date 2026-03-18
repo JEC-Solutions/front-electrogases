@@ -1,5 +1,5 @@
 import { IEquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/interfaces";
-import { Button, Input, Select, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Input, Select, Space, Table, Tag, Tooltip, Row, Col } from "antd";
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -151,42 +151,52 @@ export const TableEquiposUtilizados = ({
   return (
     <div className="overflow-x-auto">
       {/* Filtros */}
-      <Space wrap style={{ marginBottom: 16 }}>
-        <Select
-          placeholder="Filtrar por tipo de equipo"
-          style={{ width: 240 }}
-          options={tiposEquipo}
-          value={filtroTipo}
-          onChange={(val) => setFiltroTipo(val)}
-          allowClear
-          showSearch
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-        />
-        <Input
-          placeholder="Buscar por NS, marca o modelo..."
-          style={{ width: 240 }}
-          value={filtroTexto}
-          onChange={(e) => setFiltroTexto(e.target.value)}
-          allowClear
-        />
-        <Select
-          mode="multiple"
-          placeholder="Filtrar por inspector"
-          style={{ minWidth: 240 }}
-          options={inspectoresUnicos}
-          value={filtroInspectores}
-          onChange={(val) => setFiltroInspectores(val)}
-          allowClear
-          showSearch
-          optionFilterProp="label"
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-        />
-        <Button onClick={limpiarFiltros}>Limpiar filtros</Button>
-      </Space>
+      <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+        <Col xs={24} sm={12} md={6}>
+          <Select
+            placeholder="Filtrar por tipo de equipo"
+            style={{ width: "100%" }}
+            options={tiposEquipo}
+            value={filtroTipo}
+            onChange={(val) => setFiltroTipo(val)}
+            allowClear
+            showSearch
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
+        </Col>
+        <Col xs={24} sm={12} md={6}>
+          <Input
+            placeholder="Buscar por NS, marca o modelo..."
+            style={{ width: "100%" }}
+            value={filtroTexto}
+            onChange={(e) => setFiltroTexto(e.target.value)}
+            allowClear
+          />
+        </Col>
+        <Col xs={24} sm={12} md={6}>
+          <Select
+            mode="multiple"
+            placeholder="Filtrar por inspector"
+            style={{ width: "100%" }}
+            options={inspectoresUnicos}
+            value={filtroInspectores}
+            onChange={(val) => setFiltroInspectores(val)}
+            allowClear
+            showSearch
+            optionFilterProp="label"
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
+        </Col>
+        <Col xs={24} sm={12} md={6}>
+          <Button onClick={limpiarFiltros} className="w-full sm:w-auto">
+            Limpiar filtros
+          </Button>
+        </Col>
+      </Row>
 
       <Table
         columns={columns}
@@ -196,7 +206,7 @@ export const TableEquiposUtilizados = ({
         rowClassName={(_record, index) =>
           index % 2 === 0 ? "even-row" : "odd-row"
         }
-        scroll={{ x: 600 }}
+        scroll={{ x: 1000 }}
       />
     </div>
   );

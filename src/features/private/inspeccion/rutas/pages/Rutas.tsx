@@ -45,7 +45,7 @@ export const Rutas = () => {
         <Button
           type="primary"
           onClick={handleAgregarRuta}
-          className="w-full sm:w-auto"
+          className="w-auto sm:w-auto"
         >
           Agregar Rutas
         </Button>
