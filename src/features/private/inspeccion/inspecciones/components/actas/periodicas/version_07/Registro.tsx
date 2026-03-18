@@ -24,6 +24,7 @@ export const Registro = ({
       .filter(Boolean)
       .join(" ") || "";
   const registroSic = persona?.numero_documento || "";
+  const entidad = persona?.usuario?.entidad || "";
   const certificadoInspector = persona?.usuario?.certificado_no || "";
   const vigenciaInspector = persona?.usuario?.vigencia || "";
 
@@ -142,8 +143,8 @@ export const Registro = ({
             <div
               className={`h-[25%] border-t ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
-              <span>SENA:</span>
-              <span className="font-bold">{registroSic}</span>
+              <span>Expedido por:</span>
+              <span className="font-bold">{entidad} {registroSic}</span>
             </div>
           </div>
 

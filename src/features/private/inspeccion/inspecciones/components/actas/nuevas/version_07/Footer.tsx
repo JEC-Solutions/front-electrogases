@@ -24,6 +24,7 @@ export const Footer = ({
       .filter(Boolean)
       .join(" ") || "";
   const registroSic = persona?.numero_documento || "";
+  const entidad = persona?.usuario?.entidad || "";
   const certificadoInspector = persona?.usuario?.certificado_no || "";
   const vigenciaInspector = persona?.usuario?.vigencia || "";
 
@@ -112,8 +113,8 @@ export const Footer = ({
               <div
                 className={`flex-1 border-t ${borderClass} ${cellPadding} min-h-[25px]`}
               >
-                <span>SENA:</span>
-                <span className="font-bold ml-1 mt-1">{registroSic}</span>
+                <span>Expedido por:</span>
+                <span className="font-bold ml-1 mt-1">{entidad} {registroSic}</span>
               </div>
             </div>
 

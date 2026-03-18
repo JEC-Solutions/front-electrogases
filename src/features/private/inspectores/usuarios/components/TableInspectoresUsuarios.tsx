@@ -46,6 +46,12 @@ export const TableInspectoresUsuarios = ({
         ),
     },
     {
+      title: "Entidad",
+      dataIndex: "entidad",
+      key: "entidad",
+      render: (text: string) => text || "-",
+    },
+    {
       title: "Vigencia",
       dataIndex: "vigencia",
       key: "vigencia",

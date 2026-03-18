@@ -7,6 +7,7 @@ export interface IUsuario {
   vigencia?: string;
   firma_base64?: string;
   sello_base64?: string;
+  entidad?: string;
 }
 
 export interface Persona {
@@ -28,6 +29,7 @@ export interface IUsuarios {
   sello: string;
   certificado_no?: string;
   vigencia?: string;
+  entidad?: string;
   estado: boolean;
   created_at: string;
   updated_at: string;

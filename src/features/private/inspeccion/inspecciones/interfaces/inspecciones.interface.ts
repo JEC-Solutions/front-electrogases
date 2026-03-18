@@ -214,6 +214,7 @@ export interface Usuario {
   firma: string;
   sello: string;
   estado: boolean;
+  entidad: string;
 }
 
 export interface Casa {

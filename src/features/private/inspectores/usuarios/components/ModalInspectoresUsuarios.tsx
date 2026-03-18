@@ -356,6 +356,32 @@ export const ModalInspectoresUsuarios = ({
 
               <Col span={24} md={12}>
                 <div className="mb-4">
+                  <label htmlFor="entidad">Entidad</label>
+                  <Controller
+                    name="entidad"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <>
+                        <Input
+                          {...field}
+                          id="entidad"
+                          placeholder="Entidad"
+                          type="text"
+                        />
+                        {errors.entidad?.message && (
+                          <span style={{ color: "red" }}>
+                            {String(errors.entidad.message)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </div>
+              </Col>
+
+              <Col span={24} md={12}>
+                <div className="mb-4">
                   <label htmlFor="vigencia">Vigencia</label>
                   <Controller
                     name="vigencia"
