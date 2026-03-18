@@ -40,10 +40,16 @@ export const Rutas = () => {
   };
 
   return (
-    <div className="mt-8">
-      <Button type="primary" className="mb-4" onClick={handleAgregarRuta}>
-        Agregar Rutas
-      </Button>
+    <div className="mt-8 px-4 sm:px-0">
+      <div className="flex justify-start mb-4">
+        <Button
+          type="primary"
+          onClick={handleAgregarRuta}
+          className="w-full sm:w-auto"
+        >
+          Agregar Rutas
+        </Button>
+      </div>
 
       <Card>
         {isError ? (

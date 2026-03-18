@@ -8,6 +8,8 @@ import {
   DatePicker,
   Input,
   Popover,
+  Row,
+  Col,
   Select,
   Space,
   Table,
@@ -337,109 +339,162 @@ export const TableRutas = ({
     <>
       <div className="overflow-x-auto">
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <Space wrap>
-            <DatePicker.RangePicker
-              format="YYYY-MM-DD"
-              value={[localFilters.start, localFilters.end]}
-              onChange={(vals) =>
-                setLocalFilters((s) => ({
-                  ...s,
-                  start: vals?.[0] ?? null,
-                  end: vals?.[1] ?? null,
-                }))
-              }
-            />
+        <div className="mb-6 p-4 bg-gray-50/50 rounded-lg border border-gray-100">
+          <Row gutter={[12, 12]} align="bottom">
+            <Col xs={12} sm={8} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Inicio</span>
+                <DatePicker
+                  className="w-full"
+                  format="YYYY-MM-DD"
+                  value={localFilters.start}
+                  onChange={(val) =>
+                    setLocalFilters((s) => ({
+                      ...s,
+                      start: val,
+                    }))
+                  }
+                />
+              </div>
+            </Col>
 
-            <Select
-              allowClear
-              showSearch
-              placeholder="Inspector"
-              style={{ width: 220 }}
-              options={inspectores.map((i) => ({
-                value: i.persona?.id_persona,
-                label: `${i.persona?.primer_nombre ?? ""} ${
-                  i.persona?.primer_apellido ?? ""
-                }`.trim(),
-              }))}
-              optionFilterProp="label"
-              filterOption={(input, option) =>
-                normalize(option?.label as string).includes(normalize(input))
-              }
-              value={localFilters.inspectorId}
-              onChange={(v) =>
-                setLocalFilters((s) => ({ ...s, inspectorId: v }))
-              }
-            />
+            <Col xs={12} sm={8} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Fin</span>
+                <DatePicker
+                  className="w-full"
+                  format="YYYY-MM-DD"
+                  value={localFilters.end}
+                  onChange={(val) =>
+                    setLocalFilters((s) => ({
+                      ...s,
+                      end: val,
+                    }))
+                  }
+                />
+              </div>
+            </Col>
 
-            <Select
-              allowClear
-              showSearch
-              placeholder="Asesor"
-              style={{ width: 220 }}
-              options={asesores.map((i) => ({
-                value: i.persona?.id_persona,
-                label: `${i.persona?.primer_nombre ?? ""} ${
-                  i.persona?.primer_apellido ?? ""
-                }`.trim(),
-              }))}
-              optionFilterProp="label"
-              filterOption={(input, option) =>
-                normalize(option?.label as string).includes(normalize(input))
-              }
-              value={localFilters.asesorId}
-              onChange={(v) => setLocalFilters((s) => ({ ...s, asesorId: v }))}
-            />
+            <Col xs={24} sm={8} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Inspector</span>
+                <Select
+                  allowClear
+                  showSearch
+                  placeholder="Seleccionar..."
+                  className="w-full"
+                  options={inspectores.map((i) => ({
+                    value: i.persona?.id_persona,
+                    label: `${i.persona?.primer_nombre ?? ""} ${
+                      i.persona?.primer_apellido ?? ""
+                    }`.trim(),
+                  }))}
+                  optionFilterProp="label"
+                  filterOption={(input, option) =>
+                    normalize(option?.label as string).includes(normalize(input))
+                  }
+                  value={localFilters.inspectorId}
+                  onChange={(v) =>
+                    setLocalFilters((s) => ({ ...s, inspectorId: v }))
+                  }
+                />
+              </div>
+            </Col>
 
-            <Select
-              allowClear
-              showSearch
-              placeholder="Cliente"
-              style={{ width: 220 }}
-              options={clientes.map((c) => ({
-                value: c.id_cliente,
-                label: `${c.primer_nombre ?? ""} ${
-                  c.primer_apellido ?? ""
-                }`.trim(),
-              }))}
-              optionFilterProp="label"
-              filterOption={(input, option) =>
-                normalize(option?.label as string).includes(normalize(input))
-              }
-              value={localFilters.clienteId}
-              onChange={(v) => setLocalFilters((s) => ({ ...s, clienteId: v }))}
-            />
+            <Col xs={24} sm={8} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Asesor</span>
+                <Select
+                  allowClear
+                  showSearch
+                  placeholder="Seleccionar..."
+                  className="w-full"
+                  options={asesores.map((i) => ({
+                    value: i.persona?.id_persona,
+                    label: `${i.persona?.primer_nombre ?? ""} ${
+                      i.persona?.primer_apellido ?? ""
+                    }`.trim(),
+                  }))}
+                  optionFilterProp="label"
+                  filterOption={(input, option) =>
+                    normalize(option?.label as string).includes(normalize(input))
+                  }
+                  value={localFilters.asesorId}
+                  onChange={(v) =>
+                    setLocalFilters((s) => ({ ...s, asesorId: v }))
+                  }
+                />
+              </div>
+            </Col>
 
-            <Input
-              placeholder="Documento cliente"
-              allowClear
-              style={{ width: 200 }}
-              value={localFilters.clienteDocumento}
-              onChange={(e) =>
-                setLocalFilters((s) => ({
-                  ...s,
-                  clienteDocumento: e.target.value,
-                }))
-              }
-              onPressEnter={handleSearch}
-            />
+            <Col xs={24} sm={8} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Cliente</span>
+                <Select
+                  allowClear
+                  showSearch
+                  placeholder="Seleccionar..."
+                  className="w-full"
+                  options={clientes.map((c) => ({
+                    value: c.id_cliente,
+                    label: `${c.primer_nombre ?? ""} ${
+                      c.primer_apellido ?? ""
+                    }`.trim(),
+                  }))}
+                  optionFilterProp="label"
+                  filterOption={(input, option) =>
+                    normalize(option?.label as string).includes(normalize(input))
+                  }
+                  value={localFilters.clienteId}
+                  onChange={(v) =>
+                    setLocalFilters((s) => ({ ...s, clienteId: v }))
+                  }
+                />
+              </div>
+            </Col>
 
-            <Button
-              type="primary"
-              icon={<FiSearch size={18} />}
-              onClick={handleSearch}
-            >
-              Buscar
-            </Button>
+            <Col xs={24} sm={12} md={6} lg={4}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Documento</span>
+                <Input
+                  className="w-full"
+                  placeholder="Número..."
+                  allowClear
+                  value={localFilters.clienteDocumento}
+                  onChange={(e) =>
+                    setLocalFilters((s) => ({
+                      ...s,
+                      clienteDocumento: e.target.value,
+                    }))
+                  }
+                  onPressEnter={handleSearch}
+                />
+              </div>
+            </Col>
 
-            <Button
-              icon={<FiFileText size={18} />}
-              {...getRedOutlineButtonProps()}
-              onClick={handleExportPdf}
-              disabled={!localFilters.start || !localFilters.end}
-            >
-              Exportar PDF
-            </Button>
-          </Space>
+            <Col xs={24} sm={24} md={12} lg={6}>
+              <div className="flex gap-2">
+                <Button
+                  className="flex-1"
+                  type="primary"
+                  icon={<FiSearch size={16} />}
+                  onClick={handleSearch}
+                >
+                  Buscar
+                </Button>
+                <Button
+                  className="flex-1"
+                  icon={<FiFileText size={16} />}
+                  {...getRedOutlineButtonProps()}
+                  onClick={handleExportPdf}
+                  disabled={!localFilters.start || !localFilters.end}
+                >
+                  PDF
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
 
           <Table
             columns={columns}
@@ -449,7 +504,7 @@ export const TableRutas = ({
             rowClassName={(_record, index) =>
               index % 2 === 0 ? "even-row" : "odd-row"
             }
-            scroll={{ x: 600 }}
+            scroll={{ x: 1200 }}
             loading={isLoading}
             pagination={{
               current: pagination.page,
