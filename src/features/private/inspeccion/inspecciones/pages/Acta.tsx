@@ -35,14 +35,16 @@ export const Acta = () => {
     <>
       <button
         onClick={() => navigate(-1)}
-        className="bg-gray-800 text-white px-4 py-2 rounded shadow hover:bg-gray-700 print:hidden z-50 font-bold"
+        className="bg-gray-800 text-white px-4 py-2 rounded shadow hover:bg-gray-700 print:hidden z-50 font-bold mb-4"
       >
         Volver
       </button>
+    <div className="w-full overflow-x-auto pb-4">
       <div
         className="
         w-full 
-        max-w-[1246px]         
+        min-w-[1246px]
+        max-w-[1246px]
         min-h-[297mm]
         bg-white
         text-[10pt]
@@ -79,6 +81,7 @@ export const Acta = () => {
           />
         )}
       </div>
+    </div>
     </>
   );
 };

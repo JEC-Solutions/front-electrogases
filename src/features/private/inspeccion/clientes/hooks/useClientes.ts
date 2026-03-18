@@ -1,6 +1,10 @@
 import * as clientesServices from "@/features/private/inspeccion/clientes/services/clientes.services";
 import * as tiposDocumentos from "@/features/private/configuracion/tipos_documentos/services/tipoDocumentos.services";
-import { ICliente, IClientes, IInspeccionFirma } from "@/features/private/inspeccion/clientes/interfaces";
+import {
+  ICliente,
+  IClientes,
+  IInspeccionFirma,
+} from "@/features/private/inspeccion/clientes/interfaces";
 import { ITipoDocumentos } from "@/features/private/configuracion/tipos_documentos/interfaces";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -170,82 +174,6 @@ export const useClientes = () => {
     }
   };
 
-  //   Eliminar Tipo de documento
-  const deleteTipoDocumentoMutation = useMutation({
-    mutationFn: (id: number) => clientesServices.deleteCliente(id),
-
-    onMutate: () => {
-      Swal.fire({
-        title: "Eliminando...",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-    },
-
-    onSuccess: () => {
-      Swal.fire({
-        icon: "success",
-        title: "Eliminado",
-        text: "Tipo de documento eliminado correctamente",
-        confirmButtonText: "Aceptar",
-      });
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
-    },
-
-    onError: (error: any) => {
-      Swal.close();
-      handleAxiosError(error);
-    },
-  });
-
-  //   Ejecutar el query
-  const handleDelete = (id: number) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteTipoDocumentoMutation.mutate(id);
-      }
-    });
-  };
-
-  // Actualizar estado del cliente
-  const toggleClienteMutation = useMutation({
-    mutationFn: (id: number) => clientesServices.toggleStatus(id),
-
-    onMutate: () => {
-      Swal.fire({
-        title: "Actualizando estado...",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-    },
-
-    onSuccess: () => {
-      Swal.fire({
-        icon: "success",
-        title: "Estado actualizado",
-        text: "El cliente fue activado/desactivado correctamente",
-        confirmButtonText: "Aceptar",
-      });
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
-    },
-
-    onError: (error: any) => {
-      Swal.close();
-      handleAxiosError(error);
-    },
-  });
-
   // Mutation para actualizar la firma del cliente en una inspección específica
   const updateFirmaMutation = useMutation({
     mutationFn: ({
@@ -292,31 +220,31 @@ export const useClientes = () => {
     updateFirmaMutation.mutate({ idInspeccion, file });
   };
 
-  //   Actualizar estado del tipo de documento
-  const toggleStatus = (id: number) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "¿Deseas activar o desactivar este tipo de documento?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Sí, continuar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        toggleClienteMutation.mutate(id);
-      }
-    });
-  };
-
   useEffect(() => {
     if (currentCliente) {
-      methodsClientes.setValue("primer_nombre", currentCliente.primer_nombre);
-      methodsClientes.setValue("segundo_nombre", currentCliente.segundo_nombre);
+      methodsClientes.reset({
+        primer_nombre: currentCliente.primer_nombre,
+        segundo_nombre: currentCliente.segundo_nombre,
+        primer_apellido: currentCliente.primer_apellido,
+        segundo_apellido: currentCliente.segundo_apellido,
+        telefono: currentCliente.telefono,
+        numero_documento: currentCliente.numero_documento,
+        id_tipo_documento: currentCliente.tipo_documento?.id_tipo_documento,
+        estado: currentCliente.estado,
+      });
     } else {
-      methodsClientes.setValue("primer_nombre", "");
-      methodsClientes.setValue("segundo_nombre", "");
+      methodsClientes.reset({
+        primer_nombre: "",
+        segundo_nombre: "",
+        primer_apellido: "",
+        segundo_apellido: "",
+        telefono: "",
+        numero_documento: "",
+        id_tipo_documento: undefined,
+        estado: true,
+      });
     }
-  }, [currentCliente]);
+  }, [currentCliente, methodsClientes]);
 
   return {
     clientes: data,
@@ -331,8 +259,6 @@ export const useClientes = () => {
     openCurrentCliente,
     currentCliente,
     onSubmit,
-    handleDelete,
-    toggleStatus,
     // Firma
     openFirma,
     clienteFirma,

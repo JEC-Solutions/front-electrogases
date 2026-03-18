@@ -13,7 +13,6 @@ export const Clientes = () => {
     documentos,
     error,
     handleClose,
-    handleDelete,
     handleOpen,
     isError,
     isLoading,
@@ -21,7 +20,6 @@ export const Clientes = () => {
     onSubmit,
     open,
     openCurrentCliente,
-    toggleStatus,
     // Firma
     openFirma,
     clienteFirma,
@@ -63,8 +61,6 @@ export const Clientes = () => {
           <TableClientes
             clientes={clientes}
             onOpenCurrent={openCurrentCliente}
-            onDelete={handleDelete}
-            onStatus={toggleStatus}
             onFirma={openFirmaCliente}
           />
         )}

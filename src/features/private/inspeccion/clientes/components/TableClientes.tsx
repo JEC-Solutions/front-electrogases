@@ -1,28 +1,15 @@
 import { IClientes } from "@/features/private/inspeccion/clientes/interfaces";
 import { Button, Space, Table, Tag, Tooltip } from "antd";
-import { FaEdit, FaLock, FaTrashAlt, FaUnlock, FaSignature } from "react-icons/fa";
+import { FaEdit, FaSignature } from "react-icons/fa";
 
 interface Props {
   clientes: IClientes[];
   onOpenCurrent: (cliente: IClientes) => void;
-  onDelete: (id: number) => void;
-  onStatus: (id: number) => void;
   onFirma: (cliente: IClientes) => void;
 }
 
-export const TableClientes = ({
-  clientes,
-  onOpenCurrent,
-  onDelete,
-  onStatus,
-  onFirma,
-}: Props) => {
+export const TableClientes = ({ clientes, onOpenCurrent, onFirma }: Props) => {
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "id_cliente",
-      key: "id_cliente",
-    },
     {
       title: "Nombre Completo",
       key: "nombre_completo",
@@ -75,26 +62,6 @@ export const TableClientes = ({
           <Tooltip title="Actualizar Firma">
             <Button type="link" onClick={() => onFirma(record)}>
               <FaSignature style={{ color: "#722ed1" }} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip title="Eliminar Cliente">
-            <Button
-              type="link"
-              danger
-              onClick={() => onDelete(record.id_cliente)}
-            >
-              <FaTrashAlt style={{ color: "#ff4d4f" }} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip title={record.estado ? "Desactivar" : "Activar"}>
-            <Button type="link" onClick={() => onStatus(record.id_cliente)}>
-              {record.estado ? (
-                <FaLock style={{ color: "#ff4d4f" }} />
-              ) : (
-                <FaUnlock style={{ color: "#52c41a" }} />
-              )}
             </Button>
           </Tooltip>
         </Space>

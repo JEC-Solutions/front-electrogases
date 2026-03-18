@@ -6,6 +6,7 @@ export interface ICliente {
   telefono: string;
   id_tipo_documento: number;
   numero_documento: string;
+  estado?: boolean;
 }
 
 export interface IClientes{

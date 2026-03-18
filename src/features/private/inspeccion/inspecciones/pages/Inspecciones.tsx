@@ -23,7 +23,7 @@ export const Inspecciones = () => {
   } = useInspecciones();
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 px-4 sm:px-0">
       <Card>
         {isError ? (
           <div style={{ color: "red", textAlign: "center" }}>

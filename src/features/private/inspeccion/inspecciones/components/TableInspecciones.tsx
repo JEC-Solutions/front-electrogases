@@ -144,6 +144,14 @@ export const TableInspecciones = ({
     { label: "Matriz", value: "3" },
   ];
 
+  const hasFilters = !!(
+    filters.numeroActa ||
+    filters.inspector ||
+    filters.tipoInspeccion ||
+    filters.startDate ||
+    filters.endDate
+  );
+
   const columns: ColumnsType<IInspecciones> = [
     {
       title: "Fecha inspección",
@@ -296,12 +304,101 @@ export const TableInspecciones = ({
         size="small"
         style={{ marginBottom: 16 }}
         title={
-          <Space>
-            <SearchOutlined /> Filtros de Búsqueda
-          </Space>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 py-2">
+            <div className="flex items-center gap-2">
+              <SearchOutlined />
+              <span className="font-semibold">Filtros de Búsqueda</span>
+            </div>
+          </div>
         }
-        extra={
-          <Space>
+      >
+        <Row gutter={[16, 16]} align="bottom">
+          <Col xs={24} lg={16}>
+            <Row gutter={[12, 12]}>
+              <Col xs={24} sm={12} md={6}>
+                <label className="block text-sm font-medium mb-1 text-gray-600">
+                  Rango Fechas
+                </label>
+                <RangePicker
+                  style={{ width: "100%" }}
+                  value={dateRange}
+                  onChange={(val) =>
+                    setDateRange(val as [Dayjs | null, Dayjs | null] | null)
+                  }
+                  format="YYYY-MM-DD"
+                  placeholder={["Inicio", "Fin"]}
+                />
+              </Col>
+              <Col xs={24} sm={12} md={6}>
+                <label className="block text-sm font-medium mb-1 text-gray-600">
+                  Tipo Inspección
+                </label>
+                <Select
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder="Todos"
+                  value={selectedTipo}
+                  options={tiposDeInspeccionOptions}
+                  onChange={(val) => setSelectedTipo(val)}
+                />
+              </Col>
+              <Col xs={24} sm={12} md={6}>
+                <label className="block text-sm font-medium mb-1 text-gray-600">
+                  Inspector
+                </label>
+                <Input
+                  placeholder="Buscar nombre..."
+                  value={searchTermInspector}
+                  onChange={(e) => setSearchTermInspector(e.target.value)}
+                  allowClear
+                  onPressEnter={handleSearch}
+                />
+              </Col>
+              <Col xs={24} sm={12} md={6}>
+                <label className="block text-sm font-medium mb-1 text-gray-600">
+                  Número Acta
+                </label>
+                <Input
+                  placeholder="N° Acta..."
+                  value={searchTermActa}
+                  onChange={(e) => setSearchTermActa(e.target.value)}
+                  allowClear
+                  onPressEnter={handleSearch}
+                />
+              </Col>
+            </Row>
+          </Col>
+
+          <Col xs={24} lg={8}>
+            <div className="flex flex-col sm:flex-row justify-end items-end gap-3 h-full pb-[2px]">
+              <Space className="w-full sm:w-auto justify-end">
+                <Button
+                  onClick={handleClearFilters}
+                  block
+                  className="min-w-[100px]"
+                >
+                  Limpiar
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<SearchOutlined />}
+                  onClick={handleSearch}
+                  block
+                  className="min-w-[100px]"
+                >
+                  Buscar
+                </Button>
+              </Space>
+            </div>
+          </Col>
+        </Row>
+
+        <div className="mt-6 pt-4 border-t border-gray-700/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-gray-400 italic">
+            * Use los filtros para encontrar inspecciones específicas y
+            descargarlas de forma masiva.
+          </div>
+          <Space wrap className="w-full sm:w-auto justify-end">
             <Select
               value={printType}
               onChange={(val) => setPrintType(val)}
@@ -328,6 +425,7 @@ export const TableInspecciones = ({
                   {
                     key: "filtrados",
                     label: "Descargar Filtrados (Todos)",
+                    disabled: !hasFilters,
                     onClick: () =>
                       downloadMassivePdf(undefined, printType, filters),
                   },
@@ -339,65 +437,7 @@ export const TableInspecciones = ({
               </Button>
             </Dropdown>
           </Space>
-        }
-      >
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={12} md={6}>
-            <label style={{ fontWeight: 500 }}>Rango Fechas:</label>
-            <RangePicker
-              style={{ width: "100%" }}
-              value={dateRange}
-              onChange={(val) =>
-                setDateRange(val as [Dayjs | null, Dayjs | null] | null)
-              }
-              format="YYYY-MM-DD"
-              placeholder={["Inicio", "Fin"]}
-            />
-          </Col>
-          <Col xs={24} sm={12} md={6}>
-            <label style={{ fontWeight: 500 }}>Tipo Inspección:</label>
-            <Select
-              allowClear
-              style={{ width: "100%" }}
-              placeholder="Todos"
-              value={selectedTipo}
-              options={tiposDeInspeccionOptions}
-              onChange={(val) => setSelectedTipo(val)}
-            />
-          </Col>
-          <Col xs={24} sm={12} md={6}>
-            <label style={{ fontWeight: 500 }}>Inspector:</label>
-            <Input
-              placeholder="Buscar por nombre..."
-              value={searchTermInspector}
-              onChange={(e) => setSearchTermInspector(e.target.value)}
-              allowClear
-              onPressEnter={handleSearch}
-            />
-          </Col>
-          <Col xs={24} sm={12} md={6}>
-            <label style={{ fontWeight: 500 }}>Número Acta:</label>
-            <Input
-              placeholder="Buscar acta..."
-              value={searchTermActa}
-              onChange={(e) => setSearchTermActa(e.target.value)}
-              allowClear
-              onPressEnter={handleSearch}
-            />
-          </Col>
-        </Row>
-        <Row style={{ marginTop: 16 }} justify="end">
-          <Space>
-            <Button onClick={handleClearFilters}>Limpiar</Button>
-            <Button
-              type="primary"
-              icon={<SearchOutlined />}
-              onClick={handleSearch}
-            >
-              Buscar
-            </Button>
-          </Space>
-        </Row>
+        </div>
       </Card>
 
       <Table
@@ -405,7 +445,7 @@ export const TableInspecciones = ({
         dataSource={inspecciones}
         rowKey="id_inspeccion"
         className="custom-table"
-        scroll={{ x: 600 }}
+        scroll={{ x: 900 }}
         loading={isLoading}
         rowSelection={{
           selectedRowKeys,

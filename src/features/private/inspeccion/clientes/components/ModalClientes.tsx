@@ -1,5 +1,8 @@
 import { ITipoDocumentos } from "@/features/private/configuracion/tipos_documentos/interfaces";
-import { ICliente, IClientes } from "@/features/private/inspeccion/clientes/interfaces";
+import {
+  ICliente,
+  IClientes,
+} from "@/features/private/inspeccion/clientes/interfaces";
 import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
 import { Controller } from "react-hook-form";
 
