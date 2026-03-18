@@ -112,7 +112,7 @@ export const Footer = ({
               <div
                 className={`flex-1 border-t ${borderClass} ${cellPadding} min-h-[25px]`}
               >
-                <span>Expedido por:</span>
+                <span>SENA:</span>
                 <span className="font-bold ml-1 mt-1">{registroSic}</span>
               </div>
             </div>

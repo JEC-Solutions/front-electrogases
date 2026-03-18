@@ -142,7 +142,7 @@ export const Registro = ({
             <div
               className={`h-[25%] border-t ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
-              <span>Expedido por:</span>
+              <span>SENA:</span>
               <span className="font-bold">{registroSic}</span>
             </div>
           </div>
