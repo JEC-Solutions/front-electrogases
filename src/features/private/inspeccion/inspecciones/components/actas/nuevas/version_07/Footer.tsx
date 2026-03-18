@@ -23,7 +23,6 @@ export const Footer = ({
     ]
       .filter(Boolean)
       .join(" ") || "";
-  const registroSic = persona?.numero_documento || "";
   const entidad = persona?.usuario?.entidad || "";
   const certificadoInspector = persona?.usuario?.certificado_no || "";
   const vigenciaInspector = persona?.usuario?.vigencia || "";
