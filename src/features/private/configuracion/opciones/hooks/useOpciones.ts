@@ -213,7 +213,7 @@ export const useOpciones = () => {
         text: "El menu fue activado/desactivado correctamente",
         confirmButtonText: "Aceptar",
       });
-      queryClient.invalidateQueries({ queryKey: ["menus"] });
+      queryClient.invalidateQueries({ queryKey: ["opciones"] });
     },
 
     onError: (error: any) => {

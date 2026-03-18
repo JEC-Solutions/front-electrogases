@@ -26,9 +26,23 @@ export const handleAxiosError = (error: AxiosError) => {
       }
     }
 
+    let icon: "success" | "warning" | "error" = "error";
+    let title = `Error ${status}`;
+
+    if (status >= 200 && status < 300) {
+      icon = "success";
+      title = "Operación Exitosa";
+    } else if (status >= 400 && status < 500) {
+      icon = "warning";
+      title = "Atención";
+    } else if (status >= 500) {
+      icon = "error";
+      title = "Error del Servidor";
+    }
+
     Swal.fire({
-      icon: "error",
-      title: `Error ${status}`,
+      icon,
+      title,
       text: errorText,
     });
   } else if (error.request) {

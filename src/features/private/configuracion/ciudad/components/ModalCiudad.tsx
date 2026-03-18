@@ -66,13 +66,13 @@ export const ModalCiudad = ({
           <Controller
             name="nombre"
             control={control}
-            rules={{ required: "Por favor ingrese el nombre del departamento" }}
+            rules={{ required: "Por favor ingrese el nombre de la ciudad" }}
             render={({ field }) => (
               <>
                 <Input
                   {...field}
                   id="nombre"
-                  placeholder="Nombre del Departamento"
+                  placeholder="Nombre de la Ciudad"
                 />
 
                 {errors.nombre?.message && (

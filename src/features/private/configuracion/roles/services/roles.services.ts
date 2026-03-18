@@ -29,5 +29,5 @@ export const deleteRole = async (idRole: number) => {
 };
 
 export const toggleStatus = async (idRole: number) => {
-  return await electroApi.patch(`/roles/${idRole}/toggle_status`);
+  return await electroApi.patch(`/roles/${idRole}/toggle-status`);
 };
