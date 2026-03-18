@@ -144,7 +144,7 @@ export const Registro = ({
               className={`h-[25%] border-t ${borderClass} ${cellPadding} flex flex-col justify-center`}
             >
               <span>Expedido por:</span>
-              <span className="font-bold">{entidad} {registroSic}</span>
+              <span className="font-bold">{entidad}</span>
             </div>
           </div>
 
