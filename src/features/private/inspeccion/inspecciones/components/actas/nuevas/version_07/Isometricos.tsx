@@ -32,7 +32,6 @@ export const Isometricos = ({
 }: Props) => {
   const volumenRecintos = inspeccion?.volumenRecintos ?? [];
 
-  // 1. Buscamos el recinto por su NOMBRE exacto ("RA", "RB", etc.)
   const findRecinto = (nombre: string) =>
     volumenRecintos.find((r) => r.recinto === nombre);
 
@@ -43,7 +42,21 @@ export const Isometricos = ({
   const RE = findRecinto("RE");
   const RF = findRecinto("RF");
 
-  // Patrón de cuadrícula CSS simple para el fondo
+  const todosLosAdyacentes: (number | string)[] = [];
+  const recintosOrder = ["RA", "RB", "RC", "RD", "RE", "RF"];
+
+  recintosOrder.forEach((nombreRecinto) => {
+    const recinto = findRecinto(nombreRecinto);
+    if (recinto) {
+      for (let i = 1; i <= 20; i++) {
+        const key = `volumenADY${i}` as keyof typeof recinto;
+        if (recinto[key] !== undefined && recinto[key] !== null) {
+          todosLosAdyacentes.push(recinto[key] as number | string);
+        }
+      }
+    }
+  });
+
   const gridPatternStyle = {
     backgroundImage:
       "linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)",
@@ -93,44 +106,44 @@ export const Isometricos = ({
         <div className="w-[24%] flex text-[7pt]">
           {/* Sub-columna Izquierda: RA, RB, RC */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
-            {/* RA: Sus adyacentes son 1, 2, 3 */}
+            {/* RA */}
             <LineInput label="RA:" value={RA?.volumenRecinto} />
-            <LineInput label="ADY 1:" value={RA?.volumenADY1} />
-            <LineInput label="ADY 2:" value={RA?.volumenADY2} />
-            <LineInput label="ADY 3:" value={RA?.volumenADY3} />
+            <LineInput label="ADY 1:" value={todosLosAdyacentes[0]} />
+            <LineInput label="ADY 2:" value={todosLosAdyacentes[1]} />
+            <LineInput label="ADY 3:" value={todosLosAdyacentes[2]} />
 
-            {/* RB: Sus adyacentes visualmente son 4, 5, 6 (pero en DB son 1, 2, 3 de RB) */}
+            {/* RB */}
             <LineInput label="RB:" value={RB?.volumenRecinto} />
-            <LineInput label="ADY 4:" value={RB?.volumenADY1} />
-            <LineInput label="ADY 5:" value={RB?.volumenADY2} />
-            <LineInput label="ADY 6:" value={RB?.volumenADY3} />
+            <LineInput label="ADY 4:" value={todosLosAdyacentes[3]} />
+            <LineInput label="ADY 5:" value={todosLosAdyacentes[4]} />
+            <LineInput label="ADY 6:" value={todosLosAdyacentes[5]} />
 
-            {/* RC: Sus adyacentes visualmente son 7, 8, 9 */}
+            {/* RC */}
             <LineInput label="RC:" value={RC?.volumenRecinto} />
-            <LineInput label="ADY 7:" value={RC?.volumenADY1} />
-            <LineInput label="ADY 8:" value={RC?.volumenADY2} />
-            <LineInput label="ADY 9:" value={RC?.volumenADY3} />
+            <LineInput label="ADY 7:" value={todosLosAdyacentes[6]} />
+            <LineInput label="ADY 8:" value={todosLosAdyacentes[7]} />
+            <LineInput label="ADY 9:" value={todosLosAdyacentes[8]} />
           </div>
 
           {/* Sub-columna Derecha: RD, RE, RF */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             {/* RD */}
             <LineInput label="RD:" value={RD?.volumenRecinto} />
-            <LineInput label="ADY 10:" value={RD?.volumenADY1} />
-            <LineInput label="ADY 11:" value={RD?.volumenADY2} />
-            <LineInput label="ADY 12:" value={RD?.volumenADY3} />
+            <LineInput label="ADY 10:" value={todosLosAdyacentes[9]} />
+            <LineInput label="ADY 11:" value={todosLosAdyacentes[10]} />
+            <LineInput label="ADY 12:" value={todosLosAdyacentes[11]} />
 
             {/* RE */}
             <LineInput label="RE:" value={RE?.volumenRecinto} />
-            <LineInput label="ADY 13:" value={RE?.volumenADY1} />
-            <LineInput label="ADY 14:" value={RE?.volumenADY2} />
-            <LineInput label="ADY 15:" value={RE?.volumenADY3} />
+            <LineInput label="ADY 13:" value={todosLosAdyacentes[12]} />
+            <LineInput label="ADY 14:" value={todosLosAdyacentes[13]} />
+            <LineInput label="ADY 15:" value={todosLosAdyacentes[14]} />
 
             {/* RF */}
             <LineInput label="RF:" value={RF?.volumenRecinto} />
-            <LineInput label="ADY 16:" value={RF?.volumenADY1} />
-            <LineInput label="ADY 17:" value={RF?.volumenADY2} />
-            <LineInput label="ADY 18:" value={RF?.volumenADY3} />
+            <LineInput label="ADY 16:" value={todosLosAdyacentes[15]} />
+            <LineInput label="ADY 17:" value={todosLosAdyacentes[16]} />
+            <LineInput label="ADY 18:" value={todosLosAdyacentes[17]} />
           </div>
 
           {/* Sub-columna Totales */}
