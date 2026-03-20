@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Modal, Select, Spin, Empty, Image, Button } from "antd";
 import Swal from "sweetalert2";
 import { ITipoImagen } from "@/features/private/inspeccion/inspecciones/interfaces";
-import { useQuery } from "@tanstack/react-query";
-import { getTiposImagenes } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getTiposImagenes, changeImageType } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 dayjs.extend(utc);
-
 
 interface IImagenItem {
   id: number;
@@ -58,6 +57,55 @@ export const ModalImagenesInspeccion = ({
     enabled: !!currentTipoInspeccion && isModalOpen,
     staleTime: 1000 * 60 * 5,
   });
+
+  const changeTypeMutation = useMutation({
+    mutationFn: async ({
+      imagenId,
+      nuevoTipoId,
+    }: {
+      imagenId: number;
+      nuevoTipoId: number;
+    }) => {
+      return await changeImageType(imagenId, nuevoTipoId);
+    },
+    onSuccess: (_, variables) => {
+      // Remover la imagen de la lista actual ya que cambió de tipo
+      setImageList((prev) => prev.filter((img) => img.id !== variables.imagenId));
+
+      Swal.fire({
+        icon: "success",
+        title: "Tipo actualizado",
+        text: "La imagen ha sido movida al nuevo tipo correctamente.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar el tipo de la imagen.",
+      });
+    },
+  });
+
+  const handleUpdateImageType = (imagenId: number, nuevoTipoId: number) => {
+    if (nuevoTipoId === selectedTypeId) return;
+
+    Swal.fire({
+      title: "¿Cambiar tipo de imagen?",
+      text: "La imagen se moverá a la nueva categoría seleccionada.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        changeTypeMutation.mutate({ imagenId, nuevoTipoId });
+      }
+    });
+  };
 
   const handleTypeChange = async (tipoId: number) => {
     if (!currentInspeccionId) return;
@@ -203,6 +251,20 @@ export const ModalImagenesInspeccion = ({
                       Hora: {img.hora_registro}
                     </span>
                   )}
+                  <div style={{ width: "100%", marginTop: "8px" }}>
+                    <Select
+                      size="small"
+                      style={{ width: "100%" }}
+                      placeholder="Cambiar tipo"
+                      value={selectedTypeId}
+                      loading={changeTypeMutation.isPending && changeTypeMutation.variables?.imagenId === img.id}
+                      onChange={(val) => handleUpdateImageType(img.id, val)}
+                      options={tiposImagenes.map((tipo) => ({
+                        label: tipo.descripcion,
+                        value: tipo.id,
+                      }))}
+                    />
+                  </div>
                 </div>
               ))}
             </div>

@@ -258,8 +258,12 @@ export const useInspectoresUsuarios = () => {
         currentUsuarios.persona.telefono,
       );
       methodsUsuarios.setValue("persona.email", currentUsuarios.persona.email);
-      methodsUsuarios.setValue("certificado_no", currentUsuarios.certificado_no);
+      methodsUsuarios.setValue(
+        "certificado_no",
+        currentUsuarios.certificado_no,
+      );
       methodsUsuarios.setValue("vigencia", currentUsuarios.vigencia);
+      methodsUsuarios.setValue("entidad", currentUsuarios.entidad);
     } else {
       methodsUsuarios.reset();
       methodsUsuarios.setValue(

@@ -25,6 +25,9 @@ export interface IInspecciones {
   editar_informe: boolean;
   created_at: string;
   updated_at: string;
+  inspector_certificado_no: string | null;
+  inspector_vigencia: string | null;
+  inspector_entidad: string | null;
   tipoInspeccion: TipoInspeccion;
   ruta: Ruta;
 }
@@ -60,6 +63,9 @@ export interface IActa {
   editar_informe: boolean;
   created_at: string;
   updated_at: string;
+  inspector_certificado_no: string | null;
+  inspector_vigencia: string | null;
+  inspector_entidad: string | null;
   instalacionNueva: any;
   instalacionExistente: InstalacionExistente;
   tipoInspeccion: TipoInspeccion;

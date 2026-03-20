@@ -23,9 +23,11 @@ export const Footer = ({
     ]
       .filter(Boolean)
       .join(" ") || "";
-  const entidad = persona?.usuario?.entidad || "";
-  const certificadoInspector = persona?.usuario?.certificado_no || "";
-  const vigenciaInspector = persona?.usuario?.vigencia || "";
+  const entidad = inspeccion?.inspector_entidad || persona?.usuario?.entidad || "";
+  const certificadoInspector =
+    inspeccion?.inspector_certificado_no || persona?.usuario?.certificado_no || "";
+  const vigenciaInspector =
+    inspeccion?.inspector_vigencia || persona?.usuario?.vigencia || "";
 
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
