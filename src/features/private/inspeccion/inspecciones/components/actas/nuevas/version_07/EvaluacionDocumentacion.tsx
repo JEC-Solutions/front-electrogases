@@ -38,7 +38,7 @@ const DocCheckCell = ({
     className={`flex flex-col justify-between p-[1px] border-r border-black ${className}`}
   >
     <div className="leading-tight text-center text-[6.5pt]">{label}</div>
-    <div className="flex justify-center items-center gap-[2px] text-[6pt]">
+    <div className="flex justify-center items-center gap-[2px] text-[5pt]">
       <span className="font-semibold">Cumple</span>
       <span>SI</span> <Box checked={state === "SI"} />
       <span>NO</span> <Box checked={state === "NO"} />
