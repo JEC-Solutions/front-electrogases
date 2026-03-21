@@ -5,16 +5,7 @@ interface Props {
 }
 
 export const EvaluacionRecintos = ({ inspeccion }: Props) => {
-  const rawRecintos = inspeccion?.evaluacionRecintos ?? [];
-
-  // Filtrar duplicados (lógica original conservada)
-  const recintos = rawRecintos.filter(
-    (recinto, index, self) =>
-      index ===
-      self.findIndex(
-        (t) => t.id_evaluacion_recintos === recinto.id_evaluacion_recintos,
-      ),
-  );
+  const recintos = inspeccion?.evaluacionRecintos ?? [];
 
   const maxFilas = 5;
   const filas = Array.from({ length: maxFilas });
@@ -23,17 +14,19 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
   const headerClass = "bg-gray-100 font-bold px-1";
   const textClass = "text-[7.5pt] font-arial text-black leading-none";
 
-  // Función auxiliar para determinar si mostrar la potencia total
+  const val = (v: any) =>
+    v !== null && v !== undefined && v !== "" ? v : "";
+
+  const valNA = (v: any) =>
+    v !== null && v !== undefined && v !== "" ? `${v}` : "N/A";
+
   const shouldShowPotencia = (currentIndex: number) => {
     const current = recintos[currentIndex];
     if (!current) return false;
 
     const next = recintos[currentIndex + 1];
 
-    // Si no hay siguiente, es el último -> Mostrar
     if (!next) return true;
-
-    // Si el siguiente tiene diferente ID, el actual es el último de su grupo -> Mostrar
     return current.idRecinto !== next.idRecinto;
   };
 
@@ -45,23 +38,25 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
 
       <table className="w-full table-fixed border-collapse border border-black text-center">
         <colgroup>
-          <col style={{ width: "13%" }} /> {/* Tipo Recinto */}
-          <col style={{ width: "6%" }} /> {/* Id Recinto */}
-          <col style={{ width: "7%" }} /> {/* Id Artefacto */}
-          <col style={{ width: "9%" }} /> {/* Potencia Inst */}
-          <col style={{ width: "8%" }} /> {/* Potencia Total */}
-          <col style={{ width: "2.3%" }} /> {/* A */}
-          <col style={{ width: "2.3%" }} /> {/* B */}
-          <col style={{ width: "2.3%" }} /> {/* C */}
+          <col style={{ width: "11%" }} /> {/* Tipo Recinto */}
+          <col style={{ width: "5%" }} /> {/* Id Recinto */}
+          <col style={{ width: "6%" }} /> {/* Id Artefacto */}
+          <col style={{ width: "9.3%" }} /> {/* Potencia Inst */}
+          <col style={{ width: "9.3%" }} /> {/* Potencia Prevista */}
+          <col style={{ width: "9.3%" }} /> {/* Potencia Total */}
+          <col style={{ width: "2%" }} /> {/* A */}
+          <col style={{ width: "2%" }} /> {/* B */}
+          <col style={{ width: "2%" }} /> {/* C */}
           {/* LADO DERECHO (50%) */}
-          <col style={{ width: "13%" }} />
+          <col style={{ width: "11%" }} />
+          <col style={{ width: "5%" }} />
           <col style={{ width: "6%" }} />
-          <col style={{ width: "7%" }} />
-          <col style={{ width: "9%" }} />
-          <col style={{ width: "8%" }} />
-          <col style={{ width: "2.3%" }} />
-          <col style={{ width: "2.3%" }} />
-          <col style={{ width: "2.3%" }} />
+          <col style={{ width: "9.3%" }} />
+          <col style={{ width: "9.3%" }} />
+          <col style={{ width: "9.3%" }} />
+          <col style={{ width: "2%" }} />
+          <col style={{ width: "2%" }} />
+          <col style={{ width: "2%" }} />
         </colgroup>
 
         <thead>
@@ -76,17 +71,28 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
               Id. Artefacto
             </th>
             <th className={borderClass} rowSpan={2}>
-              Potencia Instalada
+              Potencia
               <br />
-              (kW)
+              Instalada
+              <br />
+              (KW)
             </th>
             <th className={borderClass} rowSpan={2}>
-              Potencia Total
+              Potencia
               <br />
-              en (kW)
+              Prevista
+              <br />
+              (KW)
+            </th>
+            <th className={borderClass} rowSpan={2}>
+              Potencia
+              <br />
+              Conjunta Max
+              <br />
+              (kw)
             </th>
             <th className={borderClass} colSpan={3}>
-              Tipo artefacto
+              Tipo art.
             </th>
 
             <th className={`${borderClass} border-l-2`} rowSpan={2}>
@@ -99,17 +105,28 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
               Id. Artefacto
             </th>
             <th className={borderClass} rowSpan={2}>
-              Potencia Instalada
+              Potencia
               <br />
-              (kW)
+              Instalada
+              <br />
+              (KW)
             </th>
             <th className={borderClass} rowSpan={2}>
-              Potencia Total
+              Potencia
               <br />
-              en (kW)
+              Prevista
+              <br />
+              (KW)
+            </th>
+            <th className={borderClass} rowSpan={2}>
+              Potencia
+              <br />
+              Conjunta Max
+              <br />
+              (kw)
             </th>
             <th className={borderClass} colSpan={3}>
-              Tipo artefacto
+              Tipo art.
             </th>
           </tr>
 
@@ -138,16 +155,19 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
               <tr key={i} className="h-[20px]">
                 {/* --- LADO IZQUIERDO --- */}
                 <td className={`${borderClass} text-left px-1 truncate`}>
-                  {itemLeft?.tipoRecinto || ""}
+                  {val(itemLeft?.tipoRecinto)}
                 </td>
-                <td className={borderClass}>{itemLeft?.idRecinto || ""}</td>
-                <td className={borderClass}>{itemLeft?.idArtefacto || ""}</td>
+                <td className={borderClass}>{val(itemLeft?.idRecinto)}</td>
+                <td className={borderClass}>{val(itemLeft?.idArtefacto)}</td>
                 <td className={borderClass}>
-                  {itemLeft?.potenciaInstalada || ""}
+                  {itemLeft ? valNA(itemLeft?.potenciaInstalada) : ""}
+                </td>
+                <td className={borderClass}>
+                  {val(itemLeft?.potenciaPrevista)}
                 </td>
                 <td className={borderClass}>
                   {/* Solo mostramos si showPotLeft es true */}
-                  {showPotLeft ? itemLeft?.potenciaConjunta : ""}
+                  {showPotLeft ? val(itemLeft?.potenciaConjunta) : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
                   {itemLeft?.tipoArtefacto === "A" ? "✓" : ""}
@@ -163,16 +183,19 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
                 <td
                   className={`${borderClass} border-l-2 text-left px-1 truncate`}
                 >
-                  {itemRight?.tipoRecinto || ""}
+                  {val(itemRight?.tipoRecinto)}
                 </td>
-                <td className={borderClass}>{itemRight?.idRecinto || ""}</td>
-                <td className={borderClass}>{itemRight?.idArtefacto || ""}</td>
+                <td className={borderClass}>{val(itemRight?.idRecinto)}</td>
+                <td className={borderClass}>{val(itemRight?.idArtefacto)}</td>
                 <td className={borderClass}>
-                  {itemRight?.potenciaInstalada || ""}
+                  {itemRight ? valNA(itemRight?.potenciaInstalada) : ""}
+                </td>
+                <td className={borderClass}>
+                  {val(itemRight?.potenciaPrevista)}
                 </td>
                 <td className={borderClass}>
                   {/* Solo mostramos si showPotRight es true */}
-                  {showPotRight ? itemRight?.potenciaConjunta : ""}
+                  {showPotRight ? val(itemRight?.potenciaConjunta) : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>
                   {itemRight?.tipoArtefacto === "A" ? "✓" : ""}

@@ -138,6 +138,7 @@ export interface EvaluacionRecinto {
   idRecinto: string;
   idArtefacto: string;
   potenciaInstalada: number;
+  potenciaPrevista: number;
   potenciaConjunta: number;
   tipoArtefacto: string;
   volumenRecinto: any;
