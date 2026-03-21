@@ -13,6 +13,7 @@ import {
   Card,
   Popconfirm,
   Dropdown,
+  Tag,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
@@ -24,6 +25,7 @@ import {
   CheckCircleOutlined,
   DownOutlined,
   FileImageOutlined,
+  BugOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import type { Dayjs } from "dayjs";
@@ -48,6 +50,8 @@ interface Props {
   ) => Promise<any>;
   autorizarEdicion: (inspeccionId: number) => void;
   isAutorizando: boolean;
+  togglePrueba: (inspeccionId: number) => void;
+  isTogglingPrueba: boolean;
   downloadImages: (id: number) => void;
   // Paginación
   pagination: {
@@ -69,6 +73,8 @@ export const TableInspecciones = ({
   getImagenPorTipo,
   autorizarEdicion,
   isAutorizando,
+  togglePrueba,
+  isTogglingPrueba,
   downloadImages,
   pagination,
   filters,
@@ -178,7 +184,12 @@ export const TableInspecciones = ({
         if (id === 1) prefijo = "PD";
         if (id === 2) prefijo = "NRD";
 
-        return `${prefijo} ${numeroActa}`.trim();
+        return (
+          <Space>
+            {`${prefijo} ${numeroActa}`.trim()}
+            {record.es_prueba && <Tag color="orange">PRUEBA</Tag>}
+          </Space>
+        );
       },
     },
     {
@@ -232,6 +243,47 @@ export const TableInspecciones = ({
                     style={{
                       fontSize: 18,
                       color: yaAutorizado ? "#52c41a" : "#faad14",
+                    }}
+                  />
+                }
+              />
+            </Popconfirm>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: "Marcar Prueba",
+      key: "marcarPrueba",
+      align: "center",
+      render: (_, record) => {
+        const esPrueba = record.es_prueba;
+        return (
+          <Tooltip
+            title={
+              esPrueba
+                ? "Quitar marca de prueba"
+                : "Marcar como inspección de prueba"
+            }
+          >
+            <Popconfirm
+              title={
+                esPrueba
+                  ? "¿Quitar marca de prueba a este informe?"
+                  : "¿Marcar este informe como prueba (tendrá marca de agua)?"
+              }
+              onConfirm={() => togglePrueba(record.id_inspeccion)}
+              okText="Sí"
+              cancelText="No"
+            >
+              <Button
+                type="text"
+                loading={isTogglingPrueba}
+                icon={
+                  <BugOutlined
+                    style={{
+                      fontSize: 18,
+                      color: esPrueba ? "#fa541c" : "#bfbfbf",
                     }}
                   />
                 }

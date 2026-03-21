@@ -23,6 +23,7 @@ export interface IInspecciones {
   existe_linea: boolean;
   existe_vacio: boolean;
   editar_informe: boolean;
+  es_prueba: boolean;
   created_at: string;
   updated_at: string;
   inspector_certificado_no: string | null;
@@ -61,6 +62,7 @@ export interface IActa {
   fecha_instalacion_anterior: string;
   version: any;
   editar_informe: boolean;
+  es_prueba: boolean;
   created_at: string;
   updated_at: string;
   inspector_certificado_no: string | null;

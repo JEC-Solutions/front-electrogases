@@ -322,6 +322,33 @@ export const useInspecciones = () => {
     },
   });
 
+  const togglePruebaMutation = useMutation({
+    mutationFn: async (inspeccionId: number) => {
+      const { data } =
+        await inspeccionServices.togglePruebaInforme(inspeccionId);
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["inspecciones"] });
+      Swal.fire({
+        icon: "success",
+        title: "¡Estado actualizado!",
+        text: data?.message || "El estado de prueba ha sido actualizado.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo cambiar el estado de prueba.",
+        confirmButtonText: "Entendido",
+      });
+    },
+  });
+
   return {
     inspecciones,
     isLoading,
@@ -345,5 +372,8 @@ export const useInspecciones = () => {
     isAutorizando: autorizarEdicionMutation.isPending,
     downloadImages: downloadImagesMutation.mutate,
     isDownloadingImages: downloadImagesMutation.isPending,
+    // toggle prueba
+    togglePrueba: togglePruebaMutation.mutate,
+    isTogglingPrueba: togglePruebaMutation.isPending,
   };
 };
