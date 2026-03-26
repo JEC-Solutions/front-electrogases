@@ -397,7 +397,7 @@ export const ModalInspectoresUsuarios = ({
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(date) =>
                             field.onChange(
-                              date ? date.format("YYYY-MM-DD") : "",
+                              date ? date.format("YYYY-MM-DD") : null,
                             )
                           }
                         />

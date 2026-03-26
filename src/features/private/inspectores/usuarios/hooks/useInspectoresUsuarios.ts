@@ -33,7 +33,7 @@ export const useInspectoresUsuarios = () => {
         email: "",
       },
       certificado_no: "",
-      vigencia: "",
+      vigencia: null,
     },
   });
 
@@ -59,7 +59,7 @@ export const useInspectoresUsuarios = () => {
         email: "",
       },
       certificado_no: "",
-      vigencia: "",
+      vigencia: null,
     });
   };
 

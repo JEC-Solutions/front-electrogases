@@ -4,7 +4,7 @@ export interface IUsuario {
   id_rol: number;
   persona: Persona;
   certificado_no?: string;
-  vigencia?: string;
+  vigencia?: string | null;
   firma_base64?: string;
   sello_base64?: string;
   entidad?: string;
@@ -28,7 +28,7 @@ export interface IUsuarios {
   firma: string;
   sello: string;
   certificado_no?: string;
-  vigencia?: string;
+  vigencia?: string | null;
   entidad?: string;
   estado: boolean;
   created_at: string;
