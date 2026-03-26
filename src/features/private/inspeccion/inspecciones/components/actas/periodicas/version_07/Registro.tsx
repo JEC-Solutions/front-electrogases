@@ -27,7 +27,7 @@ export const Registro = ({
   const certificadoInspector =
     inspeccion?.inspector_certificado_no || persona?.usuario?.certificado_no || "";
   const vigenciaInspector =
-    inspeccion?.inspector_vigencia || persona?.usuario?.vigencia || "";
+    inspeccion?.inspector_vigencia || persona?.usuario?.vigencia || "Sin Vigencia";
 
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
   const cliente = inspeccion?.ruta?.casa?.cliente;

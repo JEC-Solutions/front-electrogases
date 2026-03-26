@@ -29,12 +29,37 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
     if (!current) return false;
 
     const next = recintos[currentIndex + 1];
-    
+
     // Si no hay siguiente, es el último -> Mostrar
     if (!next) return true;
 
     // Si el siguiente tiene diferente ID, el actual es el último de su grupo -> Mostrar
     return current.idRecinto !== next.idRecinto;
+  };
+
+  const isVanti = inspeccion?.empresa?.toLowerCase().includes("vanti") ?? false;
+
+  const formatIdArtefacto = (id: string | undefined) => {
+    if (!id) return "";
+    if (!isVanti) return id;
+
+    return id.split("").map((char, index) => {
+      const isNumber = /[0-9]/.test(char);
+
+      return (
+        <span
+          key={index}
+          style={{
+            borderBottom: isNumber ? "1pt solid black" : "none",
+            margin: "0 1px",
+            display: "inline-block",
+            minWidth: "8px",
+          }}
+        >
+          {char}
+        </span>
+      );
+    });
   };
 
   return (
@@ -141,7 +166,9 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                   {itemLeft?.tipoRecinto || ""}
                 </td>
                 <td className={borderClass}>{itemLeft?.idRecinto || ""}</td>
-                <td className={borderClass}>{itemLeft?.idArtefacto || ""}</td>
+                <td className={borderClass}>
+                  {formatIdArtefacto(itemLeft?.idArtefacto)}
+                </td>
                 <td className={borderClass}>
                   {itemLeft?.potenciaInstalada || ""}
                 </td>
@@ -166,12 +193,14 @@ export const EvalRecintosTablaSimple = ({ inspeccion }: Props) => {
                   {itemRight?.tipoRecinto || ""}
                 </td>
                 <td className={borderClass}>{itemRight?.idRecinto || ""}</td>
-                <td className={borderClass}>{itemRight?.idArtefacto || ""}</td>
+                <td className={borderClass}>
+                  {formatIdArtefacto(itemRight?.idArtefacto)}
+                </td>
                 <td className={borderClass}>
                   {itemRight?.potenciaInstalada || ""}
                 </td>
                 <td className={borderClass}>
-                   {/* Solo mostramos si showPotRight es true */}
+                  {/* Solo mostramos si showPotRight es true */}
                   {showPotRight ? itemRight?.potenciaConjunta : ""}
                 </td>
                 <td className={`${borderClass} font-bold`}>

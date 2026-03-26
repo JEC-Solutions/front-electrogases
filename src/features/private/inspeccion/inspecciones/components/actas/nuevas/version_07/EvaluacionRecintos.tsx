@@ -30,6 +30,31 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
     return current.idRecinto !== next.idRecinto;
   };
 
+  const isVanti = inspeccion?.empresa?.toLowerCase().includes("vanti") ?? false;
+
+  const formatIdArtefacto = (v: any) => {
+    const str = v !== null && v !== undefined && v !== "" ? String(v) : "";
+    if (!isVanti || str === "") return str;
+
+    return str.split("").map((char, index) => {
+      const isNumber = /[0-9]/.test(char);
+
+      return (
+        <span
+          key={index}
+          style={{
+            borderBottom: isNumber ? "1pt solid black" : "none",
+            margin: "0 1px",
+            display: "inline-block",
+            minWidth: "8px",
+          }}
+        >
+          {char}
+        </span>
+      );
+    });
+  };
+
   return (
     <div className={`w-full ${textClass}`}>
       <div className="w-full border-l border-r border-black bg-gray-200 font-bold text-center py-1 text-[7pt]">
@@ -158,7 +183,9 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
                   {val(itemLeft?.tipoRecinto)}
                 </td>
                 <td className={borderClass}>{val(itemLeft?.idRecinto)}</td>
-                <td className={borderClass}>{val(itemLeft?.idArtefacto)}</td>
+                <td className={borderClass}>
+                  {formatIdArtefacto(itemLeft?.idArtefacto)}
+                </td>
                 <td className={borderClass}>
                   {itemLeft ? valNA(itemLeft?.potenciaInstalada) : ""}
                 </td>
@@ -186,7 +213,9 @@ export const EvaluacionRecintos = ({ inspeccion }: Props) => {
                   {val(itemRight?.tipoRecinto)}
                 </td>
                 <td className={borderClass}>{val(itemRight?.idRecinto)}</td>
-                <td className={borderClass}>{val(itemRight?.idArtefacto)}</td>
+                <td className={borderClass}>
+                  {formatIdArtefacto(itemRight?.idArtefacto)}
+                </td>
                 <td className={borderClass}>
                   {itemRight ? valNA(itemRight?.potenciaInstalada) : ""}
                 </td>
