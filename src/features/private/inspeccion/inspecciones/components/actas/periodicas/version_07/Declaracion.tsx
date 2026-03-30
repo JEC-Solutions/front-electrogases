@@ -18,8 +18,8 @@ export const Declaracion = ({ inspeccion }: Props) => {
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
 
   const isSinDefectos = conformidad.defectos === null;
-  const isNoCriticos = conformidad.defectos === true;
-  const isCriticos = conformidad.defectos === false;
+  const isNoCriticos = conformidad.defectos === false;
+  const isCriticos = conformidad.defectos === true;
   const nroReporte = conformidad.numero_reporte || "";
   const sitioVisible = conformidad.sitio_visible || false;
 
