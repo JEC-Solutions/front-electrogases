@@ -44,3 +44,18 @@ export interface Menu {
   created_at: string;
   updated_at: string;
 }
+
+export interface IAccion {
+  id_accion: number;
+  codigo: string;
+  nombre: string;
+  descripcion: string;
+  estado: boolean;
+  id_opcion?: number;
+  opcion?: Opcion;
+}
+
+export interface IPermisosAccion {
+  id_rol: number;
+  id_acciones: number[];
+}

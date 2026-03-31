@@ -3,6 +3,7 @@ import {
   TableRoles,
   ModalRoles,
   ModalPermisos,
+  ModalAcciones,
 } from "@/features/private/configuracion/roles/components";
 import { Button, Card, Spin } from "antd";
 
@@ -28,6 +29,13 @@ export const Roles = () => {
     openPermisos,
     openPermisosRol,
     permisosRol,
+    acciones,
+    accionesRol,
+    isLoadingAccionesRol,
+    openAcciones,
+    openAccionesRol,
+    handleCloseAcciones,
+    onSubmitAcciones,
   } = useRoles();
 
   return (
@@ -76,6 +84,7 @@ export const Roles = () => {
             onDelete={handleDelete}
             onStatus={toggleRoleStatus}
             openPermisosRol={openPermisosRol}
+            openAccionesRol={openAccionesRol}
           />
         )}
       </Card>
@@ -96,6 +105,16 @@ export const Roles = () => {
         opciones={opciones}
         permisosRol={permisosRol}
         currentRol={currentRol}
+      />
+
+      <ModalAcciones
+        open={openAcciones}
+        onClose={handleCloseAcciones}
+        acciones={acciones}
+        accionesRol={accionesRol}
+        isLoading={isLoadingAccionesRol}
+        currentRol={currentRol}
+        onSubmit={onSubmitAcciones}
       />
     </div>
   );

@@ -1,6 +1,13 @@
 import { IRoles } from "@/features/private/configuracion/roles/interfaces";
 import { Button, Space, Table, Tag, Tooltip } from "antd";
-import { FaEdit, FaKey, FaLock, FaTrashAlt, FaUnlock } from "react-icons/fa";
+import {
+  FaEdit,
+  FaKey,
+  FaLock,
+  FaShieldAlt,
+  FaTrashAlt,
+  FaUnlock,
+} from "react-icons/fa";
 
 interface Props {
   roles: IRoles[];
@@ -8,6 +15,7 @@ interface Props {
   onDelete: (id: number) => void;
   onStatus: (id: number) => void;
   openPermisosRol: (value: IRoles) => void;
+  openAccionesRol: (value: IRoles) => void;
 }
 
 export const TableRoles = ({
@@ -16,6 +24,7 @@ export const TableRoles = ({
   onDelete,
   onStatus,
   openPermisosRol,
+  openAccionesRol,
 }: Props) => {
   const columns = [
     {
@@ -38,9 +47,15 @@ export const TableRoles = ({
       key: "actions",
       render: (_text: any, record: IRoles) => (
         <Space>
-          <Tooltip title="Asignar Permisos">
+          <Tooltip title="Asignar Permisos de Menú">
             <Button type="link" onClick={() => openPermisosRol(record)}>
               <FaKey style={{ color: "#faad14" }} />
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Configurar Acciones de Módulos">
+            <Button type="link" onClick={() => openAccionesRol(record)}>
+              <FaShieldAlt style={{ color: "#722ed1" }} />
             </Button>
           </Tooltip>
 

@@ -31,3 +31,16 @@ export const deleteRole = async (idRole: number) => {
 export const toggleStatus = async (idRole: number) => {
   return await electroApi.patch(`/roles/${idRole}/toggle-status`);
 };
+
+// Acciones granulares
+export const getAcciones = async () => {
+  return await electroApi.get("/acciones");
+};
+
+export const getAccionesByRol = async (idRol: number) => {
+  return await electroApi.get(`/acciones/rol/${idRol}`);
+};
+
+export const assignAccionesToRol = async (idRol: number, id_acciones: number[]) => {
+  return await electroApi.post(`/acciones/rol/${idRol}`, { id_acciones });
+};

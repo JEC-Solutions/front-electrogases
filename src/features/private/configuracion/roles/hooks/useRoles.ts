@@ -6,6 +6,8 @@ import {
   IRoles,
   IPermiso,
   IPermisosRol,
+  IAccion,
+  IPermisosAccion,
 } from "@/features/private/configuracion/roles/interfaces";
 import { IOpciones } from "@/features/private/configuracion/opciones/interfaces";
 import Swal from "sweetalert2";
@@ -17,9 +19,11 @@ export const useRoles = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [openPermisos, setOpenPermisos] = useState(false);
+  const [openAcciones, setOpenAcciones] = useState(false);
   const [currentRol, setCurrentRol] = useState<IRoles | null>(null);
   const methodsRoles = useForm<IRole>();
   const methosPermisos = useForm<IPermiso>();
+  const methodsAcciones = useForm<IPermisosAccion>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -46,6 +50,17 @@ export const useRoles = () => {
     setOpenPermisos(false);
     setCurrentRol(null);
     methosPermisos.reset();
+  };
+  
+  const openAccionesRol = (rol: IRoles) => {
+    setCurrentRol(rol);
+    setOpenAcciones(true);
+  };
+
+  const handleCloseAcciones = () => {
+    setOpenAcciones(false);
+    setCurrentRol(null);
+    methodsAcciones.reset();
   };
 
   //   Get roles
@@ -98,6 +113,40 @@ export const useRoles = () => {
         throw error;
       }
     },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // Get todas las acciones
+  const { data: acciones = [] } = useQuery<IAccion[]>({
+    queryKey: ["acciones"],
+    queryFn: async () => {
+      try {
+        const { data } = await rolesServices.getAcciones();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // Get acciones por rol
+  const { data: accionesRol = [], isLoading: isLoadingAccionesRol } = useQuery<IAccion[]>({
+    queryKey: ["acciones-rol", currentRol?.id_rol],
+    queryFn: async () => {
+      if (!currentRol?.id_rol) return [];
+      try {
+        const { data } = await rolesServices.getAccionesByRol(currentRol.id_rol);
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    enabled: !!currentRol?.id_rol && openAcciones,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
@@ -172,6 +221,38 @@ export const useRoles = () => {
     },
   });
 
+  const asignarAccionesMutation = useMutation({
+    mutationFn: (form: IPermisosAccion) =>
+      rolesServices.assignAccionesToRol(currentRol?.id_rol || 0, form.id_acciones),
+
+    onMutate: () => {
+      Swal.fire({
+        title: "Cargando...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Actualizado",
+        text: "Acciones asignadas exitosamente",
+        confirmButtonText: "Aceptar",
+      }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["acciones-rol"] });
+        handleCloseAcciones();
+      });
+    },
+
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
   //   Update role
   const updateRoleMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: IRole }) =>
@@ -216,6 +297,13 @@ export const useRoles = () => {
 
   const onSubmitPermisos = (form: IPermiso) => {
     asignarPermisosMutation.mutate(form);
+  };
+
+  const onSubmitAcciones = (data: { id_acciones: number[] }) => {
+    asignarAccionesMutation.mutate({
+      id_rol: currentRol?.id_rol || 0,
+      id_acciones: data.id_acciones,
+    });
   };
 
   //   Eliminar rol
@@ -339,5 +427,13 @@ export const useRoles = () => {
     handleClosePermisos,
     openPermisos,
     permisosRol,
+    acciones,
+    accionesRol,
+    isLoadingAccionesRol,
+    openAcciones,
+    openAccionesRol,
+    handleCloseAcciones,
+    methodsAcciones,
+    onSubmitAcciones,
   };
 };
