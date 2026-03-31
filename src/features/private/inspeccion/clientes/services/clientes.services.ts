@@ -14,7 +14,7 @@ export const updateCliente = async (idCliente: number, data: ICliente) => {
 };
 
 export const getInspeccionesConFirma = async (idCliente: number) => {
-  return await electroApi.get(`/cliente/${idCliente}/firmas-inspecciones`);
+  return await electroApi.get(`/cliente/inspecciones-firma/${idCliente}`);
 };
 
 export const updateFirmaCliente = async (
