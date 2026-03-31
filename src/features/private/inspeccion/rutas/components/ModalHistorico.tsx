@@ -128,10 +128,6 @@ export const ModalHistorico: React.FC<Props> = ({
                           {ev.prev_inspector?.id_persona}
                         </div>
                         <div>
-                          <b>Nuevo:</b>{" "}
-                          {ev.new_inspector?.id_persona ?? "(sin asignar)"}
-                        </div>
-                        <div>
                           <b>Cambiado por:</b>{" "}
                           {ev.changed_by?.nombre_completo ??
                             (ev.changed_by?.id_persona

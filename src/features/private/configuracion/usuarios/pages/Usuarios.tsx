@@ -5,6 +5,7 @@ import {
   ModalUsuarios,
 } from "@/features/private/configuracion/usuarios/components";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
+import { IRoles } from "@/features/private/configuracion/roles/interfaces";
 
 export const Usuarios = () => {
   const {
@@ -30,13 +31,17 @@ export const Usuarios = () => {
     handleClear,
     pendingSearch,
     pendingIdRol,
+    roles,
   } = useUsuarios();
 
   return (
     <div className="mt-8 px-4 sm:px-0">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Usuarios</h1>
-        <p className="text-gray-600">Acá podrás crear y gestionar los usuarios, asignar roles y controlar su estado.</p>
+        <p className="text-gray-600">
+          Acá podrás crear y gestionar los usuarios, asignar roles y controlar
+          su estado.
+        </p>
       </div>
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
         <div className="w-full xl:w-auto">
@@ -65,13 +70,14 @@ export const Usuarios = () => {
             allowClear
             value={pendingIdRol}
             onChange={(val) => setPendingIdRol(val)}
-            options={[
-              { label: "ADMINISTRADOR", value: 1 },
-              { label: "COORDINADOR", value: 2 },
-              { label: "INSPECTOR", value: 3 },
-              { label: "SOPORTE", value: 4 },
-              { label: "ASESOR", value: 5 },
-            ]}
+            options={roles
+              .filter(
+                (r) => r.id_rol !== Number(import.meta.env.VITE_INSPECTOR),
+              )
+              .map((r: IRoles) => ({
+                label: r.nombre_rol.toUpperCase(),
+                value: r.id_rol,
+              }))}
           />
           <Space className="w-full sm:w-auto justify-end">
             <Button

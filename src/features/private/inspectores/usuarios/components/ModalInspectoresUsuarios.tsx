@@ -36,7 +36,7 @@ export const ModalInspectoresUsuarios = ({
   currentUsuario,
   documentos,
 }: Props) => {
-  const { roles } = useRoles();
+  const { roles } = useRoles({ fetchOpciones: false, fetchAcciones: false });
   const {
     handleSubmit,
     control,

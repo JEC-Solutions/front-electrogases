@@ -15,7 +15,12 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-export const useRoles = () => {
+export interface UseRolesOptions {
+  fetchOpciones?: boolean;
+  fetchAcciones?: boolean;
+}
+
+export const useRoles = (options?: UseRolesOptions) => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [openPermisos, setOpenPermisos] = useState(false);
@@ -113,6 +118,7 @@ export const useRoles = () => {
         throw error;
       }
     },
+    enabled: options?.fetchOpciones ?? true,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
@@ -129,6 +135,7 @@ export const useRoles = () => {
         throw error;
       }
     },
+    enabled: options?.fetchAcciones ?? true,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });

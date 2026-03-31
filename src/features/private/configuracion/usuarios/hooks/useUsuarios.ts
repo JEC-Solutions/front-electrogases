@@ -10,9 +10,11 @@ import Swal from "sweetalert2";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useRoles } from "../../roles/hooks";
 
 export const useUsuarios = () => {
   const queryClient = useQueryClient();
+  const { roles: rolesData } = useRoles({ fetchOpciones: false, fetchAcciones: false });
   const [open, setOpen] = useState(false);
   const [currentUsuarios, setCurrentUsuarios] = useState<IUsuarios | null>(
     null
@@ -280,5 +282,6 @@ export const useUsuarios = () => {
     pendingIdRol,
     page,
     limit,
+    roles: rolesData,
   };
 };
