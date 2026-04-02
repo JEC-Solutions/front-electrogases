@@ -13,6 +13,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Tooltip,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
@@ -41,6 +42,7 @@ type LocalFilters = {
   asesorId?: number;
   clienteId?: number;
   clienteDocumento?: string;
+  estado_inspeccion?: string;
 };
 
 interface Props {
@@ -105,6 +107,7 @@ export const TableRutas = ({
     clienteId: undefined,
     asesorId: undefined,
     clienteDocumento: "",
+    estado_inspeccion: undefined,
   });
 
   const { clientes } = useClientes();
@@ -249,6 +252,16 @@ export const TableRutas = ({
       width: 150,
     },
     {
+      title: "Estado",
+      key: "estado_inspeccion",
+      render: (_: unknown, record: IRutas) => {
+        const status = record.estado_inspeccion || "PENDIENTE";
+        const color = status === "REALIZADO" ? "green" : "orange";
+        return <Tag color={color}>{status}</Tag>;
+      },
+      width: 120,
+    },
+    {
       title: "Acciones",
       key: "acciones",
       fixed: "right",
@@ -280,8 +293,15 @@ export const TableRutas = ({
   ];
 
   const handleSearch = () => {
-    const { start, end, inspectorId, asesorId, clienteId, clienteDocumento } =
-      localFilters;
+    const {
+      start,
+      end,
+      inspectorId,
+      asesorId,
+      clienteId,
+      clienteDocumento,
+      estado_inspeccion,
+    } = localFilters;
 
     const filters: RutasFilters = {
       startDate: start ? start.format("YYYY-MM-DD") : undefined,
@@ -290,13 +310,14 @@ export const TableRutas = ({
       asesorId,
       clienteId,
       clienteDocumento: clienteDocumento?.trim() || undefined,
+      estado_inspeccion,
     };
     setFilters(filters);
     setPage(1);
   };
 
   const handleExportPdf = () => {
-    const { start, end, inspectorId, asesorId, clienteId, clienteDocumento } =
+    const { start, end, inspectorId, asesorId, clienteId, clienteDocumento, estado_inspeccion } =
       localFilters;
 
     if (!start || !end) {
@@ -326,6 +347,7 @@ export const TableRutas = ({
       clienteId: clienteId ?? 0,
       asesorId: asesorId ?? 0,
       clienteDocumento: (clienteDocumento || "").trim(),
+      estado_inspeccion,
     });
   };
 
@@ -472,7 +494,26 @@ export const TableRutas = ({
               </div>
             </Col>
 
-            <Col xs={24} sm={24} md={12} lg={6}>
+            <Col xs={24} sm={12} md={6} lg={3}>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-gray-500">Estado</span>
+                <Select
+                  allowClear
+                  placeholder="Seleccionar..."
+                  className="w-full"
+                  options={[
+                    { value: "PENDIENTE", label: "PENDIENTE" },
+                    { value: "REALIZADO", label: "REALIZADO" },
+                  ]}
+                  value={localFilters.estado_inspeccion}
+                  onChange={(v) =>
+                    setLocalFilters((s) => ({ ...s, estado_inspeccion: v }))
+                  }
+                />
+              </div>
+            </Col>
+
+            <Col xs={24} sm={24} md={12} lg={4}>
               <div className="flex gap-2">
                 <Button
                   className="flex-1"

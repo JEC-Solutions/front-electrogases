@@ -42,6 +42,7 @@ export interface IRutas {
   fecha: string;
   hora: string;
   estado: boolean;
+  estado_inspeccion?: "PENDIENTE" | "REALIZADO";
   created_at: string;
   updated_at: string;
   inspeccion: any;
@@ -153,7 +154,8 @@ export interface IPdfRuta {
   start: string;
   end: string;
   inspectorId: number;
-  asesorId: number;
-  clienteId: number;
-  clienteDocumento: string;
+  asesorId?: number;
+  clienteId?: number;
+  clienteDocumento?: string;
+  estado_inspeccion?: string;
 }

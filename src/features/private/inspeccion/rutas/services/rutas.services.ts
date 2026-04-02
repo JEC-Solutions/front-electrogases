@@ -14,6 +14,7 @@ export interface RutasFilters {
   asesorId?: number;
   clienteId?: number;
   clienteDocumento?: string;
+  estado_inspeccion?: string;
 }
 
 export const getRutas = async (filters?: RutasFilters) => {
