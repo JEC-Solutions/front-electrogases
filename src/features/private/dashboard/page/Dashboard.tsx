@@ -24,6 +24,7 @@ import {
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/page";
 import { InspectoresUsuarios } from "@/features/private/inspectores/usuarios/pages";
 import { EquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/pages";
+import { Siserco } from "../../informes/siserco/pages/Siserco";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -128,6 +129,11 @@ export const Dashboard = () => {
             <Route
               path="/informes/cuadro_maestro"
               element={<CuadroMaestro />}
+            />
+
+            <Route
+              path="/informes/siserco"
+              element={<Siserco />}
             />
 
             {/* Inspectores */}
