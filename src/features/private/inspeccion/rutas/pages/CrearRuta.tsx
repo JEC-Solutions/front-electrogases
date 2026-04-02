@@ -9,7 +9,7 @@ import {
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-const { Step } = Steps;
+
 
 export const CrearRuta = () => {
   const { methods, onSubmit, dataTipoVisita, getUserDocument, inspectores, asesores } =
@@ -92,11 +92,15 @@ export const CrearRuta = () => {
         Regresar
       </Button>
 
-      <Steps current={currentStep} className="mb-6">
-        <Step title="Cliente" />
-        <Step title="Casa" />
-        <Step title="Ruta" />
-      </Steps>
+      <Steps
+        current={currentStep}
+        className="mb-6"
+        items={[
+          { title: "Cliente" },
+          { title: "Casa" },
+          { title: "Ruta" },
+        ]}
+      />
 
       <form onSubmit={onFinish}>
         {currentStep === 0 && (

@@ -233,7 +233,7 @@ export const StepCasa = ({ methods }: Props) => {
 
       {selectedCasa && (
         <Alert
-          message={`Casa seleccionada: ${selectedCasa.direccion}`}
+          title={`Casa seleccionada: ${selectedCasa.direccion}`}
           description={`Cuenta: ${selectedCasa.no_cuenta} | Barrio: ${selectedCasa.barrio}`}
           type="success"
           showIcon
@@ -241,7 +241,7 @@ export const StepCasa = ({ methods }: Props) => {
         />
       )}
 
-      <Divider orientation="left">Datos de la Casa</Divider>
+      <Divider titlePlacement="left">Datos de la Casa</Divider>
 
       {/* Hidden field for id_casa */}
       <Controller

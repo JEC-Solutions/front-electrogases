@@ -83,7 +83,7 @@ export const ModalPermisos = ({
                 {Object.entries(opcionesPorMenu).map(
                   ([menuNombre, opciones]) => (
                     <div key={menuNombre} style={{ marginBottom: 12 }}>
-                      <Divider orientation="left">{menuNombre}</Divider>
+                      <Divider titlePlacement="left">{menuNombre}</Divider>
                       {opciones.map((op) => {
                         const checked = field.value?.includes(op.id_opcion);
 
