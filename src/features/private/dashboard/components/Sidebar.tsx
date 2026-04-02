@@ -79,6 +79,28 @@ export const Sidebar = ({ collapsed }: SidebarProps) => {
     );
   }
 
+  const menuItems = [
+    {
+      key: "inicio",
+      icon: <AiFillHome />,
+      label: <Link to="/dashboard/inicio">Inicio</Link>,
+    },
+    ...Object.entries(groupedMenus).map(([id, menu]) => ({
+      key: id,
+      icon: iconMap[menu.icono] || <IoIosSettings />,
+      label: menu.nombre,
+      children: menu.opciones.map((opcion: any) => ({
+        key: opcion.link,
+        label: (
+          <Link to={`/dashboard/${opcion.link}`} className="flex items-center">
+            <span className="submenu-dot" />
+            {opcion.nombre}
+          </Link>
+        ),
+      })),
+    })),
+  ];
+
   return (
     <div className="flex flex-col h-full custom-sidebar overflow-hidden transition-all duration-300">
       <div className={`h-[64px] my-6 flex items-center transition-all duration-300 ${collapsed ? 'justify-center' : 'justify-center px-4'}`}>
@@ -118,28 +140,8 @@ export const Sidebar = ({ collapsed }: SidebarProps) => {
           openKeys={openKeys}
           onOpenChange={onOpenChange}
           className="border-none"
-        >
-        <Menu.Item key="inicio" icon={<AiFillHome />}>
-          <Link to="/dashboard/inicio">Inicio</Link>
-        </Menu.Item>
-
-        {Object.entries(groupedMenus).map(([id, menu]) => (
-          <Menu.SubMenu
-            key={id}
-            title={menu.nombre}
-            icon={iconMap[menu.icono] || <IoIosSettings />}
-          >
-            {menu.opciones.map((opcion: any) => (
-              <Menu.Item key={opcion.link}>
-                <Link to={`/dashboard/${opcion.link}`} className="flex items-center">
-                  <span className="submenu-dot" />
-                  {opcion.nombre}
-                </Link>
-              </Menu.Item>
-            ))}
-          </Menu.SubMenu>
-        ))}
-        </Menu>
+          items={menuItems}
+        />
       </div>
     </div>
   );

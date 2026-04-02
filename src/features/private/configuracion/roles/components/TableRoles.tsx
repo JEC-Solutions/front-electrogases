@@ -92,7 +92,7 @@ export const TableRoles = ({
       <Table
         columns={columns}
         dataSource={roles}
-        rowKey="id"
+        rowKey="id_rol"
         className="custom-table"
         rowClassName={(_record, index) =>
           index % 2 === 0 ? "even-row" : "odd-row"

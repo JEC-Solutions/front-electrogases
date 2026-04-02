@@ -4,9 +4,8 @@ import {
   Badge,
   Button,
   Dropdown,
+  Empty,
   Layout,
-  List,
-  Menu,
   Popover,
   Space,
   Typography,
@@ -51,13 +50,16 @@ export const Navbar = ({
 
   const onClick = isMobile ? toggleDrawer : toggleCollapsed;
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        Cerrar sesión
-      </Menu.Item>
-    </Menu>
-  );
+  const menuProps = {
+    items: [
+      {
+        key: "logout",
+        icon: <LogoutOutlined />,
+        label: "Cerrar sesión",
+        onClick: handleLogout,
+      },
+    ],
+  };
 
   const notificationsContent = (
     <div style={{ width: 300 }}>
@@ -78,49 +80,55 @@ export const Navbar = ({
           </Button>
         )}
       </div>
-      <List
-        dataSource={notificaciones}
-        locale={{ emptyText: "Sin notificaciones pendientes" }}
-        renderItem={(item) => (
-          <List.Item
-            actions={[
+      <div style={{ maxHeight: 400, overflowY: "auto" }}>
+        {notificaciones.length > 0 ? (
+          notificaciones.map((item) => (
+            <div
+              key={item.id_notificacion_evento}
+              style={{
+                padding: "12px 0",
+                borderBottom: "1px solid #f0f0f0",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+              }}
+            >
+              <div style={{ flex: 1, paddingRight: 8 }}>
+                <Text strong style={{ fontSize: 13, display: "block" }}>
+                  {item.titulo}
+                </Text>
+                <Text type="secondary" style={{ fontSize: 12, display: "block" }}>
+                  {item.mensaje}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: "rgba(0, 0, 0, 0.45)",
+                    display: "block",
+                    marginTop: 4,
+                  }}
+                >
+                  {new Date(item.created_at).toLocaleString()}
+                </Text>
+              </div>
               <Button
                 type="text"
                 icon={<CheckOutlined />}
                 size="small"
                 onClick={() => marcarLeida(item.id_notificacion_evento)}
                 title="Marcar como leída"
-              />,
-            ]}
-            style={{ padding: "8px 0" }}
-          >
-            <List.Item.Meta
-              title={
-                <Text strong style={{ fontSize: 13 }}>
-                  {item.titulo}
-                </Text>
-              }
-              description={
-                <div>
-                  <div style={{ fontSize: 12, color: "rgba(0, 0, 0, 0.65)" }}>
-                    {item.mensaje}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: "rgba(0, 0, 0, 0.45)",
-                      marginTop: 4,
-                    }}
-                  >
-                    {new Date(item.created_at).toLocaleString()}
-                  </div>
-                </div>
-              }
-            />
-          </List.Item>
+                style={{ color: "#1890ff" }}
+              />
+            </div>
+          ))
+        ) : (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="Sin notificaciones pendientes"
+            style={{ margin: "32px 0" }}
+          />
         )}
-        style={{ maxHeight: 400, overflowY: "auto" }}
-      />
+      </div>
     </div>
   );
 
@@ -165,7 +173,7 @@ export const Navbar = ({
           </Badge>
         </Popover>
 
-        <Dropdown overlay={menu} placement="bottomRight">
+        <Dropdown menu={menuProps} placement="bottomRight">
           <Space style={{ cursor: "pointer" }}>
             <Avatar icon={<UserOutlined />} />
             <span>Usuario</span>

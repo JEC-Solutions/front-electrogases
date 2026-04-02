@@ -29,7 +29,7 @@ export const EquiposUtilizadosChart = ({ data, total, isLoading }: Props) => {
         </div>
       ) : data.length > 0 ? (
         <div className="w-full h-[300px] sm:h-[400px]">
-          <ResponsiveContainer>
+          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <BarChart data={data} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" allowDecimals={false} />

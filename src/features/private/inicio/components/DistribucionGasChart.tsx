@@ -31,7 +31,7 @@ export const DistribucionGasChart = ({ data, total, isLoading }: Props) => {
             className="mb-4"
           />
           <div style={{ width: "100%", height: 250 }}>
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <PieChart>
                 <Pie
                   data={data}

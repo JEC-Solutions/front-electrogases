@@ -15,14 +15,12 @@ export const Historial = () => {
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
   // Mapea cada segmento a breadcrumb item
-  const breadcrumbItems = pathSnippets.map((_, index) => {
+  const items = pathSnippets.map((_, index) => {
     const name = pathSnippets[index];
-    return (
-      <Breadcrumb.Item key={index}>{nameMap[name] || name}</Breadcrumb.Item>
-    );
+    return {
+      title: nameMap[name] || name,
+    };
   });
 
-  return (
-    <Breadcrumb style={{ marginBottom: 16 }}>{breadcrumbItems}</Breadcrumb>
-  );
+  return <Breadcrumb items={items} style={{ marginBottom: 16 }} />;
 };

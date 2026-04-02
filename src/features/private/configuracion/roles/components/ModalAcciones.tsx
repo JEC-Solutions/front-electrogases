@@ -130,7 +130,7 @@ export const ModalAcciones = ({
       ]}
       width={900}
       centered
-      destroyOnClose
+      destroyOnHidden
       styles={{
         body: {
           padding: "20px 24px 10px 24px",
