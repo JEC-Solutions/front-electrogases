@@ -14,8 +14,9 @@ export const useSocket = () => {
 
     if (!token) return;
 
-    // Inicializar la conexión
-    const socket = io(baseURL, {
+    const socketOrigin = new URL(baseURL).origin;
+
+    const socket = io(socketOrigin, {
       auth: {
         token,
       },
