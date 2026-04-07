@@ -163,15 +163,11 @@ export const TableInspecciones = ({
       title: "Fecha inspección",
       dataIndex: "fecha_inspeccion",
       key: "fecha_inspeccion",
-      render: (value: string) =>
-        value ? new Date(value).toLocaleDateString("es-CO") : "-",
     },
     {
       title: "Fecha expedición",
       dataIndex: "fecha_expedicion",
       key: "fecha_expedicion",
-      render: (value: string) =>
-        value ? new Date(value).toLocaleDateString("es-CO") : "-",
     },
     {
       title: "N° Informe",
