@@ -104,3 +104,19 @@ export const changeImageType = async (
     nuevoTipoImagenId,
   });
 };
+export const uploadImagenesRetroactivas = async (
+  inspeccionId: number,
+  formData: FormData,
+  onUploadProgress?: (progressEvent: any) => void,
+) => {
+  return await electroApi.post(
+    `/inspeccion/imagenes/retroactive/${inspeccionId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
+    },
+  );
+};

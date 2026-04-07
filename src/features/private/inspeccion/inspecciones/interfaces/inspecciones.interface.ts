@@ -330,5 +330,16 @@ export interface DeclaracionConformidad {
 
 export interface ITipoImagen {
   id: number;
+  nombre: string;
   descripcion: string;
+  activo: boolean;
+  orden: number;
+  requerido: boolean;
+}
+
+export interface IUploadZone {
+  tipoImagen: ITipoImagen;
+  archivos: File[]; // archivos seleccionados por el usuario
+  totalActual: number; // cuántas fotos ya existen en BD
+  estado: "vacio" | "con-fotos" | "pendiente-subida" | "subiendo" | "done" | "error";
 }
