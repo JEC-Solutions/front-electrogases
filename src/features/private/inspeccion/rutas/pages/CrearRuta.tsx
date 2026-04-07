@@ -19,23 +19,32 @@ export const CrearRuta = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  const next = async () => {
+  const next = async (skipClient = false) => {
     if (currentStep === 0) {
-      const isValid = await methods.trigger([
-        "cliente.primer_nombre",
-        "cliente.primer_apellido",
-        "cliente.id_tipo_documento",
-        "cliente.numero_documento",
-        "cliente.telefono",
-      ]);
+      if (skipClient) {
+        methods.setValue("cliente.primer_nombre", "");
+        methods.setValue("cliente.primer_apellido", "");
+        methods.setValue("cliente.id_tipo_documento", undefined as any);
+        methods.setValue("cliente.numero_documento", "");
+        methods.setValue("cliente.telefono", "");
+        methods.clearErrors("cliente");
+      } else {
+        const isValid = await methods.trigger([
+          "cliente.primer_nombre",
+          "cliente.primer_apellido",
+          "cliente.id_tipo_documento",
+          "cliente.numero_documento",
+          "cliente.telefono",
+        ]);
 
-      if (!isValid) {
-        Swal.fire({
-          icon: "warning",
-          title: "Campos incompletos",
-          text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
-        });
-        return;
+        if (!isValid) {
+          Swal.fire({
+            icon: "warning",
+            title: "Campos incompletos",
+            text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
+          });
+          return;
+        }
       }
     } else if (currentStep === 1) {
       const isValid = await methods.trigger([
@@ -50,7 +59,7 @@ export const CrearRuta = () => {
         Swal.fire({
           icon: "warning",
           title: "Campos incompletos",
-          text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
+          text: "Por favor completa todos los campos obligatorios de la casa antes de continuar.",
         });
         return;
       }
@@ -65,7 +74,7 @@ export const CrearRuta = () => {
         Swal.fire({
           icon: "warning",
           title: "Campos incompletos",
-          text: "Por favor completa todos los campos obligatorios del cliente antes de continuar.",
+          text: "Por favor completa todos los campos obligatorios de la ruta antes de continuar.",
         });
         return;
       }
@@ -128,9 +137,14 @@ export const CrearRuta = () => {
           {currentStep > 0 && <Button onClick={prev}>Anterior</Button>}
 
           {currentStep < 2 && (
-            <Button type="primary" onClick={next}>
-              Siguiente
-            </Button>
+            <Space>
+              {currentStep === 0 && (
+                <Button onClick={() => next(true)}>Omitir Cliente</Button>
+              )}
+              <Button type="primary" onClick={() => next(false)}>
+                Siguiente
+              </Button>
+            </Space>
           )}
 
           {currentStep === 2 && (
