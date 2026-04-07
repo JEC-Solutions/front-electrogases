@@ -32,8 +32,6 @@ export const CrearRuta = () => {
         const isValid = await methods.trigger([
           "cliente.primer_nombre",
           "cliente.primer_apellido",
-          "cliente.id_tipo_documento",
-          "cliente.numero_documento",
           "cliente.telefono",
         ]);
 
