@@ -99,10 +99,17 @@ export const EquiposUtilizados = ({ inspeccion }: Props) => {
     ) {
       prefix = "manometro_baja";
     } else if (
+      (nombre.includes("detector de fugas") || nombre.includes("fugas")) &&
+      (acta?.tipo_gas_glp
+        ? nombre.includes("propano") || !nombre.includes("metano")
+        : nombre.includes("metano") || !nombre.includes("propano"))
+    ) {
+      prefix = "detector_fugas";
+    } else if (
       nombre.includes("detector de fugas") ||
       nombre.includes("fugas")
     ) {
-      prefix = "detector_fugas";
+      prefix = "";
     } else if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
       prefix = "flexometro";
     } else if (

@@ -117,10 +117,9 @@ export const StepRuta = ({
               <Select
                 {...field}
                 allowClear
-                showSearch
+                showSearch={{ optionFilterProp: "label" }}
                 placeholder="Seleccione inspector (opcional)"
                 style={{ width: "100%" }}
-                optionFilterProp="label"
                 options={formatInspectores}
                 value={field.value ?? null}
                 onChange={(v) => field.onChange(v ?? null)}
@@ -146,10 +145,9 @@ export const StepRuta = ({
               <Select
                 {...field}
                 allowClear
-                showSearch
+                showSearch={{ optionFilterProp: "label" }}
                 placeholder="Seleccione asesor"
                 style={{ width: "100%" }}
-                optionFilterProp="label"
                 options={formatAsesores}
                 value={field.value ?? null}
                 onChange={(v) => field.onChange(v ?? null)}
@@ -175,10 +173,9 @@ export const StepRuta = ({
               <Select
                 {...field}
                 allowClear
-                showSearch
+                showSearch={{ optionFilterProp: "label" }}
                 placeholder="Seleccione tipo de visita (opcional)"
                 style={{ width: "100%" }}
-                optionFilterProp="label"
                 options={formatTipoVisita}
                 value={field.value ?? null}
                 onChange={(v) => field.onChange(v ?? null)}

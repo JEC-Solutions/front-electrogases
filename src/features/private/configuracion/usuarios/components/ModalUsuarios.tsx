@@ -72,22 +72,22 @@ export const ModalUsuarios = ({
                     <Select
                       {...field}
                       id="persona.id_tipo_documento"
-                      showSearch
+                      showSearch={{
+                        filterOption: (input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase()),
+                        optionFilterProp: "label",
+                      }}
                       allowClear
                       placeholder="Seleccione un tipo de documento"
                       style={{ width: "100%" }}
-                      optionFilterProp="label"
                       options={documentos.map((d) => ({
                         label: d.nombre,
                         value: d.id_tipo_documento,
                       }))}
                       onChange={(value) => field.onChange(value ?? "")}
                       value={field.value ?? undefined}
-                      filterOption={(input, option) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
                     />
                     {errors.persona?.id_tipo_documento?.message && (
                       <span style={{ color: "red" }}>
@@ -115,11 +115,16 @@ export const ModalUsuarios = ({
                     <Select
                       {...field}
                       id="id_rol"
-                      showSearch
+                      showSearch={{
+                        filterOption: (input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase()),
+                        optionFilterProp: "label",
+                      }}
                       allowClear
                       placeholder="Seleccione un rol"
                       style={{ width: "100%" }}
-                      optionFilterProp="label"
                       options={roles
                         .filter(
                           (r) =>
@@ -131,11 +136,6 @@ export const ModalUsuarios = ({
                         }))}
                       onChange={(value) => field.onChange(value ?? "")}
                       value={field.value ?? undefined}
-                      filterOption={(input, option) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
                     />
                     {errors.id_rol?.message && (
                       <span style={{ color: "red" }}>

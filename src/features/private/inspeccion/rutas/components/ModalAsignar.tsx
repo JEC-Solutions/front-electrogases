@@ -60,10 +60,9 @@ export const ModalAsignar = ({
                     <Select
                       {...field}
                       allowClear
-                      showSearch
+                      showSearch={{ optionFilterProp: "label" }}
                       placeholder="Seleccione inspector"
                       style={{ width: "100%" }}
-                      optionFilterProp="label"
                       options={formatInspectores}
                       value={field.value ?? null}
                       onChange={(v) => field.onChange(v ?? null)}

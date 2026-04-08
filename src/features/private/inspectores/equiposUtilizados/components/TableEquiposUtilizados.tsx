@@ -160,10 +160,13 @@ export const TableEquiposUtilizados = ({
             value={filtroTipo}
             onChange={(val) => setFiltroTipo(val)}
             allowClear
-            showSearch
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
+            showSearch={{
+              filterOption: (input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase()),
+              optionFilterProp: "label",
+            }}
           />
         </Col>
         <Col xs={24} sm={12} md={6}>
@@ -184,11 +187,13 @@ export const TableEquiposUtilizados = ({
             value={filtroInspectores}
             onChange={(val) => setFiltroInspectores(val)}
             allowClear
-            showSearch
-            optionFilterProp="label"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
+            showSearch={{
+              filterOption: (input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase()),
+              optionFilterProp: "label",
+            }}
           />
         </Col>
         <Col xs={24} sm={12} md={6}>

@@ -79,10 +79,17 @@ export const Equipos = ({ inspeccion }: Props) => {
       .filter((e: any) => e) as unknown as EquipoApi[];
   }
 
-  let detectorCO: any, manometroBaja: any, detectorFugas: any, flexometro: any, manometroMedia: any, otro: any;
+  let detectorCO: any,
+    manometroBaja: any,
+    detectorFugas: any,
+    flexometro: any,
+    manometroMedia: any,
+    otro: any;
 
   equipos.forEach((eq) => {
-    const nombre = eq.equiposUtilizados ? eq.equiposUtilizados.toLowerCase().trim() : "";
+    const nombre = eq.equiposUtilizados
+      ? eq.equiposUtilizados.toLowerCase().trim()
+      : "";
     let prefix = "";
 
     if (
@@ -101,10 +108,17 @@ export const Equipos = ({ inspeccion }: Props) => {
     ) {
       prefix = "manometro_baja";
     } else if (
+      (nombre.includes("detector de fugas") || nombre.includes("fugas")) &&
+      (acta?.tipo_gas_glp
+        ? nombre.includes("propano") || !nombre.includes("metano")
+        : nombre.includes("metano") || !nombre.includes("propano"))
+    ) {
+      prefix = "detector_fugas";
+    } else if (
       nombre.includes("detector de fugas") ||
       nombre.includes("fugas")
     ) {
-      prefix = "detector_fugas";
+      prefix = "";
     } else if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
       prefix = "flexometro";
     } else if (
@@ -119,10 +133,16 @@ export const Equipos = ({ inspeccion }: Props) => {
       prefix = "otro";
     }
 
-    const clearFields = prefix === "manometro_baja" || prefix === "manometro_media";
-    const equipoData = clearFields 
-      ? { ns: "", marca: "", modelo: "" } 
-      : { ns: eq.ns, marca: eq.marca, modelo: eq.modelo, nombre: (eq as any).otroEquipo || eq.equiposUtilizados || "" };
+    const clearFields =
+      prefix === "manometro_baja" || prefix === "manometro_media";
+    const equipoData = clearFields
+      ? { ns: "", marca: "", modelo: "" }
+      : {
+          ns: eq.ns,
+          marca: eq.marca,
+          modelo: eq.modelo,
+          nombre: (eq as any).otroEquipo || eq.equiposUtilizados || "",
+        };
 
     if (prefix === "detector_co") detectorCO = equipoData;
     else if (prefix === "manometro_baja") manometroBaja = equipoData;

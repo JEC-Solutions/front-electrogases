@@ -402,19 +402,13 @@ export const TableRutas = ({
                 <span className="text-xs font-medium text-gray-500">Inspector</span>
                 <Select
                   allowClear
-                  showSearch
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      normalize(option?.label as string).includes(normalize(input)),
+                    optionFilterProp: "label",
+                  }}
                   placeholder="Seleccionar..."
                   className="w-full"
-                  options={inspectores.map((i) => ({
-                    value: i.persona?.id_persona,
-                    label: `${i.persona?.primer_nombre ?? ""} ${
-                      i.persona?.primer_apellido ?? ""
-                    }`.trim(),
-                  }))}
-                  optionFilterProp="label"
-                  filterOption={(input, option) =>
-                    normalize(option?.label as string).includes(normalize(input))
-                  }
                   value={localFilters.inspectorId}
                   onChange={(v) =>
                     setLocalFilters((s) => ({ ...s, inspectorId: v }))
@@ -428,19 +422,13 @@ export const TableRutas = ({
                 <span className="text-xs font-medium text-gray-500">Asesor</span>
                 <Select
                   allowClear
-                  showSearch
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      normalize(option?.label as string).includes(normalize(input)),
+                    optionFilterProp: "label",
+                  }}
                   placeholder="Seleccionar..."
                   className="w-full"
-                  options={asesores.map((i) => ({
-                    value: i.persona?.id_persona,
-                    label: `${i.persona?.primer_nombre ?? ""} ${
-                      i.persona?.primer_apellido ?? ""
-                    }`.trim(),
-                  }))}
-                  optionFilterProp="label"
-                  filterOption={(input, option) =>
-                    normalize(option?.label as string).includes(normalize(input))
-                  }
                   value={localFilters.asesorId}
                   onChange={(v) =>
                     setLocalFilters((s) => ({ ...s, asesorId: v }))
@@ -454,19 +442,13 @@ export const TableRutas = ({
                 <span className="text-xs font-medium text-gray-500">Cliente</span>
                 <Select
                   allowClear
-                  showSearch
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      normalize(option?.label as string).includes(normalize(input)),
+                    optionFilterProp: "label",
+                  }}
                   placeholder="Seleccionar..."
                   className="w-full"
-                  options={clientes.map((c) => ({
-                    value: c.id_cliente,
-                    label: `${c.primer_nombre ?? ""} ${
-                      c.primer_apellido ?? ""
-                    }`.trim(),
-                  }))}
-                  optionFilterProp="label"
-                  filterOption={(input, option) =>
-                    normalize(option?.label as string).includes(normalize(input))
-                  }
                   value={localFilters.clienteId}
                   onChange={(v) =>
                     setLocalFilters((s) => ({ ...s, clienteId: v }))

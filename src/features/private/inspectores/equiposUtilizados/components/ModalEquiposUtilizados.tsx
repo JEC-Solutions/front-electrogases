@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Select, Space, Row, Col, Checkbox } from "antd";
+import { Button, Input, Modal, Select, Space, Row, Col } from "antd";
 import { useInspectoresUsuarios } from "@/features/private/inspectores/usuarios/hooks";
 import {
   IEquiposUtilizados,
@@ -99,12 +99,12 @@ export const ModalEquiposUtilizados = ({
                         if (value !== "OTRO") setOtroEquipo("");
                       }}
                       allowClear
-                      showSearch
-                      filterOption={(input, option) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
+                      showSearch={{
+                        filterOption: (input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase()),
+                      }}
                     />
                     {esOtro && (
                       <Input
@@ -262,26 +262,6 @@ export const ModalEquiposUtilizados = ({
             </div>
           </Col>
 
-          <Col span={24} md={12}>
-            <div className="mb-4" style={{ display: "flex", alignItems: "center", height: "100%", marginTop: "28px" }}>
-              <Controller
-                name="prestado"
-                control={control}
-                defaultValue={false}
-                render={({ field }) => (
-                  <Checkbox
-                    {...field}
-                    id="prestado"
-                    checked={!!field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  >
-                    Equipo prestado o arrendado
-                  </Checkbox>
-                )}
-              />
-            </div>
-          </Col>
-
           <Col span={24}>
             <div className="mb-4">
               <label htmlFor="personas">Inspectores Asignados</label>
@@ -295,22 +275,22 @@ export const ModalEquiposUtilizados = ({
                       {...field}
                       mode="multiple"
                       id="personas"
-                      showSearch
+                      showSearch={{
+                        filterOption: (input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase()),
+                        optionFilterProp: "label",
+                      }}
                       allowClear
                       placeholder="Seleccione inspectores"
                       style={{ width: "100%" }}
-                      optionFilterProp="label"
                       options={inspectores.map((i) => ({
                         label: `${i.persona.primer_nombre} ${i.persona.primer_apellido}`,
                         value: i.persona.id_persona,
                       }))}
                       onChange={(value) => field.onChange(value)}
                       value={field.value || []}
-                      filterOption={(input, option) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
                     />
                     {errors.personas?.message && (
                       <span style={{ color: "red" }}>

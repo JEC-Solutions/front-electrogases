@@ -32,11 +32,10 @@ export const StepCliente = ({ methods, onFindDocument }: Props) => {
             render={({ field }) => (
               <Select
                 id="tipo_documento"
-                showSearch
+                showSearch={{ optionFilterProp: "label" }}
                 allowClear
                 placeholder="Seleccione el tipo de documento"
                 style={{ width: "100%" }}
-                optionFilterProp="label"
                 options={formaDocuments}
                 value={field.value ?? undefined}
                 onChange={field.onChange}

@@ -90,22 +90,22 @@ export const ModalOpciones = ({
                 <Select
                   {...field}
                   id="id_menu"
-                  showSearch
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase()),
+                    optionFilterProp: "label",
+                  }}
                   allowClear
                   placeholder="Seleccione un menu"
                   style={{ width: "100%" }}
-                  optionFilterProp="label"
                   options={menus.map((d) => ({
                     label: d.nombre,
                     value: d.id_menu,
                   }))}
                   onChange={(value) => field.onChange(value ?? "")}
                   value={field.value ?? undefined}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
                 {errors.id_menu?.message && (
                   <span style={{ color: "red" }}>

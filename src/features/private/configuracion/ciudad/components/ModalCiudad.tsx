@@ -96,22 +96,22 @@ export const ModalCiudad = ({
                 <Select
                   {...field}
                   id="departamento"
-                  showSearch
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase()),
+                    optionFilterProp: "label",
+                  }}
                   allowClear
                   placeholder="Seleccione un departamento"
                   style={{ width: "100%" }}
-                  optionFilterProp="label"
                   options={departamentos.map((d) => ({
                     label: d.nombre,
                     value: d.codigo,
                   }))}
                   onChange={(value) => field.onChange(value ?? "")}
                   value={field.value ?? undefined}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
                 {errors.departamento?.message && (
                   <span style={{ color: "red" }}>

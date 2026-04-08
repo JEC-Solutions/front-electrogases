@@ -360,10 +360,9 @@ export const StepCasa = ({ methods }: Props) => {
                   {...field}
                   id="id_departamento"
                   allowClear
-                  showSearch
+                  showSearch={{ optionFilterProp: "label" }}
                   placeholder="Seleccione el departamento"
                   style={{ width: "100%" }}
-                  optionFilterProp="label"
                   options={formatDepartamentos}
                   disabled={isFieldDisabled}
                   onChange={(value) => {
@@ -395,10 +394,9 @@ export const StepCasa = ({ methods }: Props) => {
                 <Select
                   {...field}
                   allowClear
-                  showSearch
+                  showSearch={{ optionFilterProp: "label" }}
                   placeholder="Seleccione la ciudad"
                   style={{ width: "100%" }}
-                  optionFilterProp="label"
                   options={formatCiudades}
                   disabled={isFieldDisabled || formatCiudades.length === 0}
                 />
