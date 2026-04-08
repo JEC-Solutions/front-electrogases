@@ -32,6 +32,9 @@ export const Rutas = () => {
 
     // update
     onUpdateDate,
+
+    // toggle
+    onToggleStatus,
   } = useRutas();
   const navigate = useNavigate();
 
@@ -85,6 +88,7 @@ export const Rutas = () => {
             setFilters={setFilters}
             isLoading={isLoading}
             onUpdateDate={onUpdateDate}
+            onToggleStatus={onToggleStatus}
           />
         )}
       </Card>

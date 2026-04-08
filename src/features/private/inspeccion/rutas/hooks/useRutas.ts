@@ -225,6 +225,54 @@ export const useRutas = () => {
   const generarPDF = (_payload: IPdfRuta) => {
     generarPdfMutation.mutate(_payload);
   };
+
+  const toggleStatusMutation = useMutation({
+    mutationFn: (id: number) => rutaServices.toggleStatus(id),
+    onMutate: () => {
+      Swal.fire({
+        title: "Cambiando estado...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    },
+    onSuccess: (response) => {
+      const { data } = response;
+      Swal.fire({
+        icon: "success",
+        title: "Estado actualizado",
+        text: `La ruta ha sido ${data.estado ? "activada" : "inactivada"} correctamente`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["rutas"] });
+    },
+    onError: (error: any) => {
+      Swal.close();
+      handleAxiosError(error);
+    },
+  });
+
+  const onToggleStatus = (id: number, currentEstado: boolean) => {
+    Swal.fire({
+      title: `¿Deseas ${currentEstado ? "inactivar" : "activar"} esta ruta?`,
+      text: currentEstado
+        ? "La ruta ya no será visible para los inspectores."
+        : "La ruta volverá a ser visible para los inspectores.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toggleStatusMutation.mutate(id);
+      }
+    });
+  };
+
   return {
     // rutas
     rutas,
@@ -254,5 +302,8 @@ export const useRutas = () => {
 
     // update date
     onUpdateDate,
+
+    // toggle status
+    onToggleStatus,
   };
 };

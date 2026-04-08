@@ -22,8 +22,10 @@ import {
   FiClock,
   FiEdit2,
   FiFileText,
+  FiLock,
   FiNavigation,
   FiSearch,
+  FiUnlock,
 } from "react-icons/fi";
 import { getRedOutlineButtonProps } from "@/ui";
 import { ModalAsignar } from "@/features/private/inspeccion/rutas/components";
@@ -69,6 +71,7 @@ interface Props {
   setLimit: (limit: number) => void;
   setFilters: (filters: RutasFilters) => void;
   isLoading?: boolean;
+  onToggleStatus: (id: number, currentEstado: boolean) => void;
 }
 
 export const TableRutas = ({
@@ -88,6 +91,7 @@ export const TableRutas = ({
   setLimit,
   setFilters,
   isLoading,
+  onToggleStatus,
 }: Props) => {
   const {
     handleViewHistorial,
@@ -252,7 +256,21 @@ export const TableRutas = ({
       width: 150,
     },
     {
-      title: "Estado",
+      title: "Estado de la Ruta",
+      key: "estado",
+      render: (_: unknown, record: IRutas) => {
+        const status = record.estado;
+        const color = status ? "blue" : "red";
+        return (
+          <Tag color={color} className="uppercase">
+            {status ? "Activa" : "Inactiva"}
+          </Tag>
+        );
+      },
+      width: 120,
+    },
+    {
+      title: "Estado del Acta",
       key: "estado_inspeccion",
       render: (_: unknown, record: IRutas) => {
         const status = record.estado_inspeccion || "PENDIENTE";
@@ -285,6 +303,20 @@ export const TableRutas = ({
               size="small"
               icon={<FiNavigation size={16} />}
               onClick={() => onOpen(record)}
+            />
+          </Tooltip>
+          <Tooltip title={record.estado ? "Inactivar ruta" : "Activar ruta"}>
+            <Button
+              size="small"
+              danger={record.estado}
+              icon={
+                record.estado ? (
+                  <FiUnlock size={16} />
+                ) : (
+                  <FiLock size={16} />
+                )
+              }
+              onClick={() => onToggleStatus(record.id_ruta, record.estado)}
             />
           </Tooltip>
         </Space>
@@ -499,7 +531,7 @@ export const TableRutas = ({
               <Col xs={24} sm={12} md={6} lg={3}>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-gray-500">
-                    Estado
+                    Estado del Acta
                   </span>
                   <Select
                     allowClear
