@@ -120,3 +120,7 @@ export const uploadImagenesRetroactivas = async (
     },
   );
 };
+
+export const deleteImagenInspeccion = async (imagenId: number) => {
+  return await electroApi.delete(`/inspeccion/imagenes/${imagenId}`);
+};

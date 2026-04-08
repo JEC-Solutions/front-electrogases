@@ -343,3 +343,12 @@ export interface IUploadZone {
   totalActual: number; // cuántas fotos ya existen en BD
   estado: "vacio" | "con-fotos" | "pendiente-subida" | "subiendo" | "done" | "error";
 }
+
+export interface IImagenItem {
+  id: number;
+  nombre_archivo: string;
+  tipo_mime: string;
+  base64: string;
+  created_at: string;
+  hora_registro: string | null;
+}
