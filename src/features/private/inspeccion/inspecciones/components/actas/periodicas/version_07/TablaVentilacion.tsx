@@ -178,7 +178,7 @@ export const TablaVentilacion = ({ inspeccion }: Props) => {
               <tr key={i} className="h-[20px]">
                 <td className={cellBase}>{row?.idRecinto}</td>
                 <td className={cellBase}>{row?.co}</td>
-                <td className={cellBase}>{row?.coDiluido}</td>
+                <td className={cellBase}>{row?.coDiluido ?? ""}</td>
                 <td className={cellBase}>{row?.volumenRecinto}</td>
                 <td className={cellBase}>{row?.potenciaArtefactos}</td>
 
