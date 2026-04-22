@@ -42,17 +42,32 @@ export const SeccionIsometricos = ({
   const RE = findRecinto("RE");
   const RF = findRecinto("RF");
 
-  const todosLosAdyacentes: (number | string)[] = [];
+  const slots = Array(18).fill(undefined);
+  let currentPointer = 0;
   const recintosOrder = ["RA", "RB", "RC", "RD", "RE", "RF"];
 
-  recintosOrder.forEach((nombreRecinto) => {
+  recintosOrder.forEach((nombreRecinto, idx) => {
     const recinto = findRecinto(nombreRecinto);
+    const naturalStart = idx * 3;
+    const startAt = Math.max(naturalStart, currentPointer);
+
     if (recinto) {
+      const adyacentes: (number | string)[] = [];
       for (let i = 1; i <= 20; i++) {
         const key = `volumenADY${i}` as keyof typeof recinto;
         if (recinto[key] !== undefined && recinto[key] !== null) {
-          todosLosAdyacentes.push(recinto[key] as number | string);
+          adyacentes.push(recinto[key] as number | string);
         }
+      }
+
+      adyacentes.forEach((val, i) => {
+        if (startAt + i < 18) {
+          slots[startAt + i] = val;
+        }
+      });
+
+      if (adyacentes.length > 0) {
+        currentPointer = startAt + adyacentes.length;
       }
     }
   });
@@ -108,43 +123,42 @@ export const SeccionIsometricos = ({
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             {/* RA */}
             <LineInput label="RA:" value={RA?.volumenRecinto} />
-            {/* 2. Llenamos usando el índice general del arreglo de adyacentes */}
-            <LineInput label="ADY 1:" value={todosLosAdyacentes[0]} />
-            <LineInput label="ADY 2:" value={todosLosAdyacentes[1]} />
-            <LineInput label="ADY 3:" value={todosLosAdyacentes[2]} />
+            <LineInput label="ADY 1:" value={slots[0]} />
+            <LineInput label="ADY 2:" value={slots[1]} />
+            <LineInput label="ADY 3:" value={slots[2]} />
 
             {/* RB */}
             <LineInput label="RB:" value={RB?.volumenRecinto} />
-            <LineInput label="ADY 4:" value={todosLosAdyacentes[3]} />
-            <LineInput label="ADY 5:" value={todosLosAdyacentes[4]} />
-            <LineInput label="ADY 6:" value={todosLosAdyacentes[5]} />
+            <LineInput label="ADY 4:" value={slots[3]} />
+            <LineInput label="ADY 5:" value={slots[4]} />
+            <LineInput label="ADY 6:" value={slots[5]} />
 
             {/* RC */}
             <LineInput label="RC:" value={RC?.volumenRecinto} />
-            <LineInput label="ADY 7:" value={todosLosAdyacentes[6]} />
-            <LineInput label="ADY 8:" value={todosLosAdyacentes[7]} />
-            <LineInput label="ADY 9:" value={todosLosAdyacentes[8]} />
+            <LineInput label="ADY 7:" value={slots[6]} />
+            <LineInput label="ADY 8:" value={slots[7]} />
+            <LineInput label="ADY 9:" value={slots[8]} />
           </div>
 
           {/* Sub-columna Derecha (RD, RE, RF) */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             {/* RD */}
             <LineInput label="RD:" value={RD?.volumenRecinto} />
-            <LineInput label="ADY 10:" value={todosLosAdyacentes[9]} />
-            <LineInput label="ADY 11:" value={todosLosAdyacentes[10]} />
-            <LineInput label="ADY 12:" value={todosLosAdyacentes[11]} />
+            <LineInput label="ADY 10:" value={slots[9]} />
+            <LineInput label="ADY 11:" value={slots[10]} />
+            <LineInput label="ADY 12:" value={slots[11]} />
 
             {/* RE */}
             <LineInput label="RE:" value={RE?.volumenRecinto} />
-            <LineInput label="ADY 13:" value={todosLosAdyacentes[12]} />
-            <LineInput label="ADY 14:" value={todosLosAdyacentes[13]} />
-            <LineInput label="ADY 15:" value={todosLosAdyacentes[14]} />
+            <LineInput label="ADY 13:" value={slots[12]} />
+            <LineInput label="ADY 14:" value={slots[13]} />
+            <LineInput label="ADY 15:" value={slots[14]} />
 
             {/* RF */}
             <LineInput label="RF:" value={RF?.volumenRecinto} />
-            <LineInput label="ADY 16:" value={todosLosAdyacentes[15]} />
-            <LineInput label="ADY 17:" value={todosLosAdyacentes[16]} />
-            <LineInput label="ADY 18:" value={todosLosAdyacentes[17]} />
+            <LineInput label="ADY 16:" value={slots[15]} />
+            <LineInput label="ADY 17:" value={slots[16]} />
+            <LineInput label="ADY 18:" value={slots[17]} />
           </div>
 
           {/* Sub-columna Totales */}
