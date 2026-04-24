@@ -8,7 +8,7 @@ import { TabGaleria } from "./TabGaleria";
 import { TabCargaFaltantes } from "./TabCargaFaltantes";
 
 const { Title } = Typography;
-const { TabPane } = Tabs;
+
 
 interface Props {
   isModalOpen: boolean;
@@ -71,6 +71,7 @@ export const ModalImagenesInspeccion = ({
       centered
       footer={null}
       width={1000}
+      destroyOnHidden
       styles={{ body: { padding: "12px 24px 24px" } }}
     >
       <Tabs
@@ -78,44 +79,47 @@ export const ModalImagenesInspeccion = ({
         onChange={setActiveTab}
         animated={{ inkBar: true, tabPane: true }}
         tabBarStyle={{ marginBottom: "20px" }}
-      >
-        <TabPane
-          tab={
-            <span>
-              <PictureOutlined />
-              Galería
-            </span>
-          }
-          key="gallery"
-        >
-          <TabGaleria
-            isActive={activeTab === "gallery"}
-            currentInspeccionId={currentInspeccionId}
-            tiposImagenes={tiposImagenes}
-            isLoadingTipos={isLoadingTipos}
-            getImagenPorTipo={getImagenPorTipo}
-            onRefreshZones={notifyRefreshZones}
-          />
-        </TabPane>
-        <TabPane
-          tab={
-            <span>
-              <Badge dot={false} offset={[4, 0]}>
-                <CloudUploadOutlined />
-              </Badge>
-              Cargar Fotos Faltantes
-            </span>
-          }
-          key="upload"
-        >
-          <TabCargaFaltantes
-            refreshTrigger={refreshZonesKey}
-            currentInspeccionId={currentInspeccionId}
-            tiposImagenes={tiposImagenes}
-            getImagenPorTipo={getImagenPorTipo}
-          />
-        </TabPane>
-      </Tabs>
+        items={[
+          {
+            key: "gallery",
+            label: (
+              <span>
+                <PictureOutlined />
+                Galería
+              </span>
+            ),
+            children: (
+              <TabGaleria
+                isActive={activeTab === "gallery"}
+                currentInspeccionId={currentInspeccionId}
+                tiposImagenes={tiposImagenes}
+                isLoadingTipos={isLoadingTipos}
+                getImagenPorTipo={getImagenPorTipo}
+                onRefreshZones={notifyRefreshZones}
+              />
+            ),
+          },
+          {
+            key: "upload",
+            label: (
+              <span>
+                <Badge dot={false} offset={[4, 0]}>
+                  <CloudUploadOutlined />
+                </Badge>
+                Cargar Fotos Faltantes
+              </span>
+            ),
+            children: (
+              <TabCargaFaltantes
+                refreshTrigger={refreshZonesKey}
+                currentInspeccionId={currentInspeccionId}
+                tiposImagenes={tiposImagenes}
+                getImagenPorTipo={getImagenPorTipo}
+              />
+            ),
+          },
+        ]}
+      />
     </Modal>
   );
 };

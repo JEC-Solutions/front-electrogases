@@ -1,14 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Spin,
-  Button,
-  Card,
-  Typography,
-  Badge,
-  Tooltip,
-  Row,
-  Col,
-} from "antd";
+import { Spin, Button, Card, Typography, Badge, Tooltip, Row, Col } from "antd";
 import {
   CloudUploadOutlined,
   PictureOutlined,
@@ -22,9 +13,7 @@ import {
   ITipoImagen,
   IUploadZone,
 } from "@/features/private/inspeccion/inspecciones/interfaces";
-import {
-  uploadImagenesRetroactivas,
-} from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
+import { uploadImagenesRetroactivas } from "@/features/private/inspeccion/inspecciones/services/inspecciones.services";
 import { useQueryClient } from "@tanstack/react-query";
 
 const { Text } = Typography;
@@ -50,6 +39,10 @@ export const TabCargaFaltantes = ({
   const [uploadZones, setUploadZones] = useState<IUploadZone[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [loadingZones, setLoadingZones] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{
+    current: number;
+    total: number;
+  } | null>(null);
   const queryClient = useQueryClient();
 
   const loadZonesResumen = async (clearLocalFiles: boolean = false) => {
@@ -67,7 +60,9 @@ export const TabCargaFaltantes = ({
               tipoImagen: tipo,
               archivos: [],
               totalActual: count,
-              estado: (count > 0 ? "con-fotos" : "vacio") as IUploadZone["estado"],
+              estado: (count > 0
+                ? "con-fotos"
+                : "vacio") as IUploadZone["estado"],
             };
           } catch (e) {
             return {
@@ -81,19 +76,21 @@ export const TabCargaFaltantes = ({
       );
 
       setUploadZones((prev) => {
-        return results.map((newZone) => {
-          const existing = prev.find(
-            (p) => p.tipoImagen.id === newZone.tipoImagen.id,
-          );
-          if (!clearLocalFiles && existing && existing.archivos.length > 0) {
-            return {
-              ...newZone,
-              archivos: existing.archivos,
-              estado: "pendiente-subida" as const,
-            };
-          }
-          return newZone;
-        }).sort((a, b) => a.tipoImagen.orden - b.tipoImagen.orden);
+        return results
+          .map((newZone) => {
+            const existing = prev.find(
+              (p) => p.tipoImagen.id === newZone.tipoImagen.id,
+            );
+            if (!clearLocalFiles && existing && existing.archivos.length > 0) {
+              return {
+                ...newZone,
+                archivos: existing.archivos,
+                estado: "pendiente-subida" as const,
+              };
+            }
+            return newZone;
+          })
+          .sort((a, b) => a.tipoImagen.orden - b.tipoImagen.orden);
       });
     } catch (error) {
       console.error("Error cargando resumen de zonas", error);
@@ -104,9 +101,9 @@ export const TabCargaFaltantes = ({
 
   useEffect(() => {
     if (tiposImagenes.length > 0) {
-      loadZonesResumen();
+      loadZonesResumen(true);
     }
-  }, [tiposImagenes, refreshTrigger]);
+  }, [tiposImagenes, refreshTrigger, currentInspeccionId]);
 
   const handleFileSelect = (tipoId: number, files: FileList | null) => {
     if (!files) return;
@@ -152,25 +149,30 @@ export const TabCargaFaltantes = ({
     const zonesWithFiles = uploadZones.filter((z) => z.archivos.length > 0);
     if (zonesWithFiles.length === 0) return;
 
+    const totalFiles = zonesWithFiles.reduce(
+      (acc, zone) => acc + zone.archivos.length,
+      0,
+    );
+    let currentCount = 0;
+
     setIsUploading(true);
-    const formData = new FormData();
-    const mappings: any[] = [];
-
-    zonesWithFiles.forEach((zone) => {
-      zone.archivos.forEach((file) => {
-        formData.append("images", file);
-        mappings.push({
-          fileName: file.name,
-          tipoImagenId: zone.tipoImagen.id,
-          tipoImagenNombre: zone.tipoImagen.nombre,
-        });
-      });
-    });
-
-    formData.append("fileMappings", JSON.stringify(mappings));
+    setUploadProgress({ current: 0, total: totalFiles });
 
     try {
-      await uploadImagenesRetroactivas(currentInspeccionId!, formData);
+      for (const zone of zonesWithFiles) {
+        for (const file of zone.archivos) {
+          const formData = new FormData();
+          formData.append("image", file);
+          formData.append("tipoImagenId", zone.tipoImagen.id.toString());
+          formData.append("tipoImagenNombre", zone.tipoImagen.nombre);
+
+          await uploadImagenesRetroactivas(currentInspeccionId!, formData);
+
+          currentCount++;
+          setUploadProgress({ current: currentCount, total: totalFiles });
+        }
+      }
+
       Swal.fire({
         icon: "success",
         title: "¡Éxito!",
@@ -190,10 +192,11 @@ export const TabCargaFaltantes = ({
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "No se pudieron cargar las fotos.",
+        text: "No se pudieron cargar todas las fotos. Verifica tu conexión e inténtalo de nuevo.",
       });
     } finally {
       setIsUploading(false);
+      setUploadProgress(null);
     }
   };
 
@@ -235,7 +238,7 @@ export const TabCargaFaltantes = ({
       >
         {loadingZones && uploadZones.length === 0 ? (
           <div style={{ textAlign: "center", padding: "40px" }}>
-            <Spin tip="Analizando zonas vacías..." size="large" />
+            <Spin description="Analizando zonas vacías..." size="large" />
           </div>
         ) : (
           <Row gutter={[16, 16]}>
@@ -282,7 +285,7 @@ export const TabCargaFaltantes = ({
                         }}
                       >
                         <Badge
-                           status={isEmpty ? "warning" : "success"}
+                          status={isEmpty ? "warning" : "success"}
                           text={
                             <Text strong style={{ fontSize: "13px" }}>
                               {zone.tipoImagen.descripcion}
@@ -458,7 +461,9 @@ export const TabCargaFaltantes = ({
             boxShadow: "0 4px 10px rgba(59, 130, 246, 0.3)",
           }}
         >
-          {isUploading ? "Subiendo fotos..." : "Subir todas las fotos"}
+          {isUploading
+            ? `Subiendo (${uploadProgress?.current || 0}/${uploadProgress?.total || 0})...`
+            : "Subir todas las fotos"}
         </Button>
       </div>
     </div>

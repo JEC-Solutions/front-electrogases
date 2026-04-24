@@ -57,11 +57,9 @@ export const TabGaleria = ({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!isActive) {
-      setSelectedTypeId(null);
-      setImageList([]);
-    }
-  }, [isActive]);
+    setSelectedTypeId(null);
+    setImageList([]);
+  }, [isActive, currentInspeccionId]);
 
   const changeTypeMutation = useMutation({
     mutationFn: async ({
@@ -253,7 +251,11 @@ export const TabGaleria = ({
             label: `${tipo.descripcion}`,
             value: tipo.id,
           }))}
-          dropdownStyle={{ borderRadius: "8px" }}
+          popupRender={(menu) => (
+            <div style={{ borderRadius: "8px", overflow: "hidden" }}>
+              {menu}
+            </div>
+          )}
         />
       </Card>
 
@@ -273,7 +275,7 @@ export const TabGaleria = ({
       >
         {loadingImages ? (
           <div style={{ textAlign: "center" }}>
-            <Spin tip="Cargando galería..." size="large" />
+            <Spin description="Cargando galería..." size="large" />
           </div>
         ) : !selectedTypeId ? (
           <Empty description="Por favor, selecciona una categoría para ver las fotos" />
