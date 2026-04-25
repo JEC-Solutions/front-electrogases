@@ -21,6 +21,7 @@ export const useClientes = () => {
   // Estado para el modal de firma
   const [openFirma, setOpenFirma] = useState(false);
   const [clienteFirma, setClienteFirma] = useState<IClientes | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -54,10 +55,10 @@ export const useClientes = () => {
     isError,
     error,
   } = useQuery<IClientes[]>({
-    queryKey: ["clientes"],
+    queryKey: ["clientes", searchTerm],
     queryFn: async () => {
       try {
-        const { data } = await clientesServices.getClientes();
+        const { data } = await clientesServices.getClientes(searchTerm);
         return data.data;
       } catch (error: any) {
         handleAxiosError(error);
@@ -268,5 +269,7 @@ export const useClientes = () => {
     loadingInspecciones,
     handleUpdateFirma,
     isUpdatingFirma: updateFirmaMutation.isPending,
+    searchTerm,
+    setSearchTerm,
   };
 };

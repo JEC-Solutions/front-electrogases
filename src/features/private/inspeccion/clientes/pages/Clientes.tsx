@@ -1,5 +1,5 @@
 import { useClientes } from "@/features/private/inspeccion/clientes/hooks";
-import { Button, Card, Spin } from "antd";
+import { Button, Card, Spin, Input } from "antd";
 import {
   ModalClientes,
   ModalFirmaCliente,
@@ -29,6 +29,7 @@ export const Clientes = () => {
     loadingInspecciones,
     handleUpdateFirma,
     isUpdatingFirma,
+    setSearchTerm,
   } = useClientes();
 
   return (
@@ -36,11 +37,18 @@ export const Clientes = () => {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Clientes</h1>
         <p className="text-gray-600">
-          Acá podrás crear y gestionar toda la información de los clientes, incluyendo sus datos personales y firmas autorizadas de inspecciones.
+          Acá podrás crear y gestionar toda la información de los clientes,
+          incluyendo sus datos personales y firmas autorizadas de inspecciones.
         </p>
       </div>
 
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
+        <Input.Search
+          placeholder="Buscar por nombre, documento o teléfono..."
+          allowClear
+          onSearch={(value) => setSearchTerm(value)}
+          className="w-full xl:w-96"
+        />
         <Button
           type="primary"
           className="w-full xl:w-auto"

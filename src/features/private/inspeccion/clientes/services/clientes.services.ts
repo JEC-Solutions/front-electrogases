@@ -1,8 +1,8 @@
 import { electroApi } from "@/api";
 import { ICliente } from "@/features/private/inspeccion/clientes/interfaces";
 
-export const getClientes = async () => {
-  return await electroApi.get("/cliente");
+export const getClientes = async (q?: string) => {
+  return await electroApi.get("/cliente", { params: { q } });
 };
 
 export const createCliente = async (data: ICliente) => {
