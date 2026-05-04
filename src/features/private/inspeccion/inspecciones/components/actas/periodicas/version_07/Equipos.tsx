@@ -90,6 +90,16 @@ export const Equipos = ({ inspeccion }: Props) => {
     const nombre = eq.equiposUtilizados
       ? eq.equiposUtilizados.toLowerCase().trim()
       : "";
+
+    if (
+      nombre === "manometro analogo de bajo" ||
+      nombre === "manómetro analogo de bajo" ||
+      nombre === "manometro analogo de medio" ||
+      nombre === "manómetro analogo de medio"
+    ) {
+      return;
+    }
+
     let prefix = "";
 
     if (
