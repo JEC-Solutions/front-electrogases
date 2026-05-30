@@ -168,6 +168,7 @@ export interface EvaluacionCondicione {
   tipoVentilacionInferior: any;
   areaMinimaInferior: any;
   areaAberturaInferior: any;
+  triple_e?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -276,6 +277,7 @@ export interface VolumenRecinto {
   volumenADY4: any;
   volumenADY5: any;
   volumenTotal: number;
+  triple_e?: boolean;
   createdAt: string;
   updatedAt: string;
 }
