@@ -124,43 +124,43 @@ export const SeccionIsometricos = ({
           {/* Sub-columna Izquierda (RA, RB, RC) */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             {/* RA */}
-            <LineInput label={RA?.triple_e ? "EEE:" : "RA:"} value={RA?.volumenRecinto} />
-            <LineInput label={RA?.triple_e ? "" : "ADY 1:"} value={slots[0]} />
-            <LineInput label={RA?.triple_e ? "" : "ADY 2:"} value={slots[1]} />
-            <LineInput label={RA?.triple_e ? "" : "ADY 3:"} value={slots[2]} />
+            <LineInput label="RA:" value={RA?.triple_e ? "EEE" : RA?.volumenRecinto} />
+            <LineInput label="ADY 1:" value={slots[0]} />
+            <LineInput label="ADY 2:" value={slots[1]} />
+            <LineInput label="ADY 3:" value={slots[2]} />
 
             {/* RB */}
-            <LineInput label={RB?.triple_e ? "EEE:" : "RB:"} value={RB?.volumenRecinto} />
-            <LineInput label={RB?.triple_e ? "" : "ADY 4:"} value={slots[3]} />
-            <LineInput label={RB?.triple_e ? "" : "ADY 5:"} value={slots[4]} />
-            <LineInput label={RB?.triple_e ? "" : "ADY 6:"} value={slots[5]} />
+            <LineInput label="RB:" value={RB?.triple_e ? "EEE" : RB?.volumenRecinto} />
+            <LineInput label="ADY 4:" value={slots[3]} />
+            <LineInput label="ADY 5:" value={slots[4]} />
+            <LineInput label="ADY 6:" value={slots[5]} />
 
             {/* RC */}
-            <LineInput label={RC?.triple_e ? "EEE:" : "RC:"} value={RC?.volumenRecinto} />
-            <LineInput label={RC?.triple_e ? "" : "ADY 7:"} value={slots[6]} />
-            <LineInput label={RC?.triple_e ? "" : "ADY 8:"} value={slots[7]} />
-            <LineInput label={RC?.triple_e ? "" : "ADY 9:"} value={slots[8]} />
+            <LineInput label="RC:" value={RC?.triple_e ? "EEE" : RC?.volumenRecinto} />
+            <LineInput label="ADY 7:" value={slots[6]} />
+            <LineInput label="ADY 8:" value={slots[7]} />
+            <LineInput label="ADY 9:" value={slots[8]} />
           </div>
 
           {/* Sub-columna Derecha (RD, RE, RF) */}
           <div className="w-[37%] border-r border-black px-1 py-1 flex flex-col justify-between">
             {/* RD */}
-            <LineInput label={RD?.triple_e ? "EEE:" : "RD:"} value={RD?.volumenRecinto} />
-            <LineInput label={RD?.triple_e ? "" : "ADY 10:"} value={slots[9]} />
-            <LineInput label={RD?.triple_e ? "" : "ADY 11:"} value={slots[10]} />
-            <LineInput label={RD?.triple_e ? "" : "ADY 12:"} value={slots[11]} />
+            <LineInput label="RD:" value={RD?.triple_e ? "EEE" : RD?.volumenRecinto} />
+            <LineInput label="ADY 10:" value={slots[9]} />
+            <LineInput label="ADY 11:" value={slots[10]} />
+            <LineInput label="ADY 12:" value={slots[11]} />
 
             {/* RE */}
-            <LineInput label={RE?.triple_e ? "EEE:" : "RE:"} value={RE?.volumenRecinto} />
-            <LineInput label={RE?.triple_e ? "" : "ADY 13:"} value={slots[12]} />
-            <LineInput label={RE?.triple_e ? "" : "ADY 14:"} value={slots[13]} />
-            <LineInput label={RE?.triple_e ? "" : "ADY 15:"} value={slots[14]} />
+            <LineInput label="RE:" value={RE?.triple_e ? "EEE" : RE?.volumenRecinto} />
+            <LineInput label="ADY 13:" value={slots[12]} />
+            <LineInput label="ADY 14:" value={slots[13]} />
+            <LineInput label="ADY 15:" value={slots[14]} />
 
             {/* RF */}
-            <LineInput label={RF?.triple_e ? "EEE:" : "RF:"} value={RF?.volumenRecinto} />
-            <LineInput label={RF?.triple_e ? "" : "ADY 16:"} value={slots[15]} />
-            <LineInput label={RF?.triple_e ? "" : "ADY 17:"} value={slots[16]} />
-            <LineInput label={RF?.triple_e ? "" : "ADY 18:"} value={slots[17]} />
+            <LineInput label="RF:" value={RF?.triple_e ? "EEE" : RF?.volumenRecinto} />
+            <LineInput label="ADY 16:" value={slots[15]} />
+            <LineInput label="ADY 17:" value={slots[16]} />
+            <LineInput label="ADY 18:" value={slots[17]} />
           </div>
 
           {/* Sub-columna Totales */}
@@ -170,31 +170,31 @@ export const SeccionIsometricos = ({
             </div>
             <div className="flex-1 px-1 py-1 flex flex-col justify-between">
               <LineInput
-                label={RA?.triple_e ? "EEE:" : "RA:"}
-                value={RA?.volumenTotal}
+                label="RA:"
+                value={RA?.triple_e ? "EEE" : RA?.volumenTotal}
                 className="mb-1"
               />
               <LineInput
-                label={RB?.triple_e ? "EEE:" : "RB:"}
-                value={RB?.volumenTotal}
+                label="RB:"
+                value={RB?.triple_e ? "EEE" : RB?.volumenTotal}
                 className="mb-1"
               />
               <LineInput
-                label={RC?.triple_e ? "EEE:" : "RC:"}
-                value={RC?.volumenTotal}
+                label="RC:"
+                value={RC?.triple_e ? "EEE" : RC?.volumenTotal}
                 className="mb-1"
               />
               <LineInput
-                label={RD?.triple_e ? "EEE:" : "RD:"}
-                value={RD?.volumenTotal}
+                label="RD:"
+                value={RD?.triple_e ? "EEE" : RD?.volumenTotal}
                 className="mb-1"
               />
               <LineInput
-                label={RE?.triple_e ? "EEE:" : "RE:"}
-                value={RE?.volumenTotal}
+                label="RE:"
+                value={RE?.triple_e ? "EEE" : RE?.volumenTotal}
                 className="mb-1"
               />
-              <LineInput label={RF?.triple_e ? "EEE:" : "RF:"} value={RF?.volumenTotal} />
+              <LineInput label="RF:" value={RF?.triple_e ? "EEE" : RF?.volumenTotal} />
               <div className="flex-1"></div>
             </div>
           </div>
