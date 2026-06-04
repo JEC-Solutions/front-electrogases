@@ -90,21 +90,33 @@ export const Equipos = ({ inspeccion }: Props) => {
     const nombre = eq.equiposUtilizados
       ? eq.equiposUtilizados.toLowerCase().trim()
       : "";
+    const otroNombre = (eq as any).otroEquipo
+      ? (eq as any).otroEquipo.toLowerCase().trim()
+      : "";
 
     if (
-      nombre === "manometro analogo de bajo" ||
-      nombre === "manómetro analogo de bajo" ||
-      nombre === "manometro analogo de medio" ||
-      nombre === "manómetro analogo de medio"
+      nombre.includes("manometro analogo") ||
+      nombre.includes("manómetro analogo") ||
+      nombre.includes("manómetro análogo") ||
+      nombre.includes("manometro análogo") ||
+      otroNombre.includes("manometro analogo") ||
+      otroNombre.includes("manómetro analogo") ||
+      otroNombre.includes("manómetro análogo") ||
+      otroNombre.includes("manometro análogo")
     ) {
       return;
     }
 
     let prefix = "";
 
-    if (
+    if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
+      prefix = "flexometro";
+    } else if (
       nombre.includes("detector co") ||
-      nombre.includes("co") ||
+      nombre === "co" ||
+      nombre.includes(" co ") ||
+      nombre.startsWith("co ") ||
+      nombre.endsWith(" co") ||
       nombre.includes("monoxido") ||
       nombre.includes("monóxido")
     ) {
@@ -129,8 +141,6 @@ export const Equipos = ({ inspeccion }: Props) => {
       nombre.includes("fugas")
     ) {
       prefix = "";
-    } else if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
-      prefix = "flexometro";
     } else if (
       nombre.includes("manometro analogo medio") ||
       nombre.includes("manómetro analogo medio") ||

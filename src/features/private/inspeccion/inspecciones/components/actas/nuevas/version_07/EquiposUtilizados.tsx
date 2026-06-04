@@ -85,17 +85,25 @@ export const EquiposUtilizados = ({ inspeccion }: Props) => {
     const nombre = eq.equiposUtilizados ? eq.equiposUtilizados.toLowerCase().trim() : "";
     let prefix = "";
 
-    if (
+    if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
+      prefix = "flexometro";
+    } else if (
       nombre.includes("detector co") ||
-      nombre.includes("co") ||
+      nombre === "co" ||
+      nombre.includes(" co ") ||
+      nombre.startsWith("co ") ||
+      nombre.endsWith(" co") ||
       nombre.includes("monoxido") ||
       nombre.includes("monóxido")
     ) {
       prefix = "detector_co";
     } else if (
+      nombre.includes("manometro analogo bajo") ||
+      nombre.includes("manómetro analogo bajo") ||
       nombre.includes("manómetro de baja") ||
       nombre.includes("manometro de baja") ||
-      nombre.includes("baja")
+      nombre.includes("baja") ||
+      nombre.includes("bajo")
     ) {
       prefix = "manometro_baja";
     } else if (
@@ -110,12 +118,13 @@ export const EquiposUtilizados = ({ inspeccion }: Props) => {
       nombre.includes("fugas")
     ) {
       prefix = "";
-    } else if (nombre.includes("flexómetro") || nombre.includes("flexometro")) {
-      prefix = "flexometro";
     } else if (
+      nombre.includes("manometro analogo medio") ||
+      nombre.includes("manómetro analogo medio") ||
       nombre.includes("manómetro de media") ||
       nombre.includes("manometro de media") ||
-      nombre.includes("media")
+      nombre.includes("media") ||
+      nombre.includes("medio")
     ) {
       prefix = "manometro_media";
     } else {
