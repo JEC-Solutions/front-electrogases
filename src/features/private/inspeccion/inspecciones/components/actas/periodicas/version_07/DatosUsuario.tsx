@@ -18,6 +18,17 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
   const casa = inspeccion?.ruta?.casa;
   const ciudad = casa?.ciudad;
 
+  const FALLBACK_ORGANISMO = {
+    empresa: "OI ELECTROGASES S.A.S",
+    direccion: "Cll 3N # 3E-111 Urb. La Capillana Cúcuta - Norte De Santander",
+    telefono1: "3503732122",
+    telefono2: "5492370",
+    nit: "901106969-6",
+    acreditacion: "18-OIN-021",
+  };
+
+  const org = inspeccion?.datos_organismo_snapshot ?? FALLBACK_ORGANISMO;
+
   // Clases utilitarias para mantener consistencia
   const borderClass = "border-black";
   const labelClass = "font-bold mr-1";
@@ -99,15 +110,14 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
         <div className="w-[30%] flex">
           <div className={`flex-1 border-r ${borderClass} flex flex-col`}>
             <div className="flex-1 px-1 py-[2px] text-[7pt]">
-              <div className="whitespace-nowrap">
-                Empresa: OI ELECTROGASES S.A.S
+              <div className="whitespace-nowrap truncate">
+                Empresa: {org.empresa}
               </div>
-              <div className="leading-none whitespace-nowrap">
-                Dirección: Cll. 3N # 3E-111 Urb. Capillana
+              <div className="text-[6.5pt] leading-tight">
+                Dirección: {org.direccion}
               </div>
-              <div>Cúcuta - Norte De Santander</div>
-              <div className="font-bold mt-[1px]">
-                Acreditación N°: 18-OIN-021
+              <div className="font-bold whitespace-nowrap truncate mt-[1px]">
+                Acreditación N°: {org.acreditacion}
               </div>
             </div>
 
@@ -124,15 +134,15 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
           <div className="w-[75px] flex flex-col text-center">
             <div className="flex-1 flex flex-col justify-center py-[2px]">
               <div className="text-[6.5pt]">Teléfonos:</div>
-              <div className="font-bold leading-none">3503732122</div>
-              <div className="font-bold leading-none mt-[2px]">5492370</div>
+              <div className="font-bold leading-none">{org.telefono1}</div>
+              {org.telefono2 && <div className="font-bold leading-none mt-[2px]">{org.telefono2}</div>}
             </div>
 
             <div
               className={`border-t ${borderClass} h-[22px] flex flex-col justify-center`}
             >
               <div className="text-[6pt] leading-none">NIT:</div>
-              <div className="leading-none">901106969-6</div>
+              <div className="leading-none">{org.nit}</div>
             </div>
           </div>
         </div>

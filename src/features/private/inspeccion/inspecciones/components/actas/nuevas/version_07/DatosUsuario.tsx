@@ -17,6 +17,17 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
     .filter(Boolean)
     .join(" ");
 
+  const FALLBACK_ORGANISMO = {
+    empresa: "OI ELECTROGASES S.A.S",
+    direccion: "Cll 3N # 3E-111 Urb. La Capillana Cúcuta - Norte De Santander",
+    telefono1: "3503732122",
+    telefono2: "5492370",
+    nit: "901106969-6",
+    acreditacion: "18-OIN-021",
+  };
+
+  const org = inspeccion?.datos_organismo_snapshot ?? FALLBACK_ORGANISMO;
+
   const border = "border-black";
   const textBase = "text-[7.5pt] font-arial leading-tight text-black";
   const labelBold = "font-bold mr-1";
@@ -97,22 +108,19 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
             <div
               className={`flex-1 border-r ${border} px-1 py-[1px] flex flex-col justify-center text-[7pt]`}
             >
-              <div className="whitespace-nowrap">
-                <span className="">Empresa:</span> OI ELECTROGASES S.A.S
+              <div className="whitespace-nowrap truncate">
+                <span className="">Empresa:</span> {org.empresa}
               </div>
-              <div className="whitespace-nowrap">
-                Dirección: Cll 3N # 3E-111 Urb. La Capillana
+              <div className="text-[6.5pt] leading-tight">
+                Dirección: {org.direccion}
               </div>
-              <div className="whitespace-nowrap">
-                Cúcuta - Norte De Santander
-              </div>
-              <div className="font-bold">Acreditación N°: 18-OIN-021</div>
+              <div className="font-bold whitespace-nowrap truncate">Acreditación N°: {org.acreditacion}</div>
             </div>
 
             <div className="w-[75px] flex flex-col justify-center items-center text-center px-1">
               <div className="text-[6.5pt] mb-[1px]">Teléfonos:</div>
-              <div className="font-bold leading-none">3503732122</div>
-              <div className="font-bold leading-none">5492370</div>
+              <div className="font-bold leading-none">{org.telefono1}</div>
+              {org.telefono2 && <div className="font-bold leading-none">{org.telefono2}</div>}
             </div>
           </div>
 
@@ -122,7 +130,7 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
             </span>
             <div className="flex-1"></div> {/* Espacio vacío */}
             <span className="text-[6pt] mr-1">NIT:</span>
-            <span>901106969-6</span>
+            <span>{org.nit}</span>
           </div>
         </div>
       </div>

@@ -85,6 +85,14 @@ export interface IActa {
   resultadoCategoriaDefectologias: ResultadoCategoriaDefectologia[];
   parametrosEvaluacion: ParametrosEvaluacion[];
   declaracionConformidad: DeclaracionConformidad[];
+  datos_organismo_snapshot?: {
+    empresa: string;
+    direccion: string;
+    telefono1: string;
+    telefono2: string;
+    nit: string;
+    acreditacion: string;
+  } | null;
 }
 
 export interface ResultadoCategoriaDefectologia {
