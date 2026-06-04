@@ -24,7 +24,8 @@ import {
 import { CuadroMaestro } from "@/features/private/informes/cuadroMaestro/page";
 import { InspectoresUsuarios } from "@/features/private/inspectores/usuarios/pages";
 import { EquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/pages";
-import { Siserco } from "../../informes/siserco/pages/Siserco";
+import { Siserco } from "@/features/private/informes/siserco/pages/Siserco";
+import { Empresa } from "@/features/private/configuracion/empresa/pages";
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -117,6 +118,7 @@ export const Dashboard = () => {
             <Route path="/configuracion/menus" element={<Menu />} />
             <Route path="/configuracion/roles" element={<Roles />} />
             <Route path="/configuracion/usuarios" element={<Usuarios />} />
+            <Route path='/configuracion/empresa' element={<Empresa/>}/>
 
             {/* Inspecciones */}
             <Route path="/inspecciones/rutas" element={<Rutas />} />
