@@ -1,4 +1,4 @@
-name: Deploy dev (ElectroGases Front) 
+name: Deploy dev (ElectroGases Front)
 
 on:
   push:
@@ -48,7 +48,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            docker network create stack || true
-            cd ~/stack/apps/electrogases
-            docker compose -p electrogases-dev -f docker-compose.dev.yml up -d --pull always --force-recreate web
-            docker image prune -f
+            cd /var/www/proyectos/jecgas-landing-dev
+            docker compose pull web
+            docker compose up -d --force-recreate web
+            docker image prune -a -f
