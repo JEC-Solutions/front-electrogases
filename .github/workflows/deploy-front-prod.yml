@@ -57,6 +57,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker network create stack || true
-            cd ~/stack/apps/electrogases
+            cd /var/www/proyectos/jecgas-landing-prod
             docker compose -f docker-compose.prod.yml up -d --pull always --force-recreate web
             docker image prune -f
