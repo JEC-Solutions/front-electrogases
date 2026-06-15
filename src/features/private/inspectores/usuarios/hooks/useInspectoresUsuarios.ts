@@ -11,6 +11,23 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
+export const useInspectores = () => {
+  return useQuery<IUsuarios[]>({
+    queryKey: ["inspectores"],
+    queryFn: async () => {
+      try {
+        const { data } = await inspectorUsuarioServices.getInspectores();
+        return data.data;
+      } catch (error: any) {
+        handleAxiosError(error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+};
+
 export const useInspectoresUsuarios = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -74,20 +91,7 @@ export const useInspectoresUsuarios = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<IUsuarios[]>({
-    queryKey: ["inspectores"],
-    queryFn: async () => {
-      try {
-        const { data } = await inspectorUsuarioServices.getInspectores();
-        return data.data;
-      } catch (error: any) {
-        handleAxiosError(error);
-        throw error;
-      }
-    },
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
-  });
+  } = useInspectores();
 
   const { data: documentos = [] } = useQuery<ITipoDocumentos[]>({
     queryKey: ["tiposDocumentos"],

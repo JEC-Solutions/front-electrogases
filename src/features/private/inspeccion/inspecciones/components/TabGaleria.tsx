@@ -31,6 +31,13 @@ import utc from "dayjs/plugin/utc";
 const { Text } = Typography;
 dayjs.extend(utc);
 
+const normalize = (s: string) =>
+  (s ?? "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
 interface Props {
   currentInspeccionId: number | null;
   tiposImagenes: ITipoImagen[];
@@ -247,6 +254,11 @@ export const TabGaleria = ({
           onChange={handleTypeChange}
           value={selectedTypeId}
           size="large"
+          showSearch={{
+            filterOption: (input, option) =>
+              normalize(option?.label as string).includes(normalize(input)),
+            optionFilterProp: "label",
+          }}
           options={tiposImagenes.map((tipo) => ({
             label: `${tipo.descripcion}`,
             value: tipo.id,
@@ -340,6 +352,11 @@ export const TabGaleria = ({
                                 onChange={(val) =>
                                   handleUpdateImageType(img.id, val)
                                 }
+                                showSearch={{
+                                  filterOption: (input, option) =>
+                                    normalize(option?.label as string).includes(normalize(input)),
+                                  optionFilterProp: "label",
+                                }}
                                 options={tiposImagenes.map((tipo) => ({
                                   label: tipo.descripcion,
                                   value: tipo.id,

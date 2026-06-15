@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { IUsuarios } from "@/features/private/configuracion/usuarios/interfaces";
-import { Button, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Col, Input, Row, Space, Table, Tag, Tooltip } from "antd";
 import { FaEdit, FaLock, FaUnlock } from "react-icons/fa";
 
 interface Props {
@@ -13,6 +14,37 @@ export const TableInspectoresUsuarios = ({
   onOpenCurrent,
   onStatus,
 }: Props) => {
+  const [filtroTexto, setFiltroTexto] = useState("");
+
+  const normalize = (s: string) =>
+    (s ?? "")
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const datosFiltered = inspectores.filter((inspector) => {
+    const p = inspector.persona;
+    const fullName = `${p?.primer_nombre ?? ""} ${p?.segundo_nombre ?? ""} ${p?.primer_apellido ?? ""} ${p?.segundo_apellido ?? ""}`;
+    const doc = p?.numero_documento ?? "";
+    const email = p?.email ?? "";
+    const user = inspector.usuario ?? "";
+
+    const query = normalize(filtroTexto);
+    const matchTexto =
+      !query ||
+      normalize(fullName).includes(query) ||
+      normalize(doc).includes(query) ||
+      normalize(email).includes(query) ||
+      normalize(user).includes(query);
+
+    return matchTexto;
+  });
+
+  const limpiarFiltros = () => {
+    setFiltroTexto("");
+  };
+
   const columns = [
     {
       title: "Nombre completo",
@@ -139,10 +171,28 @@ export const TableInspectoresUsuarios = ({
   ];
 
   return (
-    <div className="overflow-x-auto">
+    <div>
+      {/* Filtros */}
+      <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+        <Col xs={24} sm={16} md={18}>
+          <Input
+            placeholder="Buscar por nombre, documento, usuario o correo..."
+            style={{ width: "100%" }}
+            value={filtroTexto}
+            onChange={(e) => setFiltroTexto(e.target.value)}
+            allowClear
+          />
+        </Col>
+        <Col xs={24} sm={8} md={6}>
+          <Button onClick={limpiarFiltros} className="w-full sm:w-auto">
+            Limpiar filtros
+          </Button>
+        </Col>
+      </Row>
+
       <Table
         columns={columns}
-        dataSource={inspectores}
+        dataSource={datosFiltered}
         rowKey="id_usuario"
         className="custom-table"
         rowClassName={(_record, index) =>

@@ -25,7 +25,9 @@ export interface IEquiposUtilizados {
     idPersona: {
       id_persona: number;
       primer_nombre: string;
+      segundo_nombre?: string | null;
       primer_apellido: string;
+      segundo_apellido?: string | null;
     };
   }[];
 }

@@ -44,7 +44,14 @@ export const TableEquiposUtilizados = ({
           eu.idPersona.id_persona,
           {
             value: eu.idPersona.id_persona,
-            label: `${eu.idPersona.primer_nombre} ${eu.idPersona.primer_apellido}`,
+            label: [
+              eu.idPersona.primer_nombre,
+              eu.idPersona.segundo_nombre,
+              eu.idPersona.primer_apellido,
+              eu.idPersona.segundo_apellido
+            ]
+              .filter(Boolean)
+              .join(" ")
           },
         ]),
     ).values(),

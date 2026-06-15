@@ -31,8 +31,16 @@ import { useState } from "react";
 import type { Dayjs } from "dayjs";
 import { ModalImagenesInspeccion } from "./ModalImagenesInspeccion";
 import { InspeccionesFilters } from "../services/inspecciones.services";
+import { useInspectores } from "@/features/private/inspectores/usuarios/hooks";
 
 const { RangePicker } = DatePicker;
+
+const normalize = (s: string) =>
+  (s ?? "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
 type PrintType = "all" | "first_page" | "first_two_pages";
 
@@ -93,6 +101,8 @@ export const TableInspecciones = ({
   >(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [printType, setPrintType] = useState<PrintType>("all");
+
+  const { data: inspectores = [], isLoading: isLoadingInspectores } = useInspectores();
 
   // --- Estados locales para los filtros (UI) ---
   const [searchTermActa, setSearchTermActa] = useState("");
@@ -377,7 +387,7 @@ export const TableInspecciones = ({
                   placeholder={["Inicio", "Fin"]}
                 />
               </Col>
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={24} sm={12} md={5}>
                 <label className="block text-sm font-medium mb-1 text-gray-600">
                   Tipo Inspección
                 </label>
@@ -390,19 +400,33 @@ export const TableInspecciones = ({
                   onChange={(val) => setSelectedTipo(val)}
                 />
               </Col>
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={24} sm={12} md={8}>
                 <label className="block text-sm font-medium mb-1 text-gray-600">
                   Inspector
                 </label>
-                <Input
-                  placeholder="Buscar nombre..."
-                  value={searchTermInspector}
-                  onChange={(e) => setSearchTermInspector(e.target.value)}
+                <Select
+                  showSearch={{
+                    filterOption: (input, option) =>
+                      normalize(option?.label as string).includes(normalize(input)),
+                    optionFilterProp: "label",
+                  }}
                   allowClear
-                  onPressEnter={handleSearch}
+                  loading={isLoadingInspectores}
+                  placeholder="Seleccione un inspector"
+                  value={searchTermInspector || undefined}
+                  onChange={(val) => setSearchTermInspector(val ?? "")}
+                  style={{ width: "100%" }}
+                  options={inspectores.map((i) => {
+                    const name = `${i.persona?.primer_nombre ?? ""} ${i.persona?.segundo_nombre ?? ""} ${i.persona?.primer_apellido ?? ""} ${i.persona?.segundo_apellido ?? ""
+                      }`.trim();
+                    return {
+                      value: name,
+                      label: name,
+                    };
+                  })}
                 />
               </Col>
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={24} sm={12} md={5}>
                 <label className="block text-sm font-medium mb-1 text-gray-600">
                   Número Acta
                 </label>
