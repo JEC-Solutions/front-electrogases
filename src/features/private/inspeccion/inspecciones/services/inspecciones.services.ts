@@ -83,7 +83,7 @@ export const downloadMassiveImages = async (params: {
 }) => {
   const { ids, filters } = params;
   return await electroApi.post(
-    `/inspeccion/generate-images-massive`,
+    `/inspeccion/imagenes/generate-images-massive`,
     { ids, ...filters },
     {
       responseType: "blob",
