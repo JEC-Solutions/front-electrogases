@@ -61,6 +61,10 @@ interface Props {
   togglePrueba: (inspeccionId: number) => void;
   isTogglingPrueba: boolean;
   downloadImages: (id: number) => void;
+  downloadMassiveImages: (
+    ids?: number[],
+    filters?: InspeccionesFilters,
+  ) => void;
   // Paginación
   pagination: {
     page: number;
@@ -84,6 +88,7 @@ export const TableInspecciones = ({
   togglePrueba,
   isTogglingPrueba,
   downloadImages,
+  downloadMassiveImages,
   pagination,
   filters,
   handleFilterChange,
@@ -505,7 +510,31 @@ export const TableInspecciones = ({
               }}
             >
               <Button type="primary" icon={<DownloadOutlined />}>
-                Descargar <DownOutlined />
+                Descargar PDFs <DownOutlined />
+              </Button>
+            </Dropdown>
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: "imagenes_seleccionados",
+                    label: `Descargar Imágenes Seleccionados (${selectedRowKeys.length})`,
+                    disabled: selectedRowKeys.length === 0,
+                    onClick: () =>
+                      downloadMassiveImages(selectedRowKeys as number[]),
+                  },
+                  {
+                    key: "imagenes_filtrados",
+                    label: "Descargar Imágenes Filtrados (Todos)",
+                    disabled: !hasFilters,
+                    onClick: () =>
+                      downloadMassiveImages(undefined, filters),
+                  },
+                ],
+              }}
+            >
+              <Button style={{ backgroundColor: "#52c41a", borderColor: "#52c41a", color: "#fff" }} icon={<FileImageOutlined />}>
+                Descargar Imágenes <DownOutlined />
               </Button>
             </Dropdown>
           </Space>

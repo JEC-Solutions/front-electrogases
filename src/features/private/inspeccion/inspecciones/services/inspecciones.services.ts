@@ -77,6 +77,20 @@ export const downloadMassivePdf = async (params: {
   );
 };
 
+export const downloadMassiveImages = async (params: {
+  ids?: number[];
+  filters?: InspeccionesFilters;
+}) => {
+  const { ids, filters } = params;
+  return await electroApi.post(
+    `/inspeccion/generate-images-massive`,
+    { ids, ...filters },
+    {
+      responseType: "blob",
+    },
+  );
+};
+
 export const autorizarEdicionInforme = async (id: number) => {
   return await electroApi.patch(`/inspeccion/${id}/autorizar-edicion`);
 };
@@ -93,6 +107,7 @@ export const getFirmaSelloInspector = async (id: number) => {
 
 export const downloadImagesInspeccion = async (id: number) => {
   return await electroApi.get(`/inspeccion/imagenes/download-zip/${id}`, {
+    responseType: "blob",
   });
 };
 

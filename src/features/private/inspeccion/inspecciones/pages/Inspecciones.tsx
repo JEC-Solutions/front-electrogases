@@ -22,6 +22,7 @@ export const Inspecciones = () => {
     togglePrueba,
     isTogglingPrueba,
     downloadImages,
+    downloadMassiveImages,
   } = useInspecciones();
 
   return (
@@ -54,6 +55,7 @@ export const Inspecciones = () => {
             togglePrueba={togglePrueba}
             isTogglingPrueba={isTogglingPrueba}
             downloadImages={downloadImages}
+            downloadMassiveImages={downloadMassiveImages}
             pagination={pagination}
             filters={filters}
             handleFilterChange={handleFilterChange}

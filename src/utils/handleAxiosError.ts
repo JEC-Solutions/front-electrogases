@@ -6,45 +6,65 @@ export const handleAxiosError = (error: AxiosError) => {
     const status = error.response.status;
     const responseData: any = error.response.data;
 
-    const message = responseData?.message || `Error ${status}`;
-    const errorDetails = responseData?.error;
+    const showSwal = (data: any) => {
+      const message = data?.message || `Error ${status}`;
+      const errorDetails = data?.error;
 
-    let errorText = message;
+      let errorText = message;
 
-    // Si es un error 500, solo mostrar el mensaje general
-    if (status === 500) {
-      errorText = message;
-    } else if (errorDetails && typeof errorDetails === "object") {
-      if (Array.isArray(errorDetails)) {
-        errorText += "\n" + errorDetails.join("\n");
-      } else {
-        errorText +=
-          "\n" +
-          Object.entries(errorDetails)
-            .map(([key, val]: any) => `${key}: ${val}`)
-            .join("\n");
+      // Si es un error 500, solo mostrar el mensaje general
+      if (status === 500) {
+        errorText = message;
+      } else if (errorDetails && typeof errorDetails === "object") {
+        if (Array.isArray(errorDetails)) {
+          errorText += "\n" + errorDetails.join("\n");
+        } else {
+          errorText +=
+            "\n" +
+            Object.entries(errorDetails)
+              .map(([key, val]: any) => `${key}: ${val}`)
+              .join("\n");
+        }
       }
+
+      let icon: "success" | "warning" | "error" = "error";
+      let title = `Error ${status}`;
+
+      if (status >= 200 && status < 300) {
+        icon = "success";
+        title = "Operación Exitosa";
+      } else if (status >= 400 && status < 500) {
+        icon = "warning";
+        title = "Atención";
+      } else if (status >= 500) {
+        icon = "error";
+        title = "Error del Servidor";
+      }
+
+      Swal.fire({
+        icon,
+        title,
+        text: errorText,
+      });
+    };
+
+    if (responseData instanceof Blob) {
+      responseData
+        .text()
+        .then((text) => {
+          try {
+            const parsed = JSON.parse(text);
+            showSwal(parsed);
+          } catch (e) {
+            showSwal({ message: `Error ${status}` });
+          }
+        })
+        .catch(() => {
+          showSwal({ message: `Error ${status}` });
+        });
+    } else {
+      showSwal(responseData);
     }
-
-    let icon: "success" | "warning" | "error" = "error";
-    let title = `Error ${status}`;
-
-    if (status >= 200 && status < 300) {
-      icon = "success";
-      title = "Operación Exitosa";
-    } else if (status >= 400 && status < 500) {
-      icon = "warning";
-      title = "Atención";
-    } else if (status >= 500) {
-      icon = "error";
-      title = "Error del Servidor";
-    }
-
-    Swal.fire({
-      icon,
-      title,
-      text: errorText,
-    });
   } else if (error.request) {
     console.error("No se recibió respuesta del servidor", error.request);
     Swal.fire({

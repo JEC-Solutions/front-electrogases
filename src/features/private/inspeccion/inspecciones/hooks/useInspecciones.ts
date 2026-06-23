@@ -115,12 +115,6 @@ export const useInspecciones = () => {
     },
     onError: (error: any) => {
       handleAxiosError(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Hubo un problema al intentar conectar con el servidor.",
-        confirmButtonText: "Entendido",
-      });
     },
   });
 
@@ -171,12 +165,55 @@ export const useInspecciones = () => {
     },
     onError: (error: any) => {
       handleAxiosError(error);
+    },
+  });
+
+  const downloadMassiveImagesMutation = useMutation({
+    mutationFn: async (params: {
+      ids?: number[];
+      filters?: InspeccionesFilters;
+    }) => {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Hubo un problema al generar los PDFs.",
-        confirmButtonText: "Entendido",
+        title: "Generando imágenes...",
+        text: `Esto puede tardar unos momentos, por favor espere...`,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
       });
+      const { data } = await inspeccionServices.downloadMassiveImages(params);
+      return data;
+    },
+    onSuccess: (data) => {
+      try {
+        const blob = new Blob([data], { type: "application/zip" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `Inspecciones_Imagenes_${new Date().toISOString().split("T")[0]}.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        Swal.fire({
+          icon: "success",
+          title: "¡Descarga completada!",
+          text: "El archivo ZIP de imágenes se ha descargado correctamente.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error procesando la descarga masiva de imágenes:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Error de procesamiento",
+          text: "El archivo se recibió pero no se pudo descargar.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      handleAxiosError(error);
     },
   });
 
@@ -223,12 +260,6 @@ export const useInspecciones = () => {
     },
     onError: (error: any) => {
       handleAxiosError(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Hubo un problema al descargar las imágenes.",
-        confirmButtonText: "Entendido",
-      });
     },
   });
 
@@ -294,6 +325,28 @@ export const useInspecciones = () => {
     downloadMassiveMutation.mutate({ ids, printType, filters: cleanFilters });
   };
 
+  const handleDownloadMassiveImages = (
+    ids?: number[],
+    filters?: InspeccionesFilters,
+  ) => {
+    if ((!ids || ids.length === 0) && !filters) {
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Debe seleccionar inspecciones o aplicar filtros para descargar imágenes.",
+      });
+      return;
+    }
+
+    const cleanFilters = filters ? { ...filters } : undefined;
+    if (cleanFilters) {
+      delete cleanFilters.page;
+      delete cleanFilters.limit;
+    }
+
+    downloadMassiveImagesMutation.mutate({ ids, filters: cleanFilters });
+  };
+
   // Autorizar edición de informe
   const autorizarEdicionMutation = useMutation({
     mutationFn: async (inspeccionId: number) => {
@@ -313,12 +366,6 @@ export const useInspecciones = () => {
     },
     onError: (error: any) => {
       handleAxiosError(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo autorizar la edición.",
-        confirmButtonText: "Entendido",
-      });
     },
   });
 
@@ -340,12 +387,6 @@ export const useInspecciones = () => {
     },
     onError: (error: any) => {
       handleAxiosError(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo cambiar el estado de prueba.",
-        confirmButtonText: "Entendido",
-      });
     },
   });
 
@@ -372,6 +413,8 @@ export const useInspecciones = () => {
     isAutorizando: autorizarEdicionMutation.isPending,
     downloadImages: downloadImagesMutation.mutate,
     isDownloadingImages: downloadImagesMutation.isPending,
+    downloadMassiveImages: handleDownloadMassiveImages,
+    isDownloadingMassiveImages: downloadMassiveImagesMutation.isPending,
     // toggle prueba
     togglePrueba: togglePruebaMutation.mutate,
     isTogglingPrueba: togglePruebaMutation.isPending,
