@@ -103,6 +103,7 @@ export const useLogin = () => {
         confirmButtonText: "Aceptar",
       }).then(() => {
         cookies.set("token", data.data.token);
+        cookies.set("puede_descargar_imagenes", !!data.data.puedeDescargarImagenes);
         reset();
         navigate("/dashboard");
       });

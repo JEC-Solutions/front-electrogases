@@ -29,6 +29,7 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import type { Dayjs } from "dayjs";
+import Cookies from "universal-cookie";
 import { ModalImagenesInspeccion } from "./ModalImagenesInspeccion";
 import { InspeccionesFilters } from "../services/inspecciones.services";
 import { useInspectores } from "@/features/private/inspectores/usuarios/hooks";
@@ -96,6 +97,10 @@ export const TableInspecciones = ({
   isLoading,
 }: Props) => {
   const navigate = useNavigate();
+
+  const cookies = new Cookies();
+  const puedeDescargarImagenes = cookies.get("puede_descargar_imagenes");
+  const isSuperAdmin = puedeDescargarImagenes === true || puedeDescargarImagenes === "true";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentInspeccionId, setCurrentInspeccionId] = useState<number | null>(
@@ -513,30 +518,32 @@ export const TableInspecciones = ({
                 Descargar PDFs <DownOutlined />
               </Button>
             </Dropdown>
-            <Dropdown
-              menu={{
-                items: [
-                  {
-                    key: "imagenes_seleccionados",
-                    label: `Descargar Imágenes Seleccionados (${selectedRowKeys.length})`,
-                    disabled: selectedRowKeys.length === 0,
-                    onClick: () =>
-                      downloadMassiveImages(selectedRowKeys as number[]),
-                  },
-                  {
-                    key: "imagenes_filtrados",
-                    label: "Descargar Imágenes Filtrados (Todos)",
-                    disabled: !hasFilters,
-                    onClick: () =>
-                      downloadMassiveImages(undefined, filters),
-                  },
-                ],
-              }}
-            >
-              <Button style={{ backgroundColor: "#52c41a", borderColor: "#52c41a", color: "#fff" }} icon={<FileImageOutlined />}>
-                Descargar Imágenes <DownOutlined />
-              </Button>
-            </Dropdown>
+            {isSuperAdmin && (
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: "imagenes_seleccionados",
+                      label: `Descargar Imágenes Seleccionados (${selectedRowKeys.length})`,
+                      disabled: selectedRowKeys.length === 0,
+                      onClick: () =>
+                        downloadMassiveImages(selectedRowKeys as number[]),
+                    },
+                    {
+                      key: "imagenes_filtrados",
+                      label: "Descargar Imágenes Filtrados (Todos)",
+                      disabled: !hasFilters,
+                      onClick: () =>
+                        downloadMassiveImages(undefined, filters),
+                    },
+                  ],
+                }}
+              >
+                <Button style={{ backgroundColor: "#52c41a", borderColor: "#52c41a", color: "#fff" }} icon={<FileImageOutlined />}>
+                  Descargar Imágenes <DownOutlined />
+                </Button>
+              </Dropdown>
+            )}
           </Space>
         </div>
       </Card>
