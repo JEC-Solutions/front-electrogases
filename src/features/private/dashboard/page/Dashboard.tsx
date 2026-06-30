@@ -26,6 +26,8 @@ import { InspectoresUsuarios } from "@/features/private/inspectores/usuarios/pag
 import { EquiposUtilizados } from "@/features/private/inspectores/equiposUtilizados/pages";
 import { Siserco } from "@/features/private/informes/siserco/pages/Siserco";
 import { Empresa } from "@/features/private/configuracion/empresa/pages";
+import { ActaEntrega } from "@/features/private/informes/actaEntrega/page/ActaEntrega";
+
 const { Sider, Content } = Layout;
 
 export const Dashboard = () => {
@@ -76,15 +78,15 @@ export const Dashboard = () => {
             closable
             onClose={() => setDrawerVisible(false)}
             open={drawerVisible}
-            styles={{ 
+            styles={{
               body: { padding: 0 },
-              header: { 
-                background: "#001529", 
+              header: {
+                background: "#001529",
                 borderBottom: "1px solid rgba(255,255,255,0.1)"
               }
             }}
-            headerStyle={{ 
-              background: "#001529" 
+            headerStyle={{
+              background: "#001529"
             }}
             className="sidebar-drawer"
             width={280}
@@ -118,7 +120,7 @@ export const Dashboard = () => {
             <Route path="/configuracion/menus" element={<Menu />} />
             <Route path="/configuracion/roles" element={<Roles />} />
             <Route path="/configuracion/usuarios" element={<Usuarios />} />
-            <Route path='/configuracion/empresa' element={<Empresa/>}/>
+            <Route path='/configuracion/empresa' element={<Empresa />} />
 
             {/* Inspecciones */}
             <Route path="/inspecciones/rutas" element={<Rutas />} />
@@ -137,6 +139,8 @@ export const Dashboard = () => {
               path="/informes/siserco"
               element={<Siserco />}
             />
+
+            <Route path="/informes/acta_entregas" element={<ActaEntrega />} />
 
             {/* Inspectores */}
             <Route
