@@ -15,9 +15,9 @@ const Box = ({ checked = false }: { checked?: boolean }) => (
 export const DeclaracionConformidad = ({ inspeccion }: Props) => {
   const conformidad: any = inspeccion?.declaracionConformidad?.[0] || {};
 
-  const isSinDefectos = conformidad.defectos === null;
-  const isNoCriticos = conformidad.defectos === false;
-  const isCriticos = conformidad.defectos === true;
+  const isSinDefectos = conformidad.sin_defectos;
+  const isNoCriticos = conformidad.defectos_no_criticos;
+  const isCriticos = conformidad.defectos_criticos;
 
   const borderClass = "border-black";
   const textClass = "text-[7.5pt] font-arial leading-tight text-black";
