@@ -65,7 +65,6 @@ export const CrearRuta = () => {
       const isValid = await methods.trigger([
         "ruta.fecha",
         "ruta.hora",
-        "ruta.id_asesor",
       ]);
 
       if (!isValid) {

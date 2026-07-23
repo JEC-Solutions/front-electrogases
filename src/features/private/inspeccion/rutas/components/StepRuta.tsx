@@ -140,7 +140,6 @@ export const StepRuta = ({
           <Controller
             name="ruta.id_asesor"
             control={control}
-            rules={{ required: "Este campo es requerido" }}
             render={({ field }) => (
               <Select
                 {...field}
@@ -154,11 +153,6 @@ export const StepRuta = ({
               />
             )}
           />
-          {errors?.ruta?.id_asesor && (
-            <span style={{ color: "red" }}>
-              {errors.ruta.id_asesor.message as string}
-            </span>
-          )}
         </div>
       </Col>
 
