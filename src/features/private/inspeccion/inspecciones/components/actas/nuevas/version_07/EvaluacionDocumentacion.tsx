@@ -59,7 +59,7 @@ const NormaRow = ({
     <div className="flex-1 px-1 border-r border-black truncate" title={label}>
       {label}
     </div>
-    <div className="w-[22px] border-r border-black flex justify-center items-center">
+    <div className="w-[23px] border-r border-black flex justify-center items-center">
       <Check checked={state === "SI"} />
     </div>
     <div className="w-[22px] border-r border-black flex justify-center items-center">
@@ -72,23 +72,29 @@ const NormaRow = ({
 );
 
 const NormaHeader = ({ title }: { title: string }) => (
-  <div className="flex border-b border-black h-[16px] bg-gray-50 items-center">
+  <div className="flex bg-gray-50 border-b border-black">
     <div
-      className="flex-1 px-1 border-r border-black font-semibold truncate leading-none"
+      className="flex-1 px-1 border-r border-black font-semibold truncate flex items-center leading-none"
       title={title}
     >
       {title}
     </div>
-    <div className="w-[38px] border-r border-black text-center font-bold text-[6pt]">
-      CUMPLE
+    <div className="w-[68px] border-l border-black flex flex-col text-center">
+      <div className="border-b border-black font-bold text-[5pt] py-[1px]">
+        CUMPLE
+      </div>
+      <div className="flex font-bold text-[5pt]">
+        <div className="w-[23px] border-r border-black text-center py-[1px]">
+          SI
+        </div>
+        <div className="w-[22px] border-r border-black text-center py-[1px]">
+          NO
+        </div>
+        <div className="flex-1 text-center py-[1px]">
+          NA
+        </div>
+      </div>
     </div>
-    <div className="w-[22px] border-r border-black text-center font-bold text-[6pt]">
-      SI
-    </div>
-    <div className="w-[22px] border-r border-black text-center font-bold text-[6pt]">
-      NO
-    </div>
-    <div className="w-[22px] text-center font-bold text-[6pt]">NA</div>
   </div>
 );
 

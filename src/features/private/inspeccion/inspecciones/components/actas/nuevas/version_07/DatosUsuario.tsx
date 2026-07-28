@@ -109,7 +109,7 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
               className={`flex-1 border-r ${border} px-1 py-[1px] flex flex-col justify-center text-[7pt]`}
             >
               <div className="whitespace-nowrap truncate">
-                <span className="">Empresa:</span> {org.empresa}
+                {org.empresa}
               </div>
               <div className="text-[6.5pt] leading-tight">
                 Dirección: {org.direccion}
