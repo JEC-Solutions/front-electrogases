@@ -26,6 +26,7 @@ import {
   DownOutlined,
   FileImageOutlined,
   BugOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import type { Dayjs } from "dayjs";
@@ -205,6 +206,70 @@ export const TableInspecciones = ({
             {`${prefijo} ${numeroActa}`.trim()}
             {record.es_prueba && <Tag color="orange">PRUEBA</Tag>}
           </Space>
+        );
+      },
+    },
+    {
+      title: "Fotos",
+      key: "estado_imagenes",
+      align: "center",
+      render: (_, record) => {
+        const estado = record.estado_imagenes;
+
+        // Inspecciones antiguas que nunca declararon cuántas fotos esperaban:
+        // no podemos afirmar que falte nada, así que no alarmamos.
+        if (!estado || !estado.verificable) {
+          return (
+            <Tooltip title="Esta inspección no registró cuántas fotos se esperaban, no es posible verificarla">
+              <Tag color="default">Sin verificar</Tag>
+            </Tooltip>
+          );
+        }
+
+        if (estado.completo) {
+          return (
+            <Tooltip title={`${estado.cargadas} de ${estado.esperadas} fotos`}>
+              <Tag color="success" icon={<CheckCircleOutlined />}>
+                Completa
+              </Tag>
+            </Tooltip>
+          );
+        }
+
+        const detalle = estado.detalle.length ? (
+          <div>
+            <div style={{ marginBottom: 4 }}>
+              Faltan {estado.faltantes} de {estado.esperadas} fotos:
+            </div>
+            {estado.detalle.map((d) => (
+              <div key={d.id_tipo_imagen}>
+                • {d.nombre}: {d.cargadas}/{d.esperadas}
+              </div>
+            ))}
+            <div style={{ marginTop: 6, fontSize: 12, opacity: 0.85 }}>
+              Abre la galería para cargarlas.
+            </div>
+          </div>
+        ) : (
+          `Faltan ${estado.faltantes} de ${estado.esperadas} fotos`
+        );
+
+        return (
+          <Tooltip title={detalle}>
+            <Tag
+              color="error"
+              icon={<WarningOutlined />}
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                openImageModal(
+                  record.id_inspeccion,
+                  record.tipoInspeccion?.id_tipo_inspeccion,
+                )
+              }
+            >
+              Faltan {estado.faltantes}
+            </Tag>
+          </Tooltip>
         );
       },
     },

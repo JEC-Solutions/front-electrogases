@@ -5,8 +5,27 @@ export interface IResponse {
   error: any;
 }
 
+export interface IEstadoImagenesDetalle {
+  id_tipo_imagen: number;
+  nombre: string;
+  esperadas: number;
+  cargadas: number;
+  faltantes: number;
+}
+
+export interface IEstadoImagenes {
+  esperadas: number;
+  cargadas: number;
+  faltantes: number;
+  /** false si la inspección nunca declaró cuántas imágenes esperaba */
+  verificable: boolean;
+  completo: boolean;
+  detalle: IEstadoImagenesDetalle[];
+}
+
 export interface IInspecciones {
   id_inspeccion: number;
+  estado_imagenes?: IEstadoImagenes;
   fecha_expedicion: string;
   fecha_inspeccion: string;
   fecha_puesta_en_servicio: string;

@@ -1,5 +1,5 @@
 import { useInspecciones } from "@/features/private/inspeccion/inspecciones/hooks";
-import { Card } from "antd";
+import { Alert, Card } from "antd";
 import { TableInspecciones } from "@/features/private/inspeccion/inspecciones/components";
 
 export const Inspecciones = () => {
@@ -25,6 +25,15 @@ export const Inspecciones = () => {
     downloadMassiveImages,
   } = useInspecciones();
 
+  // Solo cubre las inspecciones de la página visible, que es lo que trae el listado
+  const incompletas = inspecciones.filter(
+    (i) => i.estado_imagenes?.verificable && !i.estado_imagenes.completo,
+  );
+  const fotosFaltantes = incompletas.reduce(
+    (acc, i) => acc + (i.estado_imagenes?.faltantes ?? 0),
+    0,
+  );
+
   return (
     <div className="mt-8 px-4 sm:px-0">
       <div className="mb-6">
@@ -34,6 +43,22 @@ export const Inspecciones = () => {
           descargar actas en PDF y consultar evidencias fotográficas.
         </p>
       </div>
+
+      {incompletas.length > 0 && (
+        <Alert
+          type="warning"
+          showIcon
+          className="mb-4"
+          message={
+            incompletas.length === 1
+              ? "1 inspección de esta página tiene fotos faltantes"
+              : `${incompletas.length} inspecciones de esta página tienen fotos faltantes`
+          }
+          description={`Faltan ${fotosFaltantes} ${
+            fotosFaltantes === 1 ? "fotografía" : "fotografías"
+          } por cargar. Revisa la columna "Fotos" y haz clic en la etiqueta roja para subirlas.`}
+        />
+      )}
 
       <Card>
         {isError ? (
