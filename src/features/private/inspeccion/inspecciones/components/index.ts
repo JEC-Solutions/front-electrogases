@@ -15,3 +15,5 @@ export * from './actas/periodicas/version_07/SeccionIsometricos';
 export * from './actas/periodicas/version_07/TablaVentilacion';
 export * from './actas/periodicas/version_07/TrazaVacioInterno';
 export * from './actas/periodicas/version_07/TrazabilidadMatriz';
+export * from './actas/matrices/version_07/Matrices';
+

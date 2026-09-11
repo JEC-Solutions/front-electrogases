@@ -200,6 +200,7 @@ export const TableInspecciones = ({
 
         if (id === 1) prefijo = "PD";
         if (id === 2) prefijo = "NRD";
+        if (id === 3) prefijo = "MD";
 
         return (
           <Space>

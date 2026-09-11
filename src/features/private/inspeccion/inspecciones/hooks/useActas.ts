@@ -51,7 +51,13 @@ export const useActa = () => {
     refetchOnWindowFocus: false,
   });
 
-  // 3) Esquema en planta
+  const tipoId = Number(inspeccion?.tipoInspeccion?.id_tipo_inspeccion);
+  const tipoNombre = inspeccion?.tipoInspeccion?.nombre?.toLowerCase() || "";
+  const isMatriz = Boolean(
+    tipoId === 3 || (tipoNombre && tipoNombre.includes("matriz")),
+  );
+
+  // 3) Esquema en planta (no aplica para actas matrices)
   const {
     data: esquemaPlantaBase64,
     isLoading: isLoadingEsquema,
@@ -63,11 +69,13 @@ export const useActa = () => {
         const { data } = await inspeccionServices.getEsquemaPlanta(numericId!);
         return data.data.imagen.base64 as string;
       } catch (error: any) {
-        handleAxiosError(error);
-        throw error;
+        if (error?.response?.status !== 404) {
+          handleAxiosError(error);
+        }
+        return "" as string;
       }
     },
-    enabled: !!numericId,
+    enabled: !!numericId && !!inspeccion && !isMatriz,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
@@ -84,8 +92,10 @@ export const useActa = () => {
         const { data } = await inspeccionServices.getIsometrico(numericId!);
         return data.data.imagen.base64 as string;
       } catch (error: any) {
-        handleAxiosError(error);
-        throw error;
+        if (error?.response?.status !== 404) {
+          handleAxiosError(error);
+        }
+        return "" as string;
       }
     },
     enabled: !!numericId,
@@ -121,12 +131,12 @@ export const useActa = () => {
 
   const isLoadingImagenes =
     isLoadingFirma ||
-    isLoadingEsquema ||
+    (!isMatriz && isLoadingEsquema) ||
     isLoadingIsometrico ||
     isLoadingFirmaSello;
 
   const isErrorImagenes =
-    isErrorFirma || isErrorEsquema || isErrorIsometrico || isErrorFirmaSello;
+    isErrorFirma || (!isMatriz && isErrorEsquema) || isErrorIsometrico || isErrorFirmaSello;
 
   return {
     // inspección

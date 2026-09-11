@@ -2,6 +2,7 @@ import { useActa } from "@/features/private/inspeccion/inspecciones/hooks";
 import {
   Periodicas,
   Nuevas,
+  Matrices,
 } from "@/features/private/inspeccion/inspecciones/components";
 
 import { useNavigate } from "react-router-dom";
@@ -18,9 +19,13 @@ export const Acta = () => {
     selloInspectorBase64,
   } = useActa();
 
-  const isPeriodica = inspeccion?.tipoInspeccion.id_tipo_inspeccion === 1;
+  const tipoId = Number(inspeccion?.tipoInspeccion?.id_tipo_inspeccion);
+  const tipoNombre = inspeccion?.tipoInspeccion?.nombre?.toLowerCase() || "";
 
-  if (isLoading) {
+  const isPeriodica = tipoId === 1;
+  const isMatriz = tipoId === 3 || tipoNombre.includes("matriz");
+
+  if (isLoading || !inspeccion) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -66,6 +71,14 @@ export const Acta = () => {
             inspeccion={inspeccion}
             isometricoBase64={isometricoBase64}
             esquemaPlantaBase64={esquemaPlantaBase64}
+            firmaBase64={firmaBase64}
+            firmaInspectorBase64={firmaInspectorBase64}
+            selloInspectorBase64={selloInspectorBase64}
+          />
+        ) : isMatriz ? (
+          <Matrices
+            inspeccion={inspeccion}
+            isometricoBase64={isometricoBase64}
             firmaBase64={firmaBase64}
             firmaInspectorBase64={firmaInspectorBase64}
             selloInspectorBase64={selloInspectorBase64}

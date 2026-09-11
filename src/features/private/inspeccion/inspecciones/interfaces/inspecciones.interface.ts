@@ -112,6 +112,8 @@ export interface IActa {
     nit: string;
     acreditacion: string;
   } | null;
+  datos_matriz?: IDatosMatriz | null;
+  equiposInspeccion?: any[];
 }
 
 export interface ResultadoCategoriaDefectologia {
@@ -381,3 +383,119 @@ export interface IImagenItem {
   created_at: string;
   hora_registro: string | null;
 }
+
+export interface IDatosUsuarioMatriz {
+  nombre?: string | null;
+  codigo?: string | null;
+  direccion?: string | null;
+  ciudad?: string | null;
+  telefono?: string | null;
+}
+
+export interface ICaracteristicasMatriz {
+  residencial?: boolean;
+  comercial?: boolean;
+  tipo_linea?: "nueva" | "existente";
+}
+
+export interface IEmpresaInstaladorMatriz {
+  empresa?: string | null;
+  nit?: string | null;
+  telefono?: string | null;
+  registro_sic_empresa?: string | null;
+  instalador?: string | null;
+  cc?: string | null;
+  expedido_por?: string | null;
+  ccl?: string | null;
+  vigencia?: string | null;
+  registro_sic_instalador?: string | null;
+}
+
+export interface IDocumentacionMatriz {
+  ntc3838_5ta_actualizacion?: boolean | null;
+  memoria_calculo?: boolean | null;
+  registro_sic_instalador?: boolean | null;
+  diseno_isometrico?: boolean | null;
+  certificado_conformidad_materiales?: boolean | null;
+  ntc2505_4ta_actualizacion_diseno?: boolean | null;
+  ntc2505_4ta_actualizacion_construccion?: boolean | null;
+}
+
+export interface ILineaNuevaMatriz {
+  empresa_instalador?: IEmpresaInstaladorMatriz | null;
+  documentacion?: IDocumentacionMatriz | null;
+}
+
+export interface IPruebaHermeticidadMatriz {
+  lectura_inicial_psi?: number | null;
+  lectura_final_psi?: number | null;
+  tiempo_prueba_min?: number | null;
+  detector_fugas_pct_vol?: number | null;
+  presion_operacion_psi?: number | null;
+}
+
+export interface IDefectologiaMatriz {
+  hermeticidad?: {
+    cumple?: boolean | null;
+    metodos?: {
+      detector?: boolean;
+      presion?: boolean;
+      agua_jabon?: boolean;
+    };
+  };
+  trazado_general?: boolean | null;
+  materiales?: boolean | null;
+}
+
+export interface IParametroDisenoMatriz {
+  tramo?: string | null;
+  tramos?: string | null;
+  material?: string | null;
+  diametro?: string | null;
+  longitud_m?: number | null;
+  longitud?: number | null;
+  oculta?: boolean | string | null;
+  aVista?: boolean | null;
+  a_la_vista?: boolean | null;
+}
+
+export interface IDeclaracionConformidadMatriz {
+  resultado?: "sin_defectos" | "defectos_no_criticos" | "defectos_criticos";
+  sin_defectos?: boolean;
+  defectos_no_criticos?: boolean;
+  defectos_criticos?: boolean;
+  linea_matriz?: {
+    cumple?: boolean;
+    servicio?: boolean;
+    predio_continua?: boolean;
+  };
+  instalacionConforme?: boolean;
+  enServicio?: boolean;
+  continuaServicio?: boolean;
+  observaciones?: string | null;
+  cliente?: {
+    nombre?: string | null;
+    cedula?: string | null;
+    vinculo?: string | null;
+    telefono?: string | null;
+  };
+  nombreCliente?: string | null;
+  cedulaCliente?: string | null;
+  vinculoCliente?: string | null;
+  telefonoCliente?: string | null;
+  telefono?: string | null;
+}
+
+export interface IDatosMatriz {
+  version?: number;
+  datos_usuario?: IDatosUsuarioMatriz;
+  caracteristicas?: ICaracteristicasMatriz;
+  linea_nueva?: ILineaNuevaMatriz | null;
+  evaluacion_documentacion?: IDocumentacionMatriz | null;
+  prueba_hermeticidad?: IPruebaHermeticidadMatriz;
+  defectologia?: IDefectologiaMatriz;
+  condiciones_verificacion?: IDefectologiaMatriz;
+  parametros_diseno?: IParametroDisenoMatriz[];
+  declaracion_conformidad?: IDeclaracionConformidadMatriz;
+}
+
