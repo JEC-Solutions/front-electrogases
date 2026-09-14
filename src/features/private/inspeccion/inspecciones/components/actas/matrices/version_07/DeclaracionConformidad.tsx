@@ -78,6 +78,9 @@ export const DeclaracionConformidad = ({
   const certificadoInspector = String(
     inspeccion?.inspector_certificado_no || p?.usuario?.certificado_no || "",
   );
+  const vigenciaInspector = String(
+    inspeccion?.inspector_vigencia || p?.usuario?.vigencia || "",
+  );
   const expedidoPor = inspeccion?.inspector_entidad || p?.usuario?.entidad || "";
 
   const observaciones = conf.observaciones || inspeccion?.declaracionConformidad?.[0]?.observaciones || "";
@@ -239,6 +242,18 @@ export const DeclaracionConformidad = ({
                     ))
                   ) : (
                     certificadoInspector
+                  )}
+                </div>
+              </div>
+              <div className="flex-1 border-b border-black p-[2px_4px] flex items-center box-border overflow-hidden">
+                <span className="text-[6pt] whitespace-nowrap mr-[4px]">Vigencia:</span>
+                <div className="font-bold text-[5.8pt] leading-[1.2]">
+                  {vigenciaInspector.includes("/") ? (
+                    vigenciaInspector.split("/").map((item, idx) => (
+                      <div key={idx}>{item.trim()}</div>
+                    ))
+                  ) : (
+                    vigenciaInspector || "Sin Vigencia"
                   )}
                 </div>
               </div>

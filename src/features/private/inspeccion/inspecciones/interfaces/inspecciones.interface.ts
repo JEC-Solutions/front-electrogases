@@ -223,6 +223,7 @@ export interface Ruta {
   updated_at: string;
   persona: Persona;
   casa: Casa;
+  cliente?: Cliente | null;
 }
 
 export interface Persona {

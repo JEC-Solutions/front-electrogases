@@ -49,7 +49,7 @@ export const ParametrosDiseno = ({ inspeccion }: Props) => {
     <div className="w-full border-l border-r border-b border-black font-arial box-border flex flex-col bg-white text-black">
       {/* Encabezado Principal (Gris) */}
       <div className="bg-[#f2f2f2] border-b border-black text-[7.5pt] font-bold text-center py-[2.5px] uppercase leading-[1.2]">
-        8. . PARAMETROS DE DISEÑO
+        8. . PARAMETROS DEL TRAZADO Y/O DISEÑO
       </div>
 
       {/* Encabezado de Columnas (10 Columnas: 5 a la izquierda y 5 a la derecha) */}

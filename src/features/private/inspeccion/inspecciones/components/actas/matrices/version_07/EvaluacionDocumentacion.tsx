@@ -112,20 +112,20 @@ export const EvaluacionDocumentacion = ({ inspeccion }: Props) => {
 
       {/* Fila 3 (Inferior): NTC 2505 4 ta Actal: Diseño y Construcción */}
       <div className="flex flex-row w-full min-h-[17px] box-border text-[6.8pt]">
-        {/* Parte Izquierda (53%, alineada con Col 1 y 2): NTC 2505 4 ta Actal: Diseño: */}
-        <div className="w-[53%] p-[2px_5px] flex items-center justify-end box-border">
-          <div className="mr-auto flex items-center font-bold">
-            <span className="mr-[6px]">NTC 2505 4 ta Actal:</span>
-            <span className="font-normal">Diseño:</span>
-          </div>
+        {/* Columna 1 (26%): NTC 2505 4 ta Actal: */}
+        <div className="w-[26%] border-r border-black p-[2px_5px] flex items-center box-border font-bold">
+          <span>NTC 2505 4 ta Actal</span>
+        </div>
+
+        {/* Columna 2 (27%): Diseño: */}
+        <div className="w-[27%] border-r border-black p-[2px_5px] flex items-center justify-between box-border">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">Diseño:</span>
           <SiNoNaGroup val={documentacion?.ntc2505_4ta_actualizacion_diseno} />
         </div>
 
-        {/* Parte Derecha (47%, alineada con Col 3): Construcción */}
-        <div className="w-[47%] p-[2px_5px] flex items-center justify-end box-border">
-          <div className="mr-auto">
-            <span>Construcción</span>
-          </div>
+        {/* Columna 3 (47%): Construcción */}
+        <div className="w-[47%] p-[2px_5px] flex items-center justify-between box-border">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">Construcción</span>
           <SiNoNaGroup val={documentacion?.ntc2505_4ta_actualizacion_construccion} />
         </div>
       </div>

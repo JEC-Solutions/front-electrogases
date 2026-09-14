@@ -8,7 +8,10 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
   const datosMatriz = inspeccion?.datos_matriz;
   const datosUsuario = datosMatriz?.datos_usuario;
 
-  const clienteRuta = inspeccion?.ruta?.casa?.cliente;
+  const clienteRuta =
+    inspeccion?.ruta?.casa?.cliente ||
+    inspeccion?.ruta?.cliente ||
+    (inspeccion as any)?.cliente;
   const casaRuta = inspeccion?.ruta?.casa;
 
   const nombreFallback = [
@@ -24,11 +27,34 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
     (typeof datosUsuario?.nombre === "string" ? datosUsuario.nombre.trim() : "") ||
     nombreFallback ||
     "";
-  const codigoUsuario =
-    (typeof datosUsuario?.codigo === "string" ? datosUsuario.codigo.trim() : "") ||
-    casaRuta?.no_cuenta ||
-    inspeccion?.numero_informe ||
+
+  const documentoFallback =
+    clienteRuta?.numero_documento ||
+    inspeccion?.ruta?.cliente?.numero_documento ||
+    (inspeccion as any)?.cliente?.numero_documento ||
+    inspeccion?.datos_matriz?.declaracion_conformidad?.cliente?.cedula ||
+    inspeccion?.datos_matriz?.declaracion_conformidad?.cedulaCliente ||
     "";
+
+  const documentoUsuario =
+    (typeof (datosUsuario as any)?.documento === "string"
+      ? (datosUsuario as any).documento.trim()
+      : "") ||
+    (typeof (datosUsuario as any)?.numero_documento === "string"
+      ? (datosUsuario as any).numero_documento.trim()
+      : "") ||
+    (typeof (datosUsuario as any)?.cedula === "string"
+      ? (datosUsuario as any).cedula.trim()
+      : "") ||
+    (typeof (datosUsuario as any)?.nit === "string"
+      ? (datosUsuario as any).nit.trim()
+      : "") ||
+    (documentoFallback ? String(documentoFallback).trim() : "");
+
+  const codigo =
+    typeof datosUsuario?.codigo === "string" ? datosUsuario.codigo.trim() : "";
+
+  const codigoUsuario = codigo || documentoUsuario || "";
   const direccionUsuario =
     (typeof datosUsuario?.direccion === "string" ? datosUsuario.direccion.trim() : "") ||
     casaRuta?.direccion ||
@@ -124,37 +150,37 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
 
           {/* Nombre y Código */}
           <div className="flex flex-row w-full border-b border-black flex-1 min-h-[25px] box-border text-[7pt]">
-            <div className="w-[70%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
-              <span className="font-bold mr-[4px] whitespace-nowrap">Nombre :</span>
+            <div className="w-[55%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
+              <span className="font-bold mr-[4px] whitespace-nowrap shrink-0">Nombre :</span>
               <span className="font-normal overflow-hidden text-ellipsis whitespace-nowrap uppercase">
                 {nombreUsuario}
               </span>
             </div>
-            <div className="w-[30%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap">
-              <span className="font-bold mr-[4px]">Codigo:</span>
+            <div className="w-[45%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap overflow-hidden">
+              <span className="font-bold mr-[4px] shrink-0">Codigo/NIT/CC:</span>
               <span className="overflow-hidden text-ellipsis whitespace-nowrap">{codigoUsuario}</span>
             </div>
           </div>
 
           {/* Dirección y Ciudad */}
           <div className="flex flex-row w-full flex-1 min-h-[25px] box-border text-[7pt]">
-            <div className="w-[70%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
-              <span className="font-bold mr-[4px] whitespace-nowrap">Dirección :</span>
+            <div className="w-[55%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
+              <span className="font-bold mr-[4px] whitespace-nowrap shrink-0">Dirección :</span>
               <span className="font-normal overflow-hidden text-ellipsis whitespace-nowrap uppercase">
                 {direccionUsuario}
               </span>
             </div>
-            <div className="w-[30%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap">
-              <span className="font-bold mr-[4px]">Ciudad:</span>
+            <div className="w-[45%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap overflow-hidden">
+              <span className="font-bold mr-[4px] shrink-0">Ciudad:</span>
               <span className="uppercase overflow-hidden text-ellipsis whitespace-nowrap">{ciudadUsuario}</span>
             </div>
           </div>
         </div>
 
-        {/* Columna 2: 2. IDENTIFICACIÓN DEL ORGANISMO DE INSPECCIÓN (40%) */}
+        {/* Columna 2: 2. IDENTIFICACIÓN DEL ORGANISMO (40%) */}
         <div className="w-[40%] flex flex-col box-border">
           <div className="bg-[#f2f2f2] border-b border-black text-[7.5pt] font-bold text-center py-[2.5px] uppercase leading-[1.2]">
-            2. IDENTIFICACIÓN DEL ORGANISMO DE INSPECCIÓN
+            2. IDENTIFICACIÓN DEL ORGANISMO
           </div>
 
           {/* Empresa y NIT */}
