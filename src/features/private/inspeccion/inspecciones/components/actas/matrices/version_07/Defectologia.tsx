@@ -60,6 +60,13 @@ export const Defectologia = ({ inspeccion }: Props) => {
   const hermEval = evaluarItem(cv?.hermeticidad?.cumple, "critico");
   const trazadoEval = evaluarItem(cv?.trazado_general, "no_critico");
   const materialesEval = evaluarItem(cv?.materiales, "critico");
+  const valvularEval = evaluarItem(
+    cv?.valvular ??
+      cv?.valvulas ??
+      cv?.existencia_operatividad_valvular ??
+      cv?.existencia_operatividad_valvulas,
+    "critico",
+  );
 
   return (
     <div className="w-full border-l border-r border-b border-black font-arial box-border flex flex-col bg-white text-black">
@@ -126,7 +133,7 @@ export const Defectologia = ({ inspeccion }: Props) => {
       </div>
 
       {/* Fila 3: Materiales: */}
-      <div className="flex flex-row w-full box-border min-h-[17px] text-[6.8pt]">
+      <div className="flex flex-row w-full border-b border-black box-border min-h-[17px] text-[6.8pt]">
         <div className="w-[70%] border-r border-black px-[6px] py-[2px] flex items-center box-border">
           <span>Materiales:</span>
         </div>
@@ -138,6 +145,22 @@ export const Defectologia = ({ inspeccion }: Props) => {
         </div>
         <div className="w-[10%] flex items-center justify-center box-border">
           <CheckBox checked={materialesEval.cumple} />
+        </div>
+      </div>
+
+      {/* Fila 4: Existencia y operatividad de valvular */}
+      <div className="flex flex-row w-full box-border min-h-[17px] text-[6.8pt]">
+        <div className="w-[70%] border-r border-black px-[6px] py-[2px] flex items-center box-border">
+          <span>Existencia y operatividad de valvular</span>
+        </div>
+        <div className="w-[10%] border-r border-black flex items-center justify-center box-border">
+          <CheckBox checked={valvularEval.critico} />
+        </div>
+        <div className="w-[10%] border-r border-black flex items-center justify-center box-border">
+          <CheckBox checked={valvularEval.noCritico} />
+        </div>
+        <div className="w-[10%] flex items-center justify-center box-border">
+          <CheckBox checked={valvularEval.cumple} />
         </div>
       </div>
     </div>

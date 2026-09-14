@@ -446,6 +446,10 @@ export interface IDefectologiaMatriz {
   };
   trazado_general?: boolean | null;
   materiales?: boolean | null;
+  valvular?: boolean | null;
+  valvulas?: boolean | null;
+  existencia_operatividad_valvular?: boolean | null;
+  existencia_operatividad_valvulas?: boolean | null;
 }
 
 export interface IParametroDisenoMatriz {

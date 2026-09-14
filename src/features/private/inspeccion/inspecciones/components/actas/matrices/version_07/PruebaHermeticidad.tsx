@@ -71,10 +71,10 @@ export const PruebaHermeticidad = ({ inspeccion }: Props) => {
             <span>Prueba con<br />detector de gas</span>
           </div>
           <div className="flex items-center whitespace-nowrap ml-[4px]">
-            <span className="font-normal mr-[3px]">% en vol:</span>
             <span className="font-bold text-[8pt] min-w-[18px] text-center">
               {formatMedida(herm?.detector_fugas_pct_vol)}
             </span>
+            <span className="font-normal ml-[3px]">% en vol</span>
           </div>
         </div>
 
@@ -85,9 +85,6 @@ export const PruebaHermeticidad = ({ inspeccion }: Props) => {
           </div>
           <div className="font-bold text-[8pt] flex-1 text-center overflow-hidden px-[2px]">
             {formatMedida(herm?.presion_operacion_psi)}
-          </div>
-          <div className="font-bold whitespace-nowrap">
-            <span>PSI</span>
           </div>
         </div>
       </div>
