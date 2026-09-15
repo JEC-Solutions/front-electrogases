@@ -391,6 +391,12 @@ export interface IDatosUsuarioMatriz {
   direccion?: string | null;
   ciudad?: string | null;
   telefono?: string | null;
+  cliente?: {
+    nombre?: string | null;
+    cedula?: string | null;
+    vinculo?: string | null;
+    telefono?: string | null;
+  };
 }
 
 export interface ICaracteristicasMatriz {
@@ -438,6 +444,7 @@ export interface IPruebaHermeticidadMatriz {
 export interface IDefectologiaMatriz {
   hermeticidad?: {
     cumple?: boolean | null;
+    na?: boolean | null;
     metodos?: {
       detector?: boolean;
       presion?: boolean;
@@ -445,9 +452,13 @@ export interface IDefectologiaMatriz {
     };
   };
   trazado_general?: boolean | null;
+  trazado_general_na?: boolean | null;
   materiales?: boolean | null;
+  materiales_na?: boolean | null;
   valvular?: boolean | null;
+  valvular_na?: boolean | null;
   valvulas?: boolean | null;
+  valvulas_na?: boolean | null;
   existencia_operatividad_valvular?: boolean | null;
   existencia_operatividad_valvulas?: boolean | null;
 }

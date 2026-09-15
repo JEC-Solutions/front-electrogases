@@ -53,17 +53,24 @@ export const DeclaracionConformidad = ({
       ? lineaMatriz.predio_continua
       : conf.continuaServicio;
 
-  const cliente = conf.cliente || {};
-  const nombreCliente = cliente.nombre || conf.nombreCliente || "";
-  const cedulaCliente = cliente.cedula || conf.cedulaCliente || "";
-  const vinculoCliente = cliente.vinculo || conf.vinculoCliente || "";
-  const telefonoCliente =
-    cliente.telefono ||
-    conf.telefonoCliente ||
-    conf.telefono ||
-    inspeccion?.datos_matriz?.datos_usuario?.telefono ||
-    inspeccion?.ruta?.casa?.cliente?.telefono ||
+  const clienteMatriz =
+    (inspeccion?.datos_matriz?.datos_usuario as any)?.cliente ||
+    (inspeccion?.datos_matriz as any)?.cliente;
+
+  const cliente = conf.cliente || clienteMatriz || {};
+  const nombreCliente =
+    cliente.nombre ||
+    conf.nombreCliente ||
+    inspeccion?.datos_matriz?.datos_usuario?.nombre ||
     "";
+  const cedulaCliente =
+    cliente.cedula ||
+    conf.cedulaCliente ||
+    (inspeccion?.datos_matriz?.datos_usuario as any)?.codigo ||
+    (inspeccion?.datos_matriz?.datos_usuario as any)?.documento ||
+    (inspeccion?.datos_matriz?.datos_usuario as any)?.cedula ||
+    "";
+  const vinculoCliente = cliente.vinculo || conf.vinculoCliente || "";
 
   const p = inspeccion?.ruta?.persona;
   const nombreInspector = [
@@ -185,13 +192,9 @@ export const DeclaracionConformidad = ({
                 <span>Cedula:</span>
                 <span className="font-bold ml-[3px]">{cedulaCliente}</span>
               </div>
-              <div className="flex-1 border-b border-black p-[2px_4px] flex items-center">
+              <div className="flex-1 p-[2px_4px] flex items-center">
                 <span>Vinculo:</span>
                 <span className="font-bold ml-[3px] uppercase">{vinculoCliente}</span>
-              </div>
-              <div className="flex-1 p-[2px_4px] flex items-center">
-                <span>Telefono:</span>
-                <span className="font-bold ml-[3px]">{telefonoCliente}</span>
               </div>
             </div>
 

@@ -8,6 +8,11 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
   const datosMatriz = inspeccion?.datos_matriz;
   const datosUsuario = datosMatriz?.datos_usuario;
 
+  const clienteMatriz =
+    (datosUsuario as any)?.cliente ||
+    inspeccion?.datos_matriz?.declaracion_conformidad?.cliente ||
+    (inspeccion?.datos_matriz as any)?.cliente;
+
   const clienteRuta =
     inspeccion?.ruta?.casa?.cliente ||
     inspeccion?.ruta?.cliente ||
@@ -25,10 +30,15 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
 
   const nombreUsuario =
     (typeof datosUsuario?.nombre === "string" ? datosUsuario.nombre.trim() : "") ||
+    (typeof clienteMatriz?.nombre === "string" ? clienteMatriz.nombre.trim() : "") ||
+    (typeof inspeccion?.datos_matriz?.declaracion_conformidad?.nombreCliente === "string"
+      ? inspeccion.datos_matriz.declaracion_conformidad.nombreCliente.trim()
+      : "") ||
     nombreFallback ||
     "";
 
   const documentoFallback =
+    (typeof clienteMatriz?.cedula === "string" ? clienteMatriz.cedula.trim() : "") ||
     clienteRuta?.numero_documento ||
     inspeccion?.ruta?.cliente?.numero_documento ||
     (inspeccion as any)?.cliente?.numero_documento ||
@@ -62,6 +72,18 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
   const ciudadUsuario =
     (typeof datosUsuario?.ciudad === "string" ? datosUsuario.ciudad.trim() : "") ||
     casaRuta?.ciudad?.nombre ||
+    "";
+  const telefonoUsuario =
+    (typeof datosUsuario?.telefono === "string" ? datosUsuario.telefono.trim() : "") ||
+    (typeof clienteMatriz?.telefono === "string" ? clienteMatriz.telefono.trim() : "") ||
+    (typeof inspeccion?.datos_matriz?.declaracion_conformidad?.telefonoCliente === "string"
+      ? inspeccion.datos_matriz.declaracion_conformidad.telefonoCliente.trim()
+      : "") ||
+    (typeof inspeccion?.datos_matriz?.declaracion_conformidad?.telefono === "string"
+      ? inspeccion.datos_matriz.declaracion_conformidad.telefono.trim()
+      : "") ||
+    clienteRuta?.telefono ||
+    clienteRuta?.celular ||
     "";
 
   // Organismo de inspección
@@ -162,17 +184,21 @@ export const DatosUsuario = ({ inspeccion }: Props) => {
             </div>
           </div>
 
-          {/* Dirección y Ciudad */}
+          {/* Dirección, Ciudad y Teléfono */}
           <div className="flex flex-row w-full flex-1 min-h-[25px] box-border text-[7pt]">
-            <div className="w-[55%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
+            <div className="w-[50%] border-r border-black px-[5px] py-[2px] flex items-center box-border overflow-hidden">
               <span className="font-bold mr-[4px] whitespace-nowrap shrink-0">Dirección :</span>
               <span className="font-normal overflow-hidden text-ellipsis whitespace-nowrap uppercase">
                 {direccionUsuario}
               </span>
             </div>
-            <div className="w-[45%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap overflow-hidden">
+            <div className="w-[25%] border-r border-black px-[5px] py-[2px] flex items-center box-border whitespace-nowrap overflow-hidden">
               <span className="font-bold mr-[4px] shrink-0">Ciudad:</span>
               <span className="uppercase overflow-hidden text-ellipsis whitespace-nowrap">{ciudadUsuario}</span>
+            </div>
+            <div className="w-[25%] px-[5px] py-[2px] flex items-center box-border whitespace-nowrap overflow-hidden">
+              <span className="font-bold mr-[4px] shrink-0">Teléfono:</span>
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap">{telefonoUsuario}</span>
             </div>
           </div>
         </div>
