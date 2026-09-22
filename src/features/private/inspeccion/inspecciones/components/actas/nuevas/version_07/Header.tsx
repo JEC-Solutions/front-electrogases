@@ -98,7 +98,7 @@ export const Header = ({ inspeccion }: Props) => {
             VERSIÓN: 08
           </div>
           <div className="flex-1 flex items-center justify-center text-center px-1">
-            FECHA: 2023-02-19
+            FECHA: 2026-04-25
           </div>
         </div>
       </div>
